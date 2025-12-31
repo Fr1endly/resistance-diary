@@ -1,0 +1,100 @@
+import type { StateCreator } from 'zustand';
+import type { WorkoutRoutine, WorkoutDay, PlannedSet } from '@/types';
+
+export interface WorkoutSlice {
+  routines: WorkoutRoutine[];
+  addRoutine: (routine: WorkoutRoutine) => void;
+  updateRoutine: (id: string, updates: Partial<WorkoutRoutine>) => void;
+  removeRoutine: (id: string) => void;
+  addDayToRoutine: (routineId: string, day: WorkoutDay) => void;
+  updateDay: (routineId: string, dayId: string, updates: Partial<WorkoutDay>) => void;
+  removeDayFromRoutine: (routineId: string, dayId: string) => void;
+  addPlannedSetToDay: (routineId: string, dayId: string, plannedSet: PlannedSet) => void;
+  removePlannedSetFromDay: (routineId: string, dayId: string, setId: string) => void;
+}
+
+export const createWorkoutSlice: StateCreator<WorkoutSlice, [], [], WorkoutSlice> = (set) => ({
+  routines: [],
+
+  addRoutine: (routine) =>
+    set((state) => ({
+      routines: [...state.routines, routine],
+    })),
+
+  updateRoutine: (id, updates) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === id ? { ...r, ...updates, updatedAt: new Date() } : r
+      ),
+    })),
+
+  removeRoutine: (id) =>
+    set((state) => ({
+      routines: state.routines.filter((r) => r.id !== id),
+    })),
+
+  addDayToRoutine: (routineId, day) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? { ...r, days: [...r.days, day], updatedAt: new Date() }
+          : r
+      ),
+    })),
+
+  updateDay: (routineId, dayId, updates) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? {
+              ...r,
+              days: r.days.map((d) => (d.id === dayId ? { ...d, ...updates } : d)),
+              updatedAt: new Date(),
+            }
+          : r
+      ),
+    })),
+
+  removeDayFromRoutine: (routineId, dayId) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? { ...r, days: r.days.filter((d) => d.id !== dayId), updatedAt: new Date() }
+          : r
+      ),
+    })),
+
+  addPlannedSetToDay: (routineId, dayId, plannedSet) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? {
+              ...r,
+              days: r.days.map((d) =>
+                d.id === dayId
+                  ? { ...d, plannedSets: [...d.plannedSets, plannedSet] }
+                  : d
+              ),
+              updatedAt: new Date(),
+            }
+          : r
+      ),
+    })),
+
+  removePlannedSetFromDay: (routineId, dayId, setId) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? {
+              ...r,
+              days: r.days.map((d) =>
+                d.id === dayId
+                  ? { ...d, plannedSets: d.plannedSets.filter((s) => s.id !== setId) }
+                  : d
+              ),
+              updatedAt: new Date(),
+            }
+          : r
+      ),
+    })),
+});
