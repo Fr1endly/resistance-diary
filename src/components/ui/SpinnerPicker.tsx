@@ -58,7 +58,7 @@ const SpinnerItem = memo(({ val, index, y, itemHeight, suffix, onTap }: SpinnerI
   return (
     <motion.button
       onClick={() => onTap(index)}
-      style={{ opacity:1, scale, height: itemHeight   }}
+      style={{ opacity, scale, height: itemHeight   }}
   
       className="
         rounded-sm flex w-full items-center justify-center font-display text-md font-bold

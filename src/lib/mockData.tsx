@@ -15,17 +15,6 @@ import { useAppStore } from '@/store';
 // Helper to generate unique IDs
 const generateId = () => nanoid();
 
-// Helper to get a random date in the past N days
-const getRandomPastDate = (maxDaysAgo: number): Date => {
-  const now = new Date();
-  const daysAgo = Math.floor(Math.random() * maxDaysAgo);
-  const hoursOffset = Math.floor(Math.random() * 12) + 6; // Between 6am and 6pm
-  const date = new Date(now);
-  date.setDate(date.getDate() - daysAgo);
-  date.setHours(hoursOffset, Math.floor(Math.random() * 60), 0, 0);
-  return date;
-};
-
 // Helper to add random variation to weight/reps
 const addVariation = (base: number, variationPercent: number = 0.1): number => {
   const variation = base * variationPercent;
@@ -696,7 +685,7 @@ export const generateMinMockData = () => {
 // ============================================
 // STORE POPULATION FUNCTION
 // ============================================
-export const populateStoreWithMockData = (options: MockDataOptions = {}) => {
+export const populateStoreWithMockData = (_options: MockDataOptions = {}) => {
   const store = useAppStore.getState();
   const mockData = generateMinMockData();
 

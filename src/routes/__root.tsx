@@ -1,5 +1,4 @@
 import { createRootRouteWithContext, Outlet, type ErrorComponentProps } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 interface RouterContext {
   user: {
