@@ -110,6 +110,7 @@ const FloatingControls = memo(({
               step={1}
               containerHeight={70}
               itemHeight={50}
+              friction={0.95}
             />
           </div>
           <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Reps</span>
