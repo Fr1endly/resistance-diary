@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Dumbbell, Play, SkipForward, Target } from "lucide-react";
+import { nanoid } from 'nanoid';
 
 import PageLayout from "@/components/ui/PageLayout";
 import { cn } from "@/lib/utils";
@@ -164,7 +165,7 @@ function Page() {
     const handleStartSession = () => {
         if (!activeRoutine || !activeDay) return;
         startSession({
-            id: `ID-${Math.random().toString(36).slice(2, 11)}`,
+            id: nanoid(),
             routineId: activeRoutine.id,
             dayId: activeDay.id,
         });

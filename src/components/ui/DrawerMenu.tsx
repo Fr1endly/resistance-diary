@@ -32,9 +32,9 @@ export default function Menu({ children, variant = 'sectioned' }: NavDrawerProps
                     </DrawerHeader>
                     <div className="p-4 pb-0">
                         <div className="flex flex-col items-end justify-end gap-3">
-                            <Link to="/profile">Profile</Link>
+                            <Link to="/">Home</Link>
                             <Link to="/workouts">Workouts</Link>
-                            <Link to="/">Index</Link>
+                            <Link to="/exercises">Exercises</Link>
                         </div>
                         <div className="h-[35px]" />
                     </div>

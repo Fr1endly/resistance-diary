@@ -1,12 +1,19 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider, createRouter, } from '@tanstack/react-router'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import reportWebVitals from './reportWebVitals.ts'
+import { populateStoreWithMockData } from './lib/mockData'
+import { useAppStore } from './store'
+
+// Populate with mock data if store is empty (dev only)
+// if (import.meta.env.DEV && useAppStore.getState().routines.length === 0) {
+//   populateStoreWithMockData()
+// }
 
 // Create a new router instance
 const router = createRouter({

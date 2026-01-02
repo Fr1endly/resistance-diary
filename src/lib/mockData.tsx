@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 import type {
   MuscleGroup,
   Exercise,
@@ -11,7 +13,7 @@ import type {
 import { useAppStore } from '@/store';
 
 // Helper to generate unique IDs
-const generateId = () => crypto.randomUUID();
+const generateId = () => nanoid();
 
 // Helper to get a random date in the past N days
 const getRandomPastDate = (maxDaysAgo: number): Date => {
@@ -622,12 +624,81 @@ export const generateMockData = (options: MockDataOptions = {}) => {
   };
 };
 
+// Generates a minimal set of mock data (e.g., for testing)
+export const generateMinMockData = () => {
+  // One muscle group
+  const muscleGroups: MuscleGroup[] = [
+    { id: 'chest', name: 'Chest', category: 'push' },
+  ];
+
+  // One exercise
+  const exercises: Exercise[] = [
+    {
+      id: 'bench-press',
+      name: 'Barbell Bench Press',
+      description: 'Classic compound movement for chest development',
+      muscleContributions: [{ muscleGroupId: 'chest', percentage: 100 }],
+    },
+  ];
+
+  // Two planned sets for the exercise
+  const plannedSets: PlannedSet[] = [
+    {
+      id: generateId(),
+      exerciseId: 'bench-press',
+      targetReps: 8,
+      targetWeight: 60,
+      restSeconds: 90,
+      order: 0,
+    },
+    {
+      id: generateId(),
+      exerciseId: 'bench-press',
+      targetReps: 8,
+      targetWeight: 60,
+      restSeconds: 90,
+      order: 1,
+    },
+  ];
+
+  // One day with those planned sets
+  const days: WorkoutDay[] = [
+    {
+      id: generateId(),
+      name: 'Chest Day',
+      order: 0,
+      plannedSets,
+    },
+  ];
+
+  // One routine with that day
+  const routines: WorkoutRoutine[] = [
+    {
+      id: generateId(),
+      name: 'Minimal Routine',
+      description: 'A minimal routine for testing',
+      days,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ];
+
+  return {
+    muscleGroups,
+    exercises,
+    routines,
+    sessions: [] as WorkoutSession[],
+    completedSets: [] as CompletedSet[],
+    activeRoutineId: routines[0].id,
+  };
+}
+
 // ============================================
 // STORE POPULATION FUNCTION
 // ============================================
 export const populateStoreWithMockData = (options: MockDataOptions = {}) => {
   const store = useAppStore.getState();
-  const mockData = generateMockData(options);
+  const mockData = generateMinMockData();
 
   // Clear existing data first
   useAppStore.setState({
@@ -691,6 +762,6 @@ if (typeof window !== 'undefined') {
   (window as any).mockData = {
     populate: populateStoreWithMockData,
     clear: clearAllData,
-    generate: generateMockData,
+    generate: generateMinMockData,
   };
 }
