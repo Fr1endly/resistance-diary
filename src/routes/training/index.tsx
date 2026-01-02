@@ -110,7 +110,7 @@ const FloatingControls = memo(({
               step={1}
               containerHeight={70}
               itemHeight={50}
-              friction={0.95}
+              friction={0.75}
             />
           </div>
           <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Reps</span>
@@ -132,6 +132,7 @@ const FloatingControls = memo(({
               suffix="kg"
               containerHeight={70}
               itemHeight={50}
+              friction={0.75}
             />
           </div>
           <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Weight</span>
