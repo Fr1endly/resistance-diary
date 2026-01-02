@@ -44,7 +44,7 @@ const FloatingBadge = memo(({
 const CenteredChart = memo(({ data, stagedCount = 0 }: { data: RepGroup[][], stagedCount?: number }) => {
   const processedData = useMemo(() => {
     if (!data.length) return []
-    return data.map(repGroups => 
+    return data.map(repGroups =>
       repGroups.map(rg => ({
         weight: rg.weight,
         reps: rg.reps,
@@ -119,7 +119,7 @@ const FloatingControls = memo(({
 
         <div className="flex-1 flex flex-col items-center">
           <div className={cn(
-            "w-full rounded-xl overflow-hidden mb-1",
+            "w-full rounded-xl overflow-hidden mb-1 ",
             "bg-white/5 border border-white/10"
           )}>
             <SpinnerPicker

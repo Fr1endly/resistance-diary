@@ -88,7 +88,7 @@ const PageLayout = ({
                                 {upperSlot}
                             </div>
 
-                   
+
                             <motion.div
                                 className="w-full bg-gray-900/15 relative z-30 flex justify-between items-end overflow-auto"
                                 style={{ height: config.middle }}
@@ -105,18 +105,18 @@ const PageLayout = ({
                         <motion.div
                             className={cn(
                                 "flex flex-col justify-start items-start overflow-y-auto relative z-30",
-                                variant === 'glass' 
-                                    ? "p-4 h-full w-full bg-gray-900/15" 
+                                variant === 'glass'
+                                    ? "p-4 h-full w-full bg-gray-900/15"
                                     : "p-6 pr-6 bg-yellow-500"
                             )}
                             style={{ height: config.bottom }}
                             transition={{ duration: 0.35, ease: "easeInOut" }}
                             {...fadeAnimation}
                         >
-                            <div className="w-full flex-1 flex flex-col justify-start items-start overflow-clip">
+                            <div className="w-full flex flex-col justify-start items-start overflow-clip">
                                 {bottomUpper}
                             </div>
-                           
+
                             <div className={cn(
                                 "w-full flex justify-start items-end relative",
                                 variant === 'glass' ? "h-0 flex-none" : "flex-1"
