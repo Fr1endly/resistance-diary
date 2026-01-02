@@ -6,11 +6,13 @@ import {
     createWorkoutSlice,
     createSessionSlice,
     createSettingsSlice,
+    createStopwatchSlice,
     type MuscleSlice,
     type ExerciseSlice,
     type WorkoutSlice,
     type SessionSlice,
     type SettingsSlice,
+    type StopwatchSlice,
 } from './slices';
 
 // Combined store type
@@ -18,7 +20,8 @@ export type AppStore = MuscleSlice &
     ExerciseSlice &
     WorkoutSlice &
     SessionSlice &
-    SettingsSlice;
+    SettingsSlice &
+    StopwatchSlice;
 
 // Custom serialization/deserialization functions
 const dateReviver = (_key: string, value: any): any => {
@@ -46,6 +49,7 @@ export const useAppStore = create<AppStore>()(
             ...createWorkoutSlice(...args),
             ...createSessionSlice(...args),
             ...createSettingsSlice(...args),
+            ...createStopwatchSlice(...args),
         }),
         {
             name: 'resistance-diary-storage',
@@ -67,6 +71,10 @@ export const useAppStore = create<AppStore>()(
                 currentDayIndex: state.currentDayIndex,
                 currentSetIndex: state.currentSetIndex,
                 isWorkoutInProgress: state.isWorkoutInProgress,
+                // Persist stopwatch state
+                stopwatchElapsedMs: state.stopwatchElapsedMs,
+                stopwatchIsRunning: state.stopwatchIsRunning,
+                stopwatchStartTimestamp: state.stopwatchStartTimestamp,
             }),
         }
     )

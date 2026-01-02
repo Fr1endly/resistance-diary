@@ -9,7 +9,7 @@ import NavDrawer from "./DrawerMenu"
 
 // Layout height configuration by variant
 const LAYOUT_CONFIG = {
-    sectioned: { upper: '70%', middle: '80%', bottom: '30%' },
+    sectioned: { upper: '65%', middle: '80%', bottom: '35%' },
     glass: { upper: '15%', middle: '0', bottom: '85%' },
 } as const
 

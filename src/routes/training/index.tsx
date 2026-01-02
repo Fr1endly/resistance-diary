@@ -27,7 +27,7 @@ const FloatingBadge = memo(({
   currentSet: number
   totalSets: number
 }) => (
-  <div className="w-full pt-6 px-5">
+  <div className="w-full  px-5 flex justify-end items-center">
     <div className={cn(
       "inline-flex items-center gap-3 px-4 py-2.5 rounded-full",
       "backdrop-blur-xl bg-white/5 border border-white/10"
