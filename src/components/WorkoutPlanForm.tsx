@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { nanoid } from "nanoid"
 import { Plus, Trash2, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { Reorder, useDragControls } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { useAppStore } from "@/store/useAppStore"
@@ -15,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { GripVertical } from "@/components/icons"
 import type { WorkoutRoutine, Exercise } from "@/types"
 
 // ============================================
@@ -339,7 +341,7 @@ function DayStep({
   onAddDay: () => void
   onRemoveDay: () => void
 }) {
-  const { fields: setFields, append: appendSet, remove: removeSet } = useFieldArray({
+  const { fields: setFields, append: appendSet, remove: removeSet, move: moveSet } = useFieldArray({
     control: form.control,
     name: `days.${dayIndex}.plannedSets`,
   })
@@ -347,6 +349,21 @@ function DayStep({
   const dayNameError = form.formState.errors.days?.[dayIndex]?.name?.message
   const plannedSetsError = form.formState.errors.days?.[dayIndex]?.plannedSets?.message
     || form.formState.errors.days?.[dayIndex]?.plannedSets?.root?.message
+
+  const handleReorder = (newOrder: typeof setFields) => {
+    // Find what changed and use move to update form state
+    const oldIds = setFields.map(f => f.id)
+    const newIds = newOrder.map(f => f.id)
+    
+    // Find the item that moved
+    for (let newIndex = 0; newIndex < newIds.length; newIndex++) {
+      const oldIndex = oldIds.indexOf(newIds[newIndex])
+      if (oldIndex !== newIndex) {
+        moveSet(oldIndex, newIndex)
+        return
+      }
+    }
+  }
 
   const handleAddSet = () => {
     appendSet(createEmptyPlannedSet(setFields.length))
@@ -407,17 +424,25 @@ function DayStep({
             <p className="text-red-400 text-xs">{plannedSetsError}</p>
           )}
 
-          {setFields.map((field, setIndex) => (
-            <PlannedSetInput
-              key={field.id}
-              form={form}
-              exercises={exercises}
-              dayIndex={dayIndex}
-              setIndex={setIndex}
-              onRemove={() => removeSet(setIndex)}
-              canRemove={setFields.length > 1}
-            />
-          ))}
+          <Reorder.Group
+            axis="y"
+            values={setFields}
+            onReorder={handleReorder}
+            className="space-y-3"
+          >
+            {setFields.map((field, setIndex) => (
+              <PlannedSetInput
+                key={field.id}
+                field={field}
+                form={form}
+                exercises={exercises}
+                dayIndex={dayIndex}
+                setIndex={setIndex}
+                onRemove={() => removeSet(setIndex)}
+                canRemove={setFields.length > 1}
+              />
+            ))}
+          </Reorder.Group>
         </div>
       </div>
 
@@ -461,7 +486,17 @@ function DayStep({
 // PLANNED SET INPUT
 // ============================================
 
+interface FieldWithId {
+  id: string;
+  exerciseId: string;
+  targetReps: number;
+  targetWeight?: number;
+  restSeconds?: number;
+  order: number;
+}
+
 function PlannedSetInput({
+  field,
   form,
   exercises,
   dayIndex,
@@ -469,6 +504,7 @@ function PlannedSetInput({
   onRemove,
   canRemove,
 }: {
+  field: FieldWithId
   form: UseFormReturn<FormValues>
   exercises: Exercise[]
   dayIndex: number
@@ -476,14 +512,26 @@ function PlannedSetInput({
   onRemove: () => void
   canRemove: boolean
 }) {
+  const dragControls = useDragControls()
   const exerciseError = form.formState.errors.days?.[dayIndex]?.plannedSets?.[setIndex]?.exerciseId?.message
 
   return (
-    <div className={cn(
-      "rounded-xl p-4 space-y-3",
-      "bg-white/5 border border-white/10"
-    )}>
-      <div className="flex items-start justify-between gap-2">
+    <Reorder.Item
+      value={field}
+      dragListener={false}
+      dragControls={dragControls}
+      className={cn(
+        "rounded-xl p-4 space-y-3",
+        "bg-white/5 border border-white/10"
+      )}
+    >
+      <div className="flex items-start gap-2">
+        <div
+          className="mt-6 p-1 cursor-grab active:cursor-grabbing text-white/30 hover:text-white/50 touch-none"
+          onPointerDown={(e) => dragControls.start(e)}
+        >
+          <GripVertical size={20} />
+        </div>
         <div className="flex-1 space-y-2">
           <label className="text-xs font-medium text-white/50">Exercise</label>
           <Controller
@@ -576,7 +624,7 @@ function PlannedSetInput({
           />
         </div>
       </div>
-    </div>
+    </Reorder.Item>
   )
 }
 
