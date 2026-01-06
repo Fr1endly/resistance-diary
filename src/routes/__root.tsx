@@ -1,4 +1,5 @@
 import { createRootRouteWithContext, Outlet, type ErrorComponentProps } from '@tanstack/react-router'
+import { ToastContainer } from '@/components/ui/ToastContainer'
 
 interface RouterContext {
   user: {
@@ -91,6 +92,7 @@ const RootDocument = ({ children }: rootDocumentProps) => {
   return (
     <div className="h-full w-full">
       {children}
+      <ToastContainer />
     </div>
   )
 }

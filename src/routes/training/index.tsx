@@ -8,6 +8,7 @@ import SpinnerPicker from '@/components/ui/SpinnerPicker'
 import Chart from "@/components/ui/ChartWithGrid"
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
+import { useToast } from '@/hooks/useToast'
 import type { CompletedSet, RepGroup } from '@/types'
 
 export const Route = createFileRoute('/training/')({
@@ -179,6 +180,7 @@ const FloatingControls = memo(({
 
 function TrainingPage() {
   const navigate = useNavigate()
+  const toast = useToast()
 
   // Store state
   const {
@@ -273,11 +275,15 @@ function TrainingPage() {
     }
   }, [currentPlannedSet])
 
-  // Reset staged groups when moving to next set
+  // Reset staged groups and set default reps when moving to next set
   useEffect(() => {
     setStagedRepGroups([])
-    setReps(0)
-  }, [currentSetIndex])
+    if (currentPlannedSet?.targetReps) {
+      setReps(currentPlannedSet.targetReps)
+    } else {
+      setReps(0)
+    }
+  }, [currentSetIndex, currentPlannedSet])
 
   // Handlers
   const handleRepsChange = useCallback((value: number) => setReps(value), [])
@@ -285,7 +291,7 @@ function TrainingPage() {
 
   const handleAddRepGroup = useCallback(() => {
     if (reps <= 0) {
-      alert("Please add at least one rep")
+      toast.error("Please add at least one rep")
       return
     }
     const newGroup: RepGroup = {
@@ -311,7 +317,7 @@ function TrainingPage() {
     }
 
     if (finalRepGroups.length === 0) {
-      alert("Please add at least one rep group before completing the set")
+      toast.error("Please add at least one rep group before completing the set")
       return
     }
 

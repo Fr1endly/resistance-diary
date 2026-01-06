@@ -1,5 +1,4 @@
-import type { MuscleGroup } from './exercise';
-import type { Exercise } from './exercise';
+import type { MuscleGroup, Exercise } from './exercise';
 import type { WorkoutRoutine } from './workout';
 import type { WorkoutSession, CompletedSet } from './session';
 
@@ -9,24 +8,34 @@ export interface UserSettings {
   email?: string;
 }
 
+/**
+ * Application state shape - reflects the combined Zustand store slices
+ */
 export interface AppState {
-  // Data
+  // MuscleSlice
   muscleGroups: MuscleGroup[];
+
+  // ExerciseSlice
   exercises: Exercise[];
+
+  // WorkoutSlice
   routines: WorkoutRoutine[];
+
+  // SessionSlice
   sessions: WorkoutSession[];
   completedSets: CompletedSet[];
-
-  // Active state
-  activeRoutineId: string | null;
   activeSessionId: string | null;
   currentDayIndex: number;
   currentSetIndex: number;
-
-  // UI state
   isWorkoutInProgress: boolean;
+
+  // SettingsSlice
+  settings: UserSettings;
+  activeRoutineId: string | null;
   isDialogOpen: boolean;
 
-  // Settings
-  settings: UserSettings;
+  // StopwatchSlice
+  stopwatchElapsedMs: number;
+  stopwatchIsRunning: boolean;
+  stopwatchStartTimestamp: number | null;
 }
