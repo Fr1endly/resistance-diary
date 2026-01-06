@@ -333,7 +333,7 @@ function WorkoutsPage() {
       <PageLayout
         variant="glass"
         bottomUpper={
-          <div className="w-full h-full flex-1 flex flex-col">
+          <div className="w-full h-full flex-1 flex flex-col overflow-y-auto">
             {/* Back Button */}
             <button
               onClick={handleFormCancel}
@@ -365,7 +365,7 @@ function WorkoutsPage() {
       <PageLayout
         variant="glass"
         bottomUpper={
-          <div className="w-full h-full flex-1 flex flex-col">
+          <div className="w-full h-full flex-1 flex flex-col ">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
