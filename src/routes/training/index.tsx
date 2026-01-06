@@ -326,12 +326,23 @@ function TrainingPage() {
 
     addCompletedSet(completedSet)
 
-    // Check if this was the last set
+    // Check if this was the last set of entire workout
     if (currentSetIndex >= plannedSets.length - 1) {
       completeSession()
       navigate({ to: '/' })
-    } else {
-      nextSet()
+      return
+    }
+
+    // Check if the next set is a different exercise
+    const nextPlannedSet = plannedSets[currentSetIndex + 1]
+    const isLastSetOfExercise = nextPlannedSet.exerciseId !== currentPlannedSet.exerciseId
+
+    // Advance to next set first (so details page shows correct exercise)
+    nextSet()
+
+    // If switching exercises, redirect to details page
+    if (isLastSetOfExercise) {
+      navigate({ to: '/training/details' })
     }
   }, [
     currentPlannedSet,
@@ -341,7 +352,7 @@ function TrainingPage() {
     weight,
     addCompletedSet,
     currentSetIndex,
-    plannedSets.length,
+    plannedSets,
     completeSession,
     nextSet,
     navigate,
