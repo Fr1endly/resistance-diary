@@ -113,7 +113,7 @@ const PageLayout = ({
                             transition={{ duration: 0.35, ease: "easeInOut" }}
                             {...fadeAnimation}
                         >
-                            <div className="w-full flex flex-col justify-start items-start overflow-clip">
+                            <div className="w-full flex flex-col justify-start items-start ">
                                 {bottomUpper}
                             </div>
 
