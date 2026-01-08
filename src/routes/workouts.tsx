@@ -54,6 +54,14 @@ function RoutineCard({ routine, isActive, onSelect, onEdit, onDelete }: RoutineC
           : "bg-white/5 border-white/10 hover:bg-white/10"
       )}
       onClick={() => onSelect(routine)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onSelect(routine)
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">

@@ -18,7 +18,9 @@ function formatTime(ms: number): { minutes: string; seconds: string } {
 
 // Play a beep sound using Web Audio API
 function playBeep() {
-  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+  const audioContext = new AudioContextClass()
   const oscillator = audioContext.createOscillator()
   const gainNode = audioContext.createGain()
 
@@ -105,7 +107,8 @@ export function Stopwatch({ className }: StopwatchProps) {
       // Was running when navigated away, restart
       startStopwatch()
     }
-  }, []) // Only run on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run on mount - intentionally empty to run once
 
   const { minutes, seconds } = formatTime(elapsedMs)
   const hasTime = elapsedMs > 0

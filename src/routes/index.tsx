@@ -78,8 +78,11 @@ function IndexPage() {
   const actionText = !activeWorkout ? "Select" : isWorkoutInProgress ? "Continue" : "Start";
 
   useEffect(() => {
-    routines.length === 0 && populateStoreWithMockData();
-  }, []);
+    if (routines.length === 0) {
+      populateStoreWithMockData()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run on mount to populate initial data
 
   return (
     <Layout
