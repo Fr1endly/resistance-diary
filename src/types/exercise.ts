@@ -12,7 +12,7 @@ export interface Exercise {
     id: string;
     name: string;
     description?: string;
-    muscleContributions: MuscleContribution[];
-    videos?: string[];
+    muscleContributions: Array<MuscleContribution>;
+    videos?: Array<string>;
     notes?: string;
 }

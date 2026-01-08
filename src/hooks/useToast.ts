@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useAppStore } from '@/store';
 import type { ToastVariant } from '@/store/slices/toastSlice';
+import { useAppStore } from '@/store';
 
 export function useToast() {
   const addToast = useAppStore((state) => state.addToast);

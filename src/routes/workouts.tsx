@@ -1,14 +1,14 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Plus, Trash2, Calendar, Dumbbell, ChevronRight, ArrowLeft, Pencil } from 'lucide-react'
+import { ArrowLeft, Calendar, ChevronRight, Dumbbell, Pencil, Plus, Trash2 } from 'lucide-react'
 
+import type { PlannedSet, WorkoutRoutine } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import Dialog from '@/components/ui/Dialog'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import { WorkoutPlanForm } from '@/components/WorkoutPlanForm'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
-import type { WorkoutRoutine, PlannedSet } from '@/types'
 
 export const Route = createFileRoute('/workouts')({
   component: WorkoutsPage,
@@ -168,7 +168,7 @@ function RoutineDetailContent({ routine, exercises, onActivate }: RoutineDetailD
             if (!acc[ps.exerciseId]) acc[ps.exerciseId] = []
             acc[ps.exerciseId].push(ps)
             return acc
-          }, {} as Record<string, PlannedSet[]>)
+          }, {} as Record<string, Array<PlannedSet>>)
 
           return (
             <div

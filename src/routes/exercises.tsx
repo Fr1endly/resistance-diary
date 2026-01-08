@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { useForm, useFieldArray, Controller } from 'react-hook-form'
-import type { UseFormReturn } from 'react-hook-form'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { nanoid } from 'nanoid'
-import { Dumbbell, Plus, Trash2, X, ChevronRight, Pencil } from 'lucide-react'
+import { ChevronRight, Dumbbell, Pencil, Plus, Trash2, X } from 'lucide-react'
+import type { UseFormReturn } from 'react-hook-form'
 
+import type { Exercise, MuscleGroup, WorkoutRoutine } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import {
@@ -18,7 +19,6 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
-import type { Exercise, MuscleGroup, WorkoutRoutine } from '@/types'
 
 export const Route = createFileRoute('/exercises')({
   component: Page,
@@ -46,7 +46,7 @@ type ExerciseFormValues = z.infer<typeof exerciseFormSchema>
 // HELPERS
 // ============================================
 
-function getRoutinesUsingExercise(exerciseId: string, routines: WorkoutRoutine[]): WorkoutRoutine[] {
+function getRoutinesUsingExercise(exerciseId: string, routines: Array<WorkoutRoutine>): Array<WorkoutRoutine> {
   return routines.filter(routine =>
     routine.days.some(day => day.plannedSets.some(set => set.exerciseId === exerciseId))
   )
@@ -57,8 +57,8 @@ function getRoutinesUsingExercise(exerciseId: string, routines: WorkoutRoutine[]
 // ============================================
 
 interface ExerciseListProps {
-  exercises: Exercise[]
-  muscleGroups: MuscleGroup[]
+  exercises: Array<Exercise>
+  muscleGroups: Array<MuscleGroup>
   onCreateNew: () => void
   onEdit: (exercise: Exercise) => void
   onDelete: (exercise: Exercise) => void
@@ -210,7 +210,7 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
 // ============================================
 
 interface ExerciseFormProps {
-  muscleGroups: MuscleGroup[]
+  muscleGroups: Array<MuscleGroup>
   onSubmit: (exercise: Exercise) => void
   onCancel: () => void
   initialData?: Exercise
@@ -410,7 +410,7 @@ function MuscleContributionInput({
   onRemove,
 }: {
   form: UseFormReturn<ExerciseFormValues>
-  muscleGroups: MuscleGroup[]
+  muscleGroups: Array<MuscleGroup>
   index: number
   onRemove: () => void
 }) {

@@ -1,14 +1,14 @@
 import { nanoid } from 'nanoid';
 
 import type {
-  MuscleGroup,
-  Exercise,
-  WorkoutRoutine,
-  WorkoutDay,
-  PlannedSet,
-  WorkoutSession,
   CompletedSet,
+  Exercise,
+  MuscleGroup,
+  PlannedSet,
   RepGroup,
+  WorkoutDay,
+  WorkoutRoutine,
+  WorkoutSession,
 } from '@/types';
 import { useAppStore } from '@/store';
 
@@ -24,7 +24,7 @@ const addVariation = (base: number, variationPercent: number = 0.1): number => {
 // ============================================
 // MUSCLE GROUPS
 // ============================================
-export const mockMuscleGroups: MuscleGroup[] = [
+export const mockMuscleGroups: Array<MuscleGroup> = [
   { id: 'chest', name: 'Chest', category: 'push' },
   { id: 'front-delts', name: 'Front Delts', category: 'push' },
   { id: 'side-delts', name: 'Side Delts', category: 'push' },
@@ -46,7 +46,7 @@ export const mockMuscleGroups: MuscleGroup[] = [
 // ============================================
 // EXERCISES
 // ============================================
-export const mockExercises: Exercise[] = [
+export const mockExercises: Array<Exercise> = [
   // Push exercises
   {
     id: 'bench-press',
@@ -427,12 +427,12 @@ const createUpperLowerRoutine = (): WorkoutRoutine => {
 // SESSION & COMPLETED SET GENERATION
 // ============================================
 interface GeneratedSessionData {
-  sessions: WorkoutSession[];
-  completedSets: CompletedSet[];
+  sessions: Array<WorkoutSession>;
+  completedSets: Array<CompletedSet>;
 }
 
-const generateRealisticRepGroups = (targetReps: number, targetWeight: number): RepGroup[] => {
-  const groups: RepGroup[] = [];
+const generateRealisticRepGroups = (targetReps: number, targetWeight: number): Array<RepGroup> => {
+  const groups: Array<RepGroup> = [];
   let remainingReps = targetReps + Math.floor(Math.random() * 3) - 1; // Slight variation
   let currentOrder = 0;
   const actualWeight = addVariation(targetWeight, 0.05);
@@ -467,15 +467,15 @@ const generateSessionsForRoutine = (
   routine: WorkoutRoutine,
   numberOfWeeks: number = 6
 ): GeneratedSessionData => {
-  const sessions: WorkoutSession[] = [];
-  const completedSets: CompletedSet[] = [];
+  const sessions: Array<WorkoutSession> = [];
+  const completedSets: Array<CompletedSet> = [];
 
   const today = new Date();
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - numberOfWeeks * 7);
 
   // Simulate training schedule
-  let currentDate = new Date(startDate);
+  const currentDate = new Date(startDate);
   let dayIndex = 0;
 
   while (currentDate <= today) {
@@ -586,9 +586,9 @@ export const generateMockData = (options: MockDataOptions = {}) => {
 
   const muscleGroups = [...mockMuscleGroups];
   const exercises = [...mockExercises];
-  const routines: WorkoutRoutine[] = [];
-  let allSessions: WorkoutSession[] = [];
-  let allCompletedSets: CompletedSet[] = [];
+  const routines: Array<WorkoutRoutine> = [];
+  let allSessions: Array<WorkoutSession> = [];
+  let allCompletedSets: Array<CompletedSet> = [];
 
   // Generate PPL routine and its sessions
   const pplRoutine = createPPLRoutine();
@@ -616,12 +616,12 @@ export const generateMockData = (options: MockDataOptions = {}) => {
 // Generates a minimal set of mock data (e.g., for testing)
 export const generateMinMockData = () => {
   // One muscle group
-  const muscleGroups: MuscleGroup[] = [
+  const muscleGroups: Array<MuscleGroup> = [
     { id: 'chest', name: 'Chest', category: 'push' },
   ];
 
   // One exercise
-  const exercises: Exercise[] = [
+  const exercises: Array<Exercise> = [
     {
       id: 'bench-press',
       name: 'Barbell Bench Press',
@@ -631,7 +631,7 @@ export const generateMinMockData = () => {
   ];
 
   // Two planned sets for the exercise
-  const plannedSets: PlannedSet[] = [
+  const plannedSets: Array<PlannedSet> = [
     {
       id: generateId(),
       exerciseId: 'bench-press',
@@ -651,7 +651,7 @@ export const generateMinMockData = () => {
   ];
 
   // One day with those planned sets
-  const days: WorkoutDay[] = [
+  const days: Array<WorkoutDay> = [
     {
       id: generateId(),
       name: 'Chest Day',
@@ -661,7 +661,7 @@ export const generateMinMockData = () => {
   ];
 
   // One routine with that day
-  const routines: WorkoutRoutine[] = [
+  const routines: Array<WorkoutRoutine> = [
     {
       id: generateId(),
       name: 'Minimal Routine',
@@ -676,8 +676,8 @@ export const generateMinMockData = () => {
     muscleGroups,
     exercises,
     routines,
-    sessions: [] as WorkoutSession[],
-    completedSets: [] as CompletedSet[],
+    sessions: [] as Array<WorkoutSession>,
+    completedSets: [] as Array<CompletedSet>,
     activeRoutineId: routines[0].id,
   };
 }

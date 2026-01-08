@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { motion } from 'motion/react';
-import { X, CheckCircle2, AlertCircle, AlertTriangle, Info } from 'lucide-react';
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react';
 import { cva } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
 import type { Toast as ToastType } from '@/store/slices/toastSlice';
+import { cn } from '@/lib/utils';
 
 const toastVariants = cva(
   'relative flex items-start gap-3 p-4 rounded-xl shadow-lg glass-card border pointer-events-auto min-w-[300px] max-w-[400px]',

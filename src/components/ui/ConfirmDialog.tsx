@@ -1,5 +1,5 @@
-import { useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { useCallback, useEffect } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { AlertTriangle, X } from 'lucide-react'
 
 import { cn } from '@/lib/utils'

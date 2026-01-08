@@ -1,15 +1,15 @@
-import { useEffect, useMemo, memo, useState, useCallback } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { nanoid } from 'nanoid'
-import { Plus, ArrowRight } from "lucide-react"
+import { ArrowRight, Plus } from "lucide-react"
 
+import type { CompletedSet, RepGroup } from '@/types'
 import PageLayout from "@/components/ui/PageLayout"
 import SpinnerPicker from '@/components/ui/SpinnerPicker'
 import Chart from "@/components/ui/ChartWithGrid"
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
 import { useToast } from '@/hooks/useToast'
-import type { CompletedSet, RepGroup } from '@/types'
 
 export const Route = createFileRoute('/training/')({
   component: TrainingPage,
@@ -42,7 +42,7 @@ const FloatingBadge = memo(({
   </div>
 ))
 
-const CenteredChart = memo(({ data, stagedCount = 0 }: { data: RepGroup[][], stagedCount?: number }) => {
+const CenteredChart = memo(({ data, stagedCount = 0 }: { data: Array<Array<RepGroup>>, stagedCount?: number }) => {
   const processedData = useMemo(() => {
     if (!data.length) return []
     return data.map(repGroups =>
@@ -199,7 +199,7 @@ function TrainingPage() {
   // Local state for current rep input
   const [reps, setReps] = useState(0)
   const [weight, setWeight] = useState(0)
-  const [stagedRepGroups, setStagedRepGroups] = useState<RepGroup[]>([])
+  const [stagedRepGroups, setStagedRepGroups] = useState<Array<RepGroup>>([])
 
   // Get active routine and day
   const activeRoutine = useMemo(
@@ -307,7 +307,7 @@ function TrainingPage() {
     if (!currentPlannedSet || !activeSessionId) return
 
     // Include current input if there are reps
-    let finalRepGroups = [...stagedRepGroups]
+    const finalRepGroups = [...stagedRepGroups]
     if (reps > 0) {
       finalRepGroups.push({
         reps,

@@ -1,12 +1,12 @@
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
-import { useState, useMemo, forwardRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { ChevronDown, Video, Play, Target, Repeat } from 'lucide-react'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { forwardRef, useEffect, useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { ChevronDown, Play, Repeat, Target, Video } from 'lucide-react'
 
+import type { Exercise, PlannedSet } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
-import type { Exercise, PlannedSet } from '@/types'
 
 export const Route = createFileRoute('/training/details')({
   component: TrainingDetailsPage,
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/training/details')({
 
 interface ExerciseWithSets {
   exercise: Exercise
-  plannedSets: PlannedSet[]
+  plannedSets: Array<PlannedSet>
   completedCount: number
 }
 

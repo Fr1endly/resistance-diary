@@ -1,4 +1,5 @@
-import { createRootRouteWithContext, Outlet, type ErrorComponentProps } from '@tanstack/react-router'
+import {  Outlet, createRootRouteWithContext } from '@tanstack/react-router'
+import type {ErrorComponentProps} from '@tanstack/react-router';
 import { ToastContainer } from '@/components/ui/ToastContainer'
 
 interface RouterContext {

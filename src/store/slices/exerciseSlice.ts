@@ -2,7 +2,7 @@ import type { StateCreator } from 'zustand';
 import type { Exercise } from '@/types';
 
 export interface ExerciseSlice {
-  exercises: Exercise[];
+  exercises: Array<Exercise>;
   addExercise: (exercise: Exercise) => void;
   updateExercise: (id: string, updates: Partial<Exercise>) => void;
   removeExercise: (id: string) => void;

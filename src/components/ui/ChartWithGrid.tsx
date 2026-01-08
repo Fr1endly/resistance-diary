@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
-import { useEffect, useRef, useState, useMemo, useCallback, memo } from "react"
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { cn } from "@/lib/utils"
 
 export interface ChartProps {
   /** Array of sets, each containing an array of rep groups */

@@ -1,13 +1,13 @@
-import { useState, useMemo } from "react"
-import { useForm, useFieldArray, Controller } from "react-hook-form"
-import type { UseFormReturn } from "react-hook-form"
+import { useMemo, useState } from "react"
+import { Controller, useFieldArray, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { nanoid } from "nanoid"
-import { Plus, Trash2, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, Plus, Trash2, X } from "lucide-react"
 import { Reorder, useDragControls } from "motion/react"
+import type { UseFormReturn } from "react-hook-form"
 
-import { cn } from "@/lib/utils"
+import type { Exercise, WorkoutRoutine } from "@/types"
 import { useAppStore } from "@/store/useAppStore"
 import {
   Select,
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { GripVertical } from "@/components/icons"
-import type { WorkoutRoutine, Exercise } from "@/types"
+import { cn } from "@/lib/utils"
 
 // ============================================
 // ZOD SCHEMAS
@@ -333,7 +333,7 @@ function DayStep({
   onRemoveDay,
 }: {
   form: UseFormReturn<FormValues>
-  exercises: Exercise[]
+  exercises: Array<Exercise>
   dayIndex: number
   totalDays: number
   onNext: () => void
@@ -506,7 +506,7 @@ function PlannedSetInput({
 }: {
   field: FieldWithId
   form: UseFormReturn<FormValues>
-  exercises: Exercise[]
+  exercises: Array<Exercise>
   dayIndex: number
   setIndex: number
   onRemove: () => void
@@ -640,7 +640,7 @@ function SummaryStep({
   onEditDay,
 }: {
   formValues: FormValues
-  exercises: Exercise[]
+  exercises: Array<Exercise>
   onBack: () => void
   onEditBasic: () => void
   onEditDay: (index: number) => void

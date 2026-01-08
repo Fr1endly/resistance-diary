@@ -9,7 +9,7 @@ export interface CompletedSet {
   sessionId: string;
   exerciseId: string;
   plannedSetId?: string; // optional link to original plan
-  repGroups: RepGroup[];
+  repGroups: Array<RepGroup>;
   completedAt: Date;
   notes?: string;
 }

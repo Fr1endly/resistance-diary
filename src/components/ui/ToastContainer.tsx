@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'motion/react';
-import { useAppStore } from '@/store';
 import { Toast } from './Toast';
+import { useAppStore } from '@/store';
 
 const MAX_TOASTS = 3;
 

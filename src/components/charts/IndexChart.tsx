@@ -5,7 +5,7 @@ export interface DataItem {
 }
 
 export interface ChartProps {
-    data: DataItem[]
+    data: Array<DataItem>
     orientation: 'horizontal' | 'vertical'
     title: string
 }

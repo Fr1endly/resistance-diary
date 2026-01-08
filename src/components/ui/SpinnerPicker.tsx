@@ -1,5 +1,6 @@
-import { motion, useMotionValue, useTransform, animate, type PanInfo, type MotionValue } from 'framer-motion'
-import { useEffect, useState, useRef, useMemo, memo, useCallback } from 'react'
+import {   animate, motion, useMotionValue, useTransform } from 'framer-motion'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type {MotionValue, PanInfo} from 'framer-motion';
 
 interface SpinnerPickerProps {
   value: number

@@ -1,6 +1,6 @@
-import type { MuscleGroup, Exercise } from './exercise';
+import type { Exercise, MuscleGroup } from './exercise';
 import type { WorkoutRoutine } from './workout';
-import type { WorkoutSession, CompletedSet } from './session';
+import type { CompletedSet, WorkoutSession } from './session';
 
 export interface UserSettings {
   units: 'metric' | 'imperial';
@@ -13,17 +13,17 @@ export interface UserSettings {
  */
 export interface AppState {
   // MuscleSlice
-  muscleGroups: MuscleGroup[];
+  muscleGroups: Array<MuscleGroup>;
 
   // ExerciseSlice
-  exercises: Exercise[];
+  exercises: Array<Exercise>;
 
   // WorkoutSlice
-  routines: WorkoutRoutine[];
+  routines: Array<WorkoutRoutine>;
 
   // SessionSlice
-  sessions: WorkoutSession[];
-  completedSets: CompletedSet[];
+  sessions: Array<WorkoutSession>;
+  completedSets: Array<CompletedSet>;
   activeSessionId: string | null;
   currentDayIndex: number;
   currentSetIndex: number;

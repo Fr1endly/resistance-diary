@@ -1,5 +1,5 @@
-import type { StateCreator } from 'zustand';
 import { nanoid } from 'nanoid';
+import type { StateCreator } from 'zustand';
 
 export type ToastVariant = 'success' | 'error' | 'warning' | 'info';
 
@@ -11,7 +11,7 @@ export interface Toast {
 }
 
 export interface ToastSlice {
-  toasts: Toast[];
+  toasts: Array<Toast>;
   addToast: (message: string, variant: ToastVariant, duration?: number) => void;
   removeToast: (id: string) => void;
   clearToasts: () => void;

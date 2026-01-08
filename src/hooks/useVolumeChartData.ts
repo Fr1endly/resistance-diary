@@ -7,7 +7,7 @@ interface ChartDataPoint {
 }
 
 interface VolumeChartData {
-  chartData: ChartDataPoint[];
+  chartData: Array<ChartDataPoint>;
   totalVolume: number;
 }
 

@@ -1,11 +1,11 @@
+import { motion } from 'motion/react'
+import { Link } from "@tanstack/react-router"
+import NavDrawer from "./DrawerMenu"
 import type { ReactNode } from "react"
 import LogoImg from "/images/logo.png"
 import BgTextureImg from "/images/bg-texture.png"
-import { motion } from 'motion/react'
 import { cn } from "@/lib/utils"
-import { Link } from "@tanstack/react-router"
 import Dialog from "@/components/ui/Dialog"
-import NavDrawer from "./DrawerMenu"
 
 // Layout height configuration by variant
 const LAYOUT_CONFIG = {

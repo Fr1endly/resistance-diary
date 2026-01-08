@@ -1,9 +1,9 @@
 import type { StateCreator } from 'zustand';
-import type { WorkoutSession, CompletedSet } from '@/types';
+import type { CompletedSet, WorkoutSession } from '@/types';
 
 export interface SessionSlice {
-  sessions: WorkoutSession[];
-  completedSets: CompletedSet[];
+  sessions: Array<WorkoutSession>;
+  completedSets: Array<CompletedSet>;
   activeSessionId: string | null;
   currentDayIndex: number;
   currentSetIndex: number;

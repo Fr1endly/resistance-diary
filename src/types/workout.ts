@@ -10,7 +10,7 @@ export interface PlannedSet {
 export interface WorkoutDay {
   id: string;
   name: string;
-  plannedSets: PlannedSet[];
+  plannedSets: Array<PlannedSet>;
   order?: number;
 }
 
@@ -18,7 +18,7 @@ export interface WorkoutRoutine {
   id: string;
   name: string;
   description?: string;
-  days: WorkoutDay[];
+  days: Array<WorkoutDay>;
   createdAt: Date;
   updatedAt: Date;
 }

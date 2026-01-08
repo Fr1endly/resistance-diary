@@ -2,7 +2,7 @@ import type { StateCreator } from 'zustand';
 import type { MuscleGroup } from '@/types';
 
 export interface MuscleSlice {
-  muscleGroups: MuscleGroup[];
+  muscleGroups: Array<MuscleGroup>;
   addMuscleGroup: (muscleGroup: MuscleGroup) => void;
   updateMuscleGroup: (id: string, updates: Partial<MuscleGroup>) => void;
   removeMuscleGroup: (id: string) => void;

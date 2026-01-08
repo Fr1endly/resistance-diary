@@ -1,11 +1,11 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { Dumbbell, Play, SkipForward, Target } from "lucide-react";
 import { nanoid } from 'nanoid';
 
+import type { Exercise, PlannedSet } from "@/types";
 import PageLayout from "@/components/ui/PageLayout";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
-import type { Exercise, PlannedSet } from "@/types";
 
 export const Route = createFileRoute('/overview')({
     component: Page,
@@ -13,17 +13,17 @@ export const Route = createFileRoute('/overview')({
 
 interface ExerciseWithSets {
     exercise: Exercise;
-    sets: PlannedSet[];
+    sets: Array<PlannedSet>;
 }
 
 interface WorkoutDaySectionProps {
     name: string;
-    exercises: ExerciseWithSets[];
+    exercises: Array<ExerciseWithSets>;
     setCount: number;
     onStartSession: () => void;
 }
 
-function getRepRange(sets: PlannedSet[]): string {
+function getRepRange(sets: Array<PlannedSet>): string {
     if (sets.length === 0) return '0';
     const reps = sets.map(s => s.targetReps);
     const min = Math.min(...reps);
@@ -155,7 +155,7 @@ function Page() {
     const activeDay = activeRoutine?.days[currentDayIndex];
     const plannedSets = activeDay?.plannedSets ?? [];
 
-    const exerciseData: ExerciseWithSets[] = [...new Set(plannedSets.map(s => s.exerciseId))]
+    const exerciseData: Array<ExerciseWithSets> = [...new Set(plannedSets.map(s => s.exerciseId))]
         .map(exerciseId => ({
             exercise: exercises.find(ex => ex.id === exerciseId)!,
             sets: plannedSets.filter(s => s.exerciseId === exerciseId),

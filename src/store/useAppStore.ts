@@ -1,21 +1,22 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import {
-    createMuscleSlice,
+    
+    
+    
+    
+    
+    
+    
     createExerciseSlice,
-    createWorkoutSlice,
+    createMuscleSlice,
     createSessionSlice,
     createSettingsSlice,
     createStopwatchSlice,
     createToastSlice,
-    type MuscleSlice,
-    type ExerciseSlice,
-    type WorkoutSlice,
-    type SessionSlice,
-    type SettingsSlice,
-    type StopwatchSlice,
-    type ToastSlice,
+    createWorkoutSlice
 } from './slices';
+import type {ExerciseSlice, MuscleSlice, SessionSlice, SettingsSlice, StopwatchSlice, ToastSlice, WorkoutSlice} from './slices';
 
 // Combined store type
 export type AppStore = MuscleSlice &

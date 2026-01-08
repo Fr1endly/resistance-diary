@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { X } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { cn } from '@/lib/utils'
-import { X } from 'lucide-react'
 
 interface DialogProps {
   title?: string
