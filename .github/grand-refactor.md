@@ -2,7 +2,7 @@ Plan: Comprehensive Fitness App Improvements
 A unified improvement plan addressing code quality, architecture, testing, performance, and developer experience through quick wins, component refactoring, state management enhancements, and tooling upgrades.
 
 Steps
-Quick wins & config fixes (1-2 hours) - Update SEO meta tags in __root.tsx, fix build script order in package.json to tsc && vite build, remove console.logs from production code, move activeRoutineId from settingsSlice to workoutSlice, replace alert() calls in workouts.tsx and training/details.tsx with toast notifications
+Quick wins & config fixes (1-2 hours) - Update SEO meta tags in __root.tsx, fix build script order in package.json to tsc && vite build, remove console.logs from production code, move activeRoutineId from settingsSlice to workoutSlice.
 
 Tooling & linting (30 min) - Install eslint-plugin-react-hooks and eslint-plugin-jsx-a11y, update eslint.config.js to enable hooks rules (catches useEffect dependency issues) and accessibility rules (catches missing aria-labels), run lint to identify existing violations
 
@@ -20,5 +20,3 @@ Further Considerations
 Component library decision - Keep custom Button/Input implementations in src/components/ui/ or adopt Shadcn for consistency? Recommend keeping custom (already invested, matches design system) but extract shared patterns.
 
 Testing strategy - Start with component test for DayPlanStep during refactor (validates pattern) or tackle store slices first (higher value)? Recommend both in parallel—component test with refactor, store tests separately.
-
-Toast implementation - Build custom toast to match design system or use sonner/react-hot-toast for speed? Recommend sonner (minimal, customizable) unless specific design requirements exist.

@@ -37,6 +37,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     }
   },
   head: () => ({
+    title: "Fitness Tracker",
     meta: [
       {
         charSet: "utf-8",
@@ -45,10 +46,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
+      {
+        name: "theme-color",
+        content: "#000000",
+      },
+      {
+        name: "apple-mobile-web-app-capable",
+        content: "yes",
+      },
+      {
+        name: "apple-mobile-web-app-status-bar-style",
+        content: "black-translucent",
+      },
       ...seo({
-        title:
-          "TanStack Start | Type-Safe, Client-First, Full-Stack React Framework",
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        title: "Fitness Tracker - Log Resistance Training & Track Progress",
+        description: "Track your resistance training workouts, log sets and reps, and monitor your fitness progress over time.",
       }),
     ],
     links: [
@@ -69,7 +81,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         sizes: "16x16",
         href: "/favicon-16x16.png",
       },
-      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
+      { rel: "manifest", href: "/manifest.json" },
       { rel: "icon", href: "/favicon.ico" },
     ],
   }),

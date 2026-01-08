@@ -717,13 +717,6 @@ export const populateStoreWithMockData = (_options: MockDataOptions = {}) => {
   // Set active routine
   useAppStore.setState({ activeRoutineId: mockData.activeRoutineId });
 
-  console.log('✅ Mock data populated successfully!');
-  console.log(`   - ${mockData.muscleGroups.length} muscle groups`);
-  console.log(`   - ${mockData.exercises.length} exercises`);
-  console.log(`   - ${mockData.routines.length} routines`);
-  console.log(`   - ${mockData.sessions.length} sessions`);
-  console.log(`   - ${mockData.completedSets.length} completed sets`);
-
   return mockData;
 };
 

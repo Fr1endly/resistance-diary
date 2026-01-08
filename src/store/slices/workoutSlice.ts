@@ -3,9 +3,11 @@ import type { WorkoutRoutine, WorkoutDay, PlannedSet } from '@/types';
 
 export interface WorkoutSlice {
   routines: WorkoutRoutine[];
+  activeRoutineId: string | null;
   addRoutine: (routine: WorkoutRoutine) => void;
   updateRoutine: (id: string, updates: Partial<WorkoutRoutine>) => void;
   removeRoutine: (id: string) => void;
+  setActiveRoutine: (routineId: string | null) => void;
   addDayToRoutine: (routineId: string, day: WorkoutDay) => void;
   updateDay: (routineId: string, dayId: string, updates: Partial<WorkoutDay>) => void;
   removeDayFromRoutine: (routineId: string, dayId: string) => void;
@@ -16,6 +18,7 @@ export interface WorkoutSlice {
 
 export const createWorkoutSlice: StateCreator<WorkoutSlice, [], [], WorkoutSlice> = (set) => ({
   routines: [],
+  activeRoutineId: null,
 
   addRoutine: (routine) =>
     set((state) => ({
@@ -33,6 +36,8 @@ export const createWorkoutSlice: StateCreator<WorkoutSlice, [], [], WorkoutSlice
     set((state) => ({
       routines: state.routines.filter((r) => r.id !== id),
     })),
+
+  setActiveRoutine: (routineId) => set({ activeRoutineId: routineId }),
 
   addDayToRoutine: (routineId, day) =>
     set((state) => ({
