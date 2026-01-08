@@ -3,6 +3,7 @@ import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronDown, Play, Repeat, Target, Video } from 'lucide-react'
 
+import { useShallow } from 'zustand/react/shallow'
 import type { Exercise, PlannedSet } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import { cn } from '@/lib/utils'
@@ -292,7 +293,19 @@ function TrainingDetailsPage() {
     routines,
     exercises,
     completedSets,
-  } = useAppStore()
+    sessions,
+  } = useAppStore(
+    useShallow((state) => ({
+      isWorkoutInProgress: state.isWorkoutInProgress,
+      activeSessionId: state.activeSessionId,
+      activeRoutineId: state.activeRoutineId,
+      currentSetIndex: state.currentSetIndex,
+      routines: state.routines,
+      exercises: state.exercises,
+      completedSets: state.completedSets,
+      sessions: state.sessions,
+    })),
+  )
 
   // Get active routine and day
   const activeRoutine = useMemo(
@@ -301,8 +314,8 @@ function TrainingDetailsPage() {
   )
 
   const activeSession = useMemo(
-    () => useAppStore.getState().sessions.find((s) => s.id === activeSessionId),
-    [activeSessionId],
+    () => sessions.find((s) => s.id === activeSessionId),
+    [sessions, activeSessionId],
   )
 
   const activeDay = useMemo(

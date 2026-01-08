@@ -2,6 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { Dumbbell, Play, SkipForward, Target } from 'lucide-react'
 import { nanoid } from 'nanoid'
 
+import { useShallow } from 'zustand/react/shallow'
 import type { Exercise, PlannedSet } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import { cn } from '@/lib/utils'
@@ -178,7 +179,15 @@ function Page() {
     routines,
     exercises,
     startSession,
-  } = useAppStore()
+  } = useAppStore(
+    useShallow((state) => ({
+      currentDayIndex: state.currentDayIndex,
+      activeRoutineId: state.activeRoutineId,
+      routines: state.routines,
+      exercises: state.exercises,
+      startSession: state.startSession,
+    })),
+  )
 
   const activeRoutine = routines.find((r) => r.id === activeRoutineId)
   const activeDay = activeRoutine?.days[currentDayIndex]

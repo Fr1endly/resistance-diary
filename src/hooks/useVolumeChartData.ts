@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from '@/store/useAppStore'
 
 interface ChartDataPoint {
@@ -12,7 +13,13 @@ interface VolumeChartData {
 }
 
 export function useVolumeChartData(daysBack: number = 31): VolumeChartData {
-  const { activeRoutineId, sessions, completedSets } = useAppStore()
+  const { activeRoutineId, sessions, completedSets } = useAppStore(
+    useShallow((state) => ({
+      activeRoutineId: state.activeRoutineId,
+      sessions: state.sessions,
+      completedSets: state.completedSets,
+    })),
+  )
 
   return useMemo(() => {
     if (!activeRoutineId) return { chartData: [], totalVolume: 0 }

@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { nanoid } from 'nanoid'
 import { ArrowRight, Plus } from 'lucide-react'
 
+import { useShallow } from 'zustand/react/shallow'
 import type { CompletedSet, PlannedSet, RepGroup } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import SpinnerPicker from '@/components/ui/SpinnerPicker'
@@ -227,10 +228,25 @@ function TrainingPage() {
     routines,
     exercises,
     completedSets,
+    sessions,
     addCompletedSet,
     nextSet,
     completeSession,
-  } = useAppStore()
+  } = useAppStore(
+    useShallow((state) => ({
+      isWorkoutInProgress: state.isWorkoutInProgress,
+      activeSessionId: state.activeSessionId,
+      activeRoutineId: state.activeRoutineId,
+      currentSetIndex: state.currentSetIndex,
+      routines: state.routines,
+      exercises: state.exercises,
+      completedSets: state.completedSets,
+      sessions: state.sessions,
+      addCompletedSet: state.addCompletedSet,
+      nextSet: state.nextSet,
+      completeSession: state.completeSession,
+    })),
+  )
 
   // Local state for current rep input
   const [reps, setReps] = useState(0)
@@ -244,8 +260,8 @@ function TrainingPage() {
   )
 
   const activeSession = useMemo(
-    () => useAppStore.getState().sessions.find((s) => s.id === activeSessionId),
-    [activeSessionId],
+    () => sessions.find((s) => s.id === activeSessionId),
+    [sessions, activeSessionId],
   )
 
   const activeDay = useMemo(

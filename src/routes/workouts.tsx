@@ -10,6 +10,7 @@ import {
   Trash2,
 } from 'lucide-react'
 
+import { useShallow } from 'zustand/react/shallow'
 import type { PlannedSet, WorkoutRoutine } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import Dialog from '@/components/ui/Dialog'
@@ -310,7 +311,17 @@ function WorkoutsPage() {
     updateRoutine,
     removeRoutine,
     toggleDialog,
-  } = useAppStore()
+  } = useAppStore(
+    useShallow((state) => ({
+      routines: state.routines,
+      exercises: state.exercises,
+      activeRoutineId: state.activeRoutineId,
+      addRoutine: state.addRoutine,
+      updateRoutine: state.updateRoutine,
+      removeRoutine: state.removeRoutine,
+      toggleDialog: state.toggleDialog,
+    })),
+  )
 
   // Create exercise name lookup map
   const exerciseNameMap = useMemo(() => {
