@@ -1,6 +1,6 @@
-import {   animate, motion, useMotionValue, useTransform } from 'framer-motion'
+import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type {MotionValue, PanInfo} from 'framer-motion';
+import type { MotionValue, PanInfo } from 'framer-motion'
 
 interface SpinnerPickerProps {
   value: number
@@ -26,56 +26,53 @@ interface SpinnerItemProps {
 }
 
 // Memoized individual spinner item with its own transforms
-const SpinnerItem = memo(({ val, index, y, itemHeight, suffix, onTap }: SpinnerItemProps) => {
-  const centerOffset = itemHeight / 2
-   // Constant determines how many levels of items are visible
-  const levels = 2; 
+const SpinnerItem = memo(
+  ({ val, index, y, itemHeight, suffix, onTap }: SpinnerItemProps) => {
+    const centerOffset = itemHeight / 2
+    // Constant determines how many levels of items are visible
+    const levels = 2
 
-  const opacity = useTransform(
-    y,
-  
-    [
-      -(index + levels) * itemHeight - centerOffset,
-      -(index + (levels - 1)) * itemHeight - centerOffset,
-      -(index + (levels - 2)) * itemHeight - centerOffset,
-      -index * itemHeight - centerOffset,
-      -(index - (levels - 2)) * itemHeight - centerOffset,
-      -(index - (levels - 1)) * itemHeight - centerOffset,
-      -(index - levels) * itemHeight - centerOffset,
-    ],
-    [0, 0.3, 0.6, 1, 0.6, 0.3, 0]
-  )
+    const opacity = useTransform(
+      y,
 
-  const scale = useTransform(
-    y,
-    [
-      -(index + 2) * itemHeight - centerOffset,
-      -(index + 1) * itemHeight - centerOffset,
-      -index * itemHeight - centerOffset,
-      -(index - 1) * itemHeight - centerOffset,
-      -(index - 2) * itemHeight - centerOffset,
-    ],
-    [0.7, 0.85, 1, 0.85, 0.7]
-  )
+      [
+        -(index + levels) * itemHeight - centerOffset,
+        -(index + (levels - 1)) * itemHeight - centerOffset,
+        -(index + (levels - 2)) * itemHeight - centerOffset,
+        -index * itemHeight - centerOffset,
+        -(index - (levels - 2)) * itemHeight - centerOffset,
+        -(index - (levels - 1)) * itemHeight - centerOffset,
+        -(index - levels) * itemHeight - centerOffset,
+      ],
+      [0, 0.3, 0.6, 1, 0.6, 0.3, 0],
+    )
 
-  return (
-    <motion.button
-      onClick={() => onTap(index)}
-      style={{ opacity, scale, height: itemHeight   }}
-  
-      className="
+    const scale = useTransform(
+      y,
+      [
+        -(index + 2) * itemHeight - centerOffset,
+        -(index + 1) * itemHeight - centerOffset,
+        -index * itemHeight - centerOffset,
+        -(index - 1) * itemHeight - centerOffset,
+        -(index - 2) * itemHeight - centerOffset,
+      ],
+      [0.7, 0.85, 1, 0.85, 0.7],
+    )
+
+    return (
+      <motion.button
+        onClick={() => onTap(index)}
+        style={{ opacity, scale, height: itemHeight }}
+        className="
         rounded-sm flex w-full items-center justify-center font-display text-md font-bold
         transition-colors text-neutral-50 bg-neutral-900"
-    >
-      {val}
-      {suffix && (
-        <span className="ml-2 text-xl font-normal ">
-          {suffix}
-        </span>
-      )}
-    </motion.button>
-  )
-})
+      >
+        {val}
+        {suffix && <span className="ml-2 text-xl font-normal ">{suffix}</span>}
+      </motion.button>
+    )
+  },
+)
 
 export default function SpinnerPicker({
   value,
@@ -99,35 +96,45 @@ export default function SpinnerPicker({
   const animationRef = useRef<ReturnType<typeof animate> | null>(null)
 
   // Memoize values array to prevent recreation on every render
-  const values = useMemo(() =>
-    Array.from(
-      { length: Math.floor((max - min) / step) + 1 },
-      (_, i) => min + i * step
-    ),
-    [min, max, step]
+  const values = useMemo(
+    () =>
+      Array.from(
+        { length: Math.floor((max - min) / step) + 1 },
+        (_, i) => min + i * step,
+      ),
+    [min, max, step],
   )
 
   // Memoize current index calculation
-  const currentIndex = useMemo(() =>
-    values.indexOf(localValue),
-    [values, localValue]
+  const currentIndex = useMemo(
+    () => values.indexOf(localValue),
+    [values, localValue],
   )
 
   // Memoize drag constraints
-  const dragConstraints = useMemo(() => ({
-    top: -(values.length - 1) * itemHeight - itemHeight / 2,
-    bottom: -itemHeight / 2
-  }), [values.length, itemHeight])
+  const dragConstraints = useMemo(
+    () => ({
+      top: -(values.length - 1) * itemHeight - itemHeight / 2,
+      bottom: -itemHeight / 2,
+    }),
+    [values.length, itemHeight],
+  )
 
   // Memoize container style
-  const containerStyle = useMemo(() => ({
-    height: `${containerHeight}px`
-  }), [containerHeight])
+  const containerStyle = useMemo(
+    () => ({
+      height: `${containerHeight}px`,
+    }),
+    [containerHeight],
+  )
 
   // Memoize highlight style
-  const highlightStyle = useMemo(() => ({
-    height: `${itemHeight}px`
-  }), [itemHeight])
+  const highlightStyle = useMemo(
+    () => ({
+      height: `${itemHeight}px`,
+    }),
+    [itemHeight],
+  )
 
   useEffect(() => {
     setLocalValue(value)
@@ -139,55 +146,61 @@ export default function SpinnerPicker({
     const currentY = y.get()
     const now = Date.now()
     const dt = now - lastTimeRef.current
-    
+
     if (dt > 0) {
-      velocityRef.current = (currentY - lastYRef.current) / dt * 1000 // px per second
+      velocityRef.current = ((currentY - lastYRef.current) / dt) * 1000 // px per second
     }
-    
+
     lastYRef.current = currentY
     lastTimeRef.current = now
   }, [y])
 
   // Snap to nearest value with animation
-  const snapToNearest = useCallback((targetY: number) => {
-    const minY = -(values.length - 1) * itemHeight - itemHeight / 2
-    const maxY = -itemHeight / 2
-    
-    // Clamp to bounds
-    const clampedY = Math.max(minY, Math.min(maxY, targetY))
-    
-    // Calculate nearest index
-    let newIndex = Math.round((-clampedY - itemHeight / 2) / itemHeight)
-    newIndex = Math.max(0, Math.min(values.length - 1, newIndex))
-    
-    const snapY = -newIndex * itemHeight - itemHeight / 2
-    const newValue = values[newIndex]
-    
-    // Animate to snap position
-    animationRef.current = animate(y, snapY, {
-      type: 'spring',
-      stiffness: 400,
-      damping: 30,
-      onComplete: () => {
-        setLocalValue(newValue)
-        onChange(newValue)
-      }
-    })
-  }, [values, itemHeight, y, onChange])
+  const snapToNearest = useCallback(
+    (targetY: number) => {
+      const minY = -(values.length - 1) * itemHeight - itemHeight / 2
+      const maxY = -itemHeight / 2
 
-  const handleDragEnd = useCallback((_: unknown, info: PanInfo) => {
-    setIsDragging(false)
-    
-    const currentY = y.get()
-    const velocity = info.velocity.y || velocityRef.current
-    
-    // Calculate projected position based on velocity with friction decay
-    // Using physics: final_position = current + velocity * friction / (1 - friction)
-    const projectedDistance = velocity * friction / (1 - friction) / 60 // Normalize for ~60fps feel
-    const projectedY = currentY + projectedDistance
-    
-    snapToNearest(projectedY)
-  }, [y, friction, snapToNearest])
+      // Clamp to bounds
+      const clampedY = Math.max(minY, Math.min(maxY, targetY))
+
+      // Calculate nearest index
+      let newIndex = Math.round((-clampedY - itemHeight / 2) / itemHeight)
+      newIndex = Math.max(0, Math.min(values.length - 1, newIndex))
+
+      const snapY = -newIndex * itemHeight - itemHeight / 2
+      const newValue = values[newIndex]
+
+      // Animate to snap position
+      animationRef.current = animate(y, snapY, {
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+        onComplete: () => {
+          setLocalValue(newValue)
+          onChange(newValue)
+        },
+      })
+    },
+    [values, itemHeight, y, onChange],
+  )
+
+  const handleDragEnd = useCallback(
+    (_: unknown, info: PanInfo) => {
+      setIsDragging(false)
+
+      const currentY = y.get()
+      const velocity = info.velocity.y || velocityRef.current
+
+      // Calculate projected position based on velocity with friction decay
+      // Using physics: final_position = current + velocity * friction / (1 - friction)
+      const projectedDistance = (velocity * friction) / (1 - friction) / 60 // Normalize for ~60fps feel
+      const projectedY = currentY + projectedDistance
+
+      snapToNearest(projectedY)
+    },
+    [y, friction, snapToNearest],
+  )
 
   const handleDragStart = useCallback(() => {
     // Cancel any ongoing animation
@@ -200,28 +213,31 @@ export default function SpinnerPicker({
     velocityRef.current = 0
   }, [y])
 
-  const handleTap = useCallback((index: number) => {
-    if (!isDragging) {
-      // Cancel any ongoing animation
-      if (animationRef.current) {
-        animationRef.current.stop()
-      }
-      const newValue = values[index]
-      const snapY = -index * itemHeight - itemHeight / 2
-      
-      animationRef.current = animate(y, snapY, {
-        type: 'spring',
-        stiffness: 400,
-        damping: 30,
-        onComplete: () => {
-          setLocalValue(newValue)
-          onChange(newValue)
+  const handleTap = useCallback(
+    (index: number) => {
+      if (!isDragging) {
+        // Cancel any ongoing animation
+        if (animationRef.current) {
+          animationRef.current.stop()
         }
-      })
-    }
-  }, [isDragging, values, itemHeight, y, onChange])
+        const newValue = values[index]
+        const snapY = -index * itemHeight - itemHeight / 2
 
-  return (  
+        animationRef.current = animate(y, snapY, {
+          type: 'spring',
+          stiffness: 400,
+          damping: 30,
+          onComplete: () => {
+            setLocalValue(newValue)
+            onChange(newValue)
+          },
+        })
+      }
+    },
+    [isDragging, values, itemHeight, y, onChange],
+  )
+
+  return (
     <div
       ref={constraintsRef}
       className={`relative w-full overflow-clip ${className} bg-neutral-900`}

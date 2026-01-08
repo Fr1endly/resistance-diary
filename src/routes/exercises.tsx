@@ -46,9 +46,14 @@ type ExerciseFormValues = z.infer<typeof exerciseFormSchema>
 // HELPERS
 // ============================================
 
-function getRoutinesUsingExercise(exerciseId: string, routines: Array<WorkoutRoutine>): Array<WorkoutRoutine> {
-  return routines.filter(routine =>
-    routine.days.some(day => day.plannedSets.some(set => set.exerciseId === exerciseId))
+function getRoutinesUsingExercise(
+  exerciseId: string,
+  routines: Array<WorkoutRoutine>,
+): Array<WorkoutRoutine> {
+  return routines.filter((routine) =>
+    routine.days.some((day) =>
+      day.plannedSets.some((set) => set.exerciseId === exerciseId),
+    ),
   )
 }
 
@@ -64,21 +69,31 @@ interface ExerciseListProps {
   onDelete: (exercise: Exercise) => void
 }
 
-function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }: ExerciseListProps) {
-  const muscleMap = new Map(muscleGroups.map(mg => [mg.id, mg.name]))
+function ExerciseList({
+  exercises,
+  muscleGroups,
+  onCreateNew,
+  onEdit,
+  onDelete,
+}: ExerciseListProps) {
+  const muscleMap = new Map(muscleGroups.map((mg) => [mg.id, mg.name]))
 
   return (
     <div className="w-full h-full flex flex-col space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Exercise Library</p>
-          <h3 className="font-display text-2xl font-bold text-white">Exercises</h3>
+          <p className="text-white/40 text-xs uppercase tracking-wider mb-1">
+            Exercise Library
+          </p>
+          <h3 className="font-display text-2xl font-bold text-white">
+            Exercises
+          </h3>
         </div>
         <div
           className={cn(
             'w-12 h-12 rounded-full flex items-center justify-center',
-            'backdrop-blur-md bg-amber-500/20 border border-amber-400/30'
+            'backdrop-blur-md bg-amber-500/20 border border-amber-400/30',
           )}
         >
           <Dumbbell size={22} className="text-amber-400" />
@@ -89,17 +104,25 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
       <div
         className={cn(
           'flex items-center gap-4 py-4 px-5 rounded-2xl',
-          'backdrop-blur-xl bg-white/5 border border-white/10'
+          'backdrop-blur-xl bg-white/5 border border-white/10',
         )}
       >
         <div className="text-center flex-1">
-          <div className="text-3xl font-bold text-amber-400 font-mono">{exercises.length}</div>
-          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">Total</div>
+          <div className="text-3xl font-bold text-amber-400 font-mono">
+            {exercises.length}
+          </div>
+          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+            Total
+          </div>
         </div>
         <div className="h-12 w-px bg-white/10" />
         <div className="text-center flex-1">
-          <div className="text-3xl font-bold text-amber-400 font-mono">{muscleGroups.length}</div>
-          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">Muscle Groups</div>
+          <div className="text-3xl font-bold text-amber-400 font-mono">
+            {muscleGroups.length}
+          </div>
+          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+            Muscle Groups
+          </div>
         </div>
       </div>
 
@@ -114,31 +137,40 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
           <div
             className={cn(
               'rounded-2xl p-6 text-center',
-              'backdrop-blur-xl bg-white/5 border border-white/10'
+              'backdrop-blur-xl bg-white/5 border border-white/10',
             )}
           >
-            <p className="text-white/50 text-sm">No exercises yet. Create your first one!</p>
+            <p className="text-white/50 text-sm">
+              No exercises yet. Create your first one!
+            </p>
           </div>
         ) : (
-          exercises.map(exercise => (
+          exercises.map((exercise) => (
             <div
               key={exercise.id}
-              className={cn('rounded-2xl p-4', 'backdrop-blur-xl bg-white/5 border border-white/10')}
+              className={cn(
+                'rounded-2xl p-4',
+                'backdrop-blur-xl bg-white/5 border border-white/10',
+              )}
             >
               <div className="flex items-start gap-3 mb-2">
                 <div
                   className={cn(
                     'flex items-center justify-center w-10 h-10 rounded-full shrink-0',
                     'bg-amber-500/20 border border-amber-400/30',
-                    'text-amber-400'
+                    'text-amber-400',
                   )}
                 >
                   <Dumbbell size={18} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h5 className="font-display text-lg text-white/90">{exercise.name}</h5>
+                  <h5 className="font-display text-lg text-white/90">
+                    {exercise.name}
+                  </h5>
                   {exercise.description && (
-                    <p className="text-xs text-white/40 line-clamp-2">{exercise.description}</p>
+                    <p className="text-xs text-white/40 line-clamp-2">
+                      {exercise.description}
+                    </p>
                   )}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
@@ -146,7 +178,7 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
                     onClick={() => onEdit(exercise)}
                     className={cn(
                       'p-2 rounded-lg transition-colors',
-                      'text-white/30 hover:text-amber-400 hover:bg-amber-500/10'
+                      'text-white/30 hover:text-amber-400 hover:bg-amber-500/10',
                     )}
                   >
                     <Pencil size={16} />
@@ -155,7 +187,7 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
                     onClick={() => onDelete(exercise)}
                     className={cn(
                       'p-2 rounded-lg transition-colors',
-                      'text-white/30 hover:text-red-400 hover:bg-red-500/10'
+                      'text-white/30 hover:text-red-400 hover:bg-red-500/10',
                     )}
                   >
                     <Trash2 size={16} />
@@ -165,16 +197,17 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
 
               {exercise.muscleContributions.length > 0 && (
                 <div className="flex flex-wrap gap-2 ml-13">
-                  {exercise.muscleContributions.map(mc => (
+                  {exercise.muscleContributions.map((mc) => (
                     <div
                       key={mc.muscleGroupId}
                       className={cn(
                         'px-3 py-1.5 rounded-lg',
                         'bg-white/5 border border-white/10',
-                        'text-xs font-mono text-white/50'
+                        'text-xs font-mono text-white/50',
                       )}
                     >
-                      {muscleMap.get(mc.muscleGroupId) || 'Unknown'}: {mc.percentage}%
+                      {muscleMap.get(mc.muscleGroupId) || 'Unknown'}:{' '}
+                      {mc.percentage}%
                     </div>
                   ))}
                 </div>
@@ -194,7 +227,7 @@ function ExerciseList({ exercises, muscleGroups, onCreateNew, onEdit, onDelete }
             'text-amber-100 transition-all duration-200',
             'hover:bg-amber-500/30 hover:border-amber-400/50',
             'active:scale-[0.98]',
-            'flex items-center justify-center gap-2'
+            'flex items-center justify-center gap-2',
           )}
         >
           <Plus size={20} />
@@ -216,7 +249,12 @@ interface ExerciseFormProps {
   initialData?: Exercise
 }
 
-function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: ExerciseFormProps) {
+function ExerciseForm({
+  muscleGroups,
+  onSubmit,
+  onCancel,
+  initialData,
+}: ExerciseFormProps) {
   const isEditing = !!initialData
 
   const form = useForm<ExerciseFormValues>({
@@ -257,7 +295,10 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
   const nameError = form.formState.errors.name?.message
 
   return (
-    <form onSubmit={handleSubmit} className="w-full h-full flex flex-col space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full h-full flex flex-col space-y-4"
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -274,7 +315,7 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
           className={cn(
             'w-10 h-10 rounded-full flex items-center justify-center',
             'backdrop-blur-md bg-white/5 border border-white/10',
-            'text-white/50 hover:text-white/80 transition-colors'
+            'text-white/50 hover:text-white/80 transition-colors',
           )}
         >
           <X size={20} />
@@ -285,7 +326,9 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
       <div className="space-y-4 overflow-y-auto flex-1 -mx-1 px-1">
         {/* Name */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-white/70">Exercise Name</label>
+          <span className="text-sm font-medium text-white/70">
+            Exercise Name
+          </span>
           <input
             type="text"
             placeholder="e.g., Bench Press"
@@ -293,7 +336,7 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
               'w-full h-10 px-3 rounded-lg',
               'bg-white/5 border text-white placeholder:text-white/30',
               'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
-              nameError ? 'border-red-500/50' : 'border-white/10'
+              nameError ? 'border-red-500/50' : 'border-white/10',
             )}
             {...form.register('name')}
           />
@@ -302,13 +345,15 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
 
         {/* Description */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-white/70">Description (optional)</label>
+          <span className="text-sm font-medium text-white/70">
+            Description (optional)
+          </span>
           <textarea
             placeholder="How to perform this exercise..."
             className={cn(
               'w-full px-3 py-2 rounded-lg min-h-20',
               'bg-white/5 border border-white/10 text-white placeholder:text-white/30',
-              'focus:outline-none focus:ring-2 focus:ring-amber-500/50'
+              'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
             )}
             {...form.register('description')}
           />
@@ -317,7 +362,9 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
         {/* Muscle Contributions */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-white/70">Muscle Groups</label>
+            <span className="text-sm font-medium text-white/70">
+              Muscle Groups
+            </span>
             <button
               type="button"
               onClick={handleAddContribution}
@@ -332,10 +379,12 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
             <div
               className={cn(
                 'rounded-xl p-4 text-center',
-                'bg-white/5 border border-white/10 border-dashed'
+                'bg-white/5 border border-white/10 border-dashed',
               )}
             >
-              <p className="text-white/40 text-sm">No muscle groups added yet</p>
+              <p className="text-white/40 text-sm">
+                No muscle groups added yet
+              </p>
             </div>
           ) : (
             contributionFields.map((field, index) => (
@@ -352,13 +401,15 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
 
         {/* Notes */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-white/70">Notes (optional)</label>
+          <span className="text-sm font-medium text-white/70">
+            Notes (optional)
+          </span>
           <textarea
             placeholder="Any additional notes..."
             className={cn(
               'w-full px-3 py-2 rounded-lg min-h-16',
               'bg-white/5 border border-white/10 text-white placeholder:text-white/30',
-              'focus:outline-none focus:ring-2 focus:ring-amber-500/50'
+              'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
             )}
             {...form.register('notes')}
           />
@@ -375,7 +426,7 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
             'backdrop-blur-md bg-white/5 border border-white/10',
             'text-white/60 transition-all duration-200',
             'hover:bg-white/10 hover:text-white/80',
-            'active:scale-[0.98]'
+            'active:scale-[0.98]',
           )}
         >
           Cancel
@@ -388,7 +439,7 @@ function ExerciseForm({ muscleGroups, onSubmit, onCancel, initialData }: Exercis
             'text-amber-100 transition-all duration-200',
             'hover:bg-amber-500/30 hover:border-amber-400/50',
             'active:scale-[0.98]',
-            'flex items-center justify-center gap-2'
+            'flex items-center justify-center gap-2',
           )}
         >
           {isEditing ? 'Save Changes' : 'Create'}
@@ -414,13 +465,16 @@ function MuscleContributionInput({
   index: number
   onRemove: () => void
 }) {
-  const error = form.formState.errors.muscleContributions?.[index]?.muscleGroupId?.message
+  const error =
+    form.formState.errors.muscleContributions?.[index]?.muscleGroupId?.message
 
   return (
     <div className={cn('rounded-xl p-4', 'bg-white/5 border border-white/10')}>
       <div className="flex items-start gap-3">
         <div className="flex-1 space-y-2">
-          <label className="text-xs font-medium text-white/50">Muscle Group</label>
+          <span className="text-xs font-medium text-white/50">
+            Muscle Group
+          </span>
           <Controller
             control={form.control}
             name={`muscleContributions.${index}.muscleGroupId`}
@@ -430,7 +484,7 @@ function MuscleContributionInput({
                   <SelectValue placeholder="Select muscle..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {muscleGroups.map(mg => (
+                  {muscleGroups.map((mg) => (
                     <SelectItem key={mg.id} value={mg.id}>
                       {mg.name}
                     </SelectItem>
@@ -443,7 +497,7 @@ function MuscleContributionInput({
         </div>
 
         <div className="w-24 space-y-2">
-          <label className="text-xs font-medium text-white/50">%</label>
+          <span className="text-xs font-medium text-white/50">%</span>
           <input
             type="number"
             min={1}
@@ -451,7 +505,7 @@ function MuscleContributionInput({
             className={cn(
               'w-full h-10 px-3 rounded-lg',
               'bg-white/5 border border-white/10 text-white',
-              'focus:outline-none focus:ring-2 focus:ring-amber-500/50'
+              'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
             )}
             {...form.register(`muscleContributions.${index}.percentage`, {
               valueAsNumber: true,
@@ -480,8 +534,14 @@ function Page() {
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null)
 
-  const { exercises, muscleGroups, routines, addExercise, updateExercise, removeExercise } =
-    useAppStore()
+  const {
+    exercises,
+    muscleGroups,
+    routines,
+    addExercise,
+    updateExercise,
+    removeExercise,
+  } = useAppStore()
 
   const handleCreateNew = () => {
     setEditingExercise(null)
@@ -526,7 +586,7 @@ function Page() {
 
   const deleteWarning =
     routinesUsingExercise.length > 0
-      ? `This exercise is used in ${routinesUsingExercise.length} routine${routinesUsingExercise.length > 1 ? 's' : ''}: ${routinesUsingExercise.map(r => r.name).join(', ')}. Deleting it may cause issues with those routines.`
+      ? `This exercise is used in ${routinesUsingExercise.length} routine${routinesUsingExercise.length > 1 ? 's' : ''}: ${routinesUsingExercise.map((r) => r.name).join(', ')}. Deleting it may cause issues with those routines.`
       : undefined
 
   return (

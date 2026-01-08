@@ -68,16 +68,19 @@ toast.toast('Action completed', variant, 5000)
 ## Architecture
 
 ### Store Slice
+
 - **Location**: `src/store/slices/toastSlice.ts`
 - **State**: Array of toast objects
 - **Actions**: `addToast`, `removeToast`, `clearToasts`
 
 ### Components
+
 - **Toast**: Individual toast component with icon and dismiss button
 - **ToastContainer**: Manages toast stack and animations
 - **useToast**: Convenience hook for easy access
 
 ### Styling
+
 - Uses CVA (Class Variance Authority) for variants
 - Glass-morphism design matching app theme
 - Responsive positioning (top-right on desktop)
@@ -85,19 +88,21 @@ toast.toast('Action completed', variant, 5000)
 ## Migration from alert()
 
 ### Before
+
 ```typescript
 if (value <= 0) {
-  alert("Please enter a valid number")
+  alert('Please enter a valid number')
   return
 }
 ```
 
 ### After
+
 ```typescript
 const toast = useToast()
 
 if (value <= 0) {
-  toast.error("Please enter a valid number")
+  toast.error('Please enter a valid number')
   return
 }
 ```

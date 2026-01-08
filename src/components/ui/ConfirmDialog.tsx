@@ -33,7 +33,7 @@ export default function ConfirmDialog({
         onClose()
       }
     },
-    [open, onClose]
+    [open, onClose],
   )
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function ConfirmDialog({
             className={cn(
               'fixed bottom-0 left-0 right-0 z-101',
               'rounded-t-3xl p-6 pb-10',
-              'bg-neutral-900 border-t border-white/10'
+              'bg-neutral-900 border-t border-white/10',
             )}
           >
             {/* Close button */}
@@ -78,7 +78,7 @@ export default function ConfirmDialog({
               className={cn(
                 'absolute top-4 right-4 p-2 rounded-full',
                 'text-white/50 hover:text-white/80 hover:bg-white/10',
-                'transition-colors'
+                'transition-colors',
               )}
             >
               <X size={20} />
@@ -89,32 +89,38 @@ export default function ConfirmDialog({
               <div
                 className={cn(
                   'w-14 h-14 rounded-full flex items-center justify-center mb-4',
-                  variant === 'danger' && 'bg-red-500/20 border border-red-500/30',
-                  variant === 'warning' && 'bg-amber-500/20 border border-amber-500/30'
+                  variant === 'danger' &&
+                    'bg-red-500/20 border border-red-500/30',
+                  variant === 'warning' &&
+                    'bg-amber-500/20 border border-amber-500/30',
                 )}
               >
                 <AlertTriangle
                   size={28}
                   className={cn(
                     variant === 'danger' && 'text-red-400',
-                    variant === 'warning' && 'text-amber-400'
+                    variant === 'warning' && 'text-amber-400',
                   )}
                 />
               </div>
             )}
 
             {/* Title */}
-            <h2 className="font-display text-xl font-bold text-white mb-2">{title}</h2>
+            <h2 className="font-display text-xl font-bold text-white mb-2">
+              {title}
+            </h2>
 
             {/* Description */}
-            {description && <p className="text-white/60 text-sm mb-4">{description}</p>}
+            {description && (
+              <p className="text-white/60 text-sm mb-4">{description}</p>
+            )}
 
             {/* Warning */}
             {warning && (
               <div
                 className={cn(
                   'rounded-xl p-4 mb-6',
-                  'bg-amber-500/10 border border-amber-500/20'
+                  'bg-amber-500/10 border border-amber-500/20',
                 )}
               >
                 <p className="text-amber-200 text-sm">{warning}</p>
@@ -130,7 +136,7 @@ export default function ConfirmDialog({
                   'backdrop-blur-md bg-white/5 border border-white/10',
                   'text-white/60 transition-all duration-200',
                   'hover:bg-white/10 hover:text-white/80',
-                  'active:scale-[0.98]'
+                  'active:scale-[0.98]',
                 )}
               >
                 {cancelLabel}
@@ -145,7 +151,7 @@ export default function ConfirmDialog({
                   variant === 'warning' &&
                     'bg-amber-500/20 border border-amber-400/30 text-amber-100 hover:bg-amber-500/30',
                   variant === 'default' &&
-                    'bg-amber-500/20 border border-amber-400/30 text-amber-100 hover:bg-amber-500/30'
+                    'bg-amber-500/20 border border-amber-400/30 text-amber-100 hover:bg-amber-500/30',
                 )}
               >
                 {confirmLabel}

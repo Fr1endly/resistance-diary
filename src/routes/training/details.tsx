@@ -43,42 +43,58 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
       <div
         ref={ref}
         className={cn(
-          "relative w-full h-full flex flex-col justify-stretch",
-          className
+          'relative w-full h-full flex flex-col justify-stretch',
+          className,
         )}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex-1">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-1">Current Exercise</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider mb-1">
+              Current Exercise
+            </p>
             <h3 className="font-display text-2xl font-bold text-white">
               {exercise.name}
             </h3>
           </div>
-          <div className={cn(
-            "w-12 h-12 rounded-full flex items-center justify-center",
-            "backdrop-blur-md bg-amber-500/20 border border-amber-400/30"
-          )}>
+          <div
+            className={cn(
+              'w-12 h-12 rounded-full flex items-center justify-center',
+              'backdrop-blur-md bg-amber-500/20 border border-amber-400/30',
+            )}
+          >
             <Target size={22} className="text-amber-400" />
           </div>
         </div>
 
         {/* Stats Overview - Glass */}
-        <div className={cn(
-          "flex items-center gap-4 py-4 px-5 rounded-2xl mb-4",
-          "backdrop-blur-xl bg-white/5 border border-white/10"
-        )}>
+        <div
+          className={cn(
+            'flex items-center gap-4 py-4 px-5 rounded-2xl mb-4',
+            'backdrop-blur-xl bg-white/5 border border-white/10',
+          )}
+        >
           <div className="text-center flex-1">
             <div className="flex items-baseline justify-center gap-1">
-              <span className="text-3xl font-bold text-emerald-400 font-mono">{completedCount}</span>
-              <span className="text-lg text-white/40 font-mono">/ {totalSets}</span>
+              <span className="text-3xl font-bold text-emerald-400 font-mono">
+                {completedCount}
+              </span>
+              <span className="text-lg text-white/40 font-mono">
+                / {totalSets}
+              </span>
             </div>
-            <div className="text-xs text-white/40 uppercase tracking-wider mt-1">Progress</div>
+            <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+              Progress
+            </div>
           </div>
           <div className="h-12 w-px bg-white/10" />
           <div className="text-center flex-1">
-            <div className="text-3xl font-bold text-amber-400 font-mono">{totalReps}</div>
-            <div className="text-xs text-white/40 uppercase tracking-wider mt-1">Total Reps</div>
+            <div className="text-3xl font-bold text-amber-400 font-mono">
+              {totalReps}
+            </div>
+            <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+              Total Reps
+            </div>
           </div>
         </div>
 
@@ -87,7 +103,9 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
           <div className="mb-4 flex-1 overflow-y-auto -mx-1 px-1">
             <div className="flex items-center gap-2 mb-3">
               <Repeat size={12} className="text-white/40" />
-              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">Set Breakdown</span>
+              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+                Set Breakdown
+              </span>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {plannedSets.map((set, i) => {
@@ -98,15 +116,17 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
                   <div
                     key={set.id}
                     className={cn(
-                      "flex flex-col items-center justify-center py-3 px-2 rounded-xl border text-center transition-all",
+                      'flex flex-col items-center justify-center py-3 px-2 rounded-xl border text-center transition-all',
                       isCompleted
-                        ? "backdrop-blur-md bg-amber-500/20 border-amber-400/30 text-amber-100"
+                        ? 'backdrop-blur-md bg-amber-500/20 border-amber-400/30 text-amber-100'
                         : isCurrent
-                          ? "backdrop-blur-md bg-emerald-500/20 border-emerald-400/30 text-emerald-100"
-                          : "backdrop-blur-md bg-white/5 border-white/10 text-white/60 hover:bg-white/10"
+                          ? 'backdrop-blur-md bg-emerald-500/20 border-emerald-400/30 text-emerald-100'
+                          : 'backdrop-blur-md bg-white/5 border-white/10 text-white/60 hover:bg-white/10',
                     )}
                   >
-                    <span className="text-[10px] font-medium text-white/40 mb-1">SET {i + 1}</span>
+                    <span className="text-[10px] font-medium text-white/40 mb-1">
+                      SET {i + 1}
+                    </span>
                     <span className="font-mono font-semibold text-sm">
                       {set.targetReps} reps
                     </span>
@@ -124,10 +144,12 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
 
         {/* Description if exists */}
         {exercise.description && (
-          <div className={cn(
-            "p-4 rounded-2xl mb-4",
-            "backdrop-blur-xl bg-white/5 border border-white/10"
-          )}>
+          <div
+            className={cn(
+              'p-4 rounded-2xl mb-4',
+              'backdrop-blur-xl bg-white/5 border border-white/10',
+            )}
+          >
             <p className="text-sm text-white/70 leading-relaxed">
               {exercise.description}
             </p>
@@ -136,27 +158,29 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
 
         {/* Notes if exists */}
         {exercise.notes && (
-          <div className={cn(
-            "p-3 rounded-xl mb-4",
-            "backdrop-blur-md bg-white/5 border border-white/10"
-          )}>
-            <p className="text-xs text-white/50 italic">
-              {exercise.notes}
-            </p>
+          <div
+            className={cn(
+              'p-3 rounded-xl mb-4',
+              'backdrop-blur-md bg-white/5 border border-white/10',
+            )}
+          >
+            <p className="text-xs text-white/50 italic">{exercise.notes}</p>
           </div>
         )}
 
         {/* Video embeds if exists */}
         {exercise.videos && exercise.videos.length > 0 && (
-          <div className={cn(
-            "rounded-2xl overflow-hidden",
-            "backdrop-blur-xl bg-white/5 border border-white/10"
-          )}>
+          <div
+            className={cn(
+              'rounded-2xl overflow-hidden',
+              'backdrop-blur-xl bg-white/5 border border-white/10',
+            )}
+          >
             <button
               onClick={() => setIsVideosOpen(!isVideosOpen)}
               className={cn(
-                "flex w-full items-center justify-between px-4 py-3",
-                "text-sm font-medium text-white/70 hover:text-white/90 transition-colors"
+                'flex w-full items-center justify-between px-4 py-3',
+                'text-sm font-medium text-white/70 hover:text-white/90 transition-colors',
               )}
             >
               <div className="flex items-center gap-2">
@@ -175,15 +199,17 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
               {isVideosOpen && (
                 <motion.div
                   initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
+                  animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
                   className="overflow-hidden"
                 >
                   <div className="space-y-3 px-4 pb-4">
                     {exercise.videos.map((video, idx) => {
                       // Extract YouTube video ID if it's a YouTube URL
-                      const youtubeMatch = video.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/)
+                      const youtubeMatch = video.match(
+                        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/,
+                      )
                       const videoId = youtubeMatch?.[1]
 
                       if (!videoId) {
@@ -200,7 +226,10 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
                         )
                       }
                       return (
-                        <div key={idx} className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10">
+                        <div
+                          key={idx}
+                          className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10"
+                        >
                           <iframe
                             src={`https://www.youtube.com/embed/${videoId}`}
                             title={`${exercise.name} - Video ${idx + 1}`}
@@ -223,25 +252,30 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
           <Link to="/training" className="block">
             <button
               className={cn(
-                "w-2/3 h-14 rounded-2xl font-semibold text-base text-neutral-950",
-                "backdrop-blur-md bg-yellow-500/90 border border-yellow-400/30",
-                "transition-all duration-200",
-                "hover:bg-emerald-500/30 hover:border-emerald-400/50",
-                "active:scale-[0.98]",
-                "flex items-center justify-center gap-2"
+                'w-2/3 h-14 rounded-2xl font-semibold text-base text-neutral-950',
+                'backdrop-blur-md bg-yellow-500/90 border border-yellow-400/30',
+                'transition-all duration-200',
+                'hover:bg-emerald-500/30 hover:border-emerald-400/50',
+                'active:scale-[0.98]',
+                'flex items-center justify-center gap-2',
               )}
             >
-              <Play size={20} fill="black" stroke="black" style={{ opacity: 0.80 }} />
+              <Play
+                size={20}
+                fill="black"
+                stroke="black"
+                style={{ opacity: 0.8 }}
+              />
               Begin Exercise
             </button>
           </Link>
         </div>
       </div>
     )
-  }
+  },
 )
 
-ExerciseCard.displayName = "ExerciseCard"
+ExerciseCard.displayName = 'ExerciseCard'
 
 // ============================================
 // MAIN PAGE
@@ -262,38 +296,42 @@ function TrainingDetailsPage() {
 
   // Get active routine and day
   const activeRoutine = useMemo(
-    () => routines.find(r => r.id === activeRoutineId),
-    [routines, activeRoutineId]
+    () => routines.find((r) => r.id === activeRoutineId),
+    [routines, activeRoutineId],
   )
 
   const activeSession = useMemo(
-    () => useAppStore.getState().sessions.find(s => s.id === activeSessionId),
-    [activeSessionId]
+    () => useAppStore.getState().sessions.find((s) => s.id === activeSessionId),
+    [activeSessionId],
   )
 
   const activeDay = useMemo(
-    () => activeRoutine?.days.find(d => d.id === activeSession?.dayId),
-    [activeRoutine, activeSession]
+    () => activeRoutine?.days.find((d) => d.id === activeSession?.dayId),
+    [activeRoutine, activeSession],
   )
 
-  const plannedSets = activeDay?.plannedSets ?? []
-  const currentPlannedSet = plannedSets[currentSetIndex]
+  const plannedSets = useMemo(() => activeDay?.plannedSets ?? [], [activeDay])
+  const currentPlannedSet = plannedSets[currentSetIndex] as
+    | PlannedSet
+    | undefined
 
   // Get current exercise with its planned sets
   const currentExerciseData: ExerciseWithSets | null = useMemo(() => {
     if (!currentPlannedSet) return null
 
-    const exercise = exercises.find(ex => ex.id === currentPlannedSet.exerciseId)
+    const exercise = exercises.find(
+      (ex) => ex.id === currentPlannedSet.exerciseId,
+    )
     if (!exercise) return null
 
     // Get all planned sets for this exercise
     const exercisePlannedSets = plannedSets.filter(
-      ps => ps.exerciseId === currentPlannedSet.exerciseId
+      (ps) => ps.exerciseId === currentPlannedSet.exerciseId,
     )
 
     // Count completed sets for this exercise in current session
     const completedCount = completedSets.filter(
-      cs => cs.sessionId === activeSessionId && cs.exerciseId === exercise.id
+      (cs) => cs.sessionId === activeSessionId && cs.exerciseId === exercise.id,
     ).length
 
     return {
@@ -301,7 +339,13 @@ function TrainingDetailsPage() {
       plannedSets: exercisePlannedSets,
       completedCount,
     }
-  }, [currentPlannedSet, exercises, plannedSets, completedSets, activeSessionId])
+  }, [
+    currentPlannedSet,
+    exercises,
+    plannedSets,
+    completedSets,
+    activeSessionId,
+  ])
 
   // Redirect if not in workout
   useEffect(() => {
@@ -318,13 +362,7 @@ function TrainingDetailsPage() {
   return (
     <PageLayout
       variant="glass"
-      bottomUpper={
-        <ExerciseCard
-          data={currentExerciseData}
-        />
-      }
+      bottomUpper={<ExerciseCard data={currentExerciseData} />}
     />
   )
 }
-
-

@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { motion } from 'motion/react';
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react';
-import { cva } from 'class-variance-authority';
-import type { Toast as ToastType } from '@/store/slices/toastSlice';
-import { cn } from '@/lib/utils';
+import { useEffect } from 'react'
+import { motion } from 'motion/react'
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
+import { cva } from 'class-variance-authority'
+import type { Toast as ToastType } from '@/store/slices/toastSlice'
+import { cn } from '@/lib/utils'
 
 const toastVariants = cva(
   'relative flex items-start gap-3 p-4 rounded-xl shadow-lg glass-card border pointer-events-auto min-w-[300px] max-w-[400px]',
@@ -19,8 +19,8 @@ const toastVariants = cva(
     defaultVariants: {
       variant: 'info',
     },
-  }
-);
+  },
+)
 
 const iconVariants = cva('shrink-0', {
   variants: {
@@ -31,11 +31,11 @@ const iconVariants = cva('shrink-0', {
       info: 'text-blue-400',
     },
   },
-});
+})
 
 interface ToastProps {
-  toast: ToastType;
-  onDismiss: (id: string) => void;
+  toast: ToastType
+  onDismiss: (id: string) => void
 }
 
 const iconMap = {
@@ -43,20 +43,20 @@ const iconMap = {
   error: AlertCircle,
   warning: AlertTriangle,
   info: Info,
-};
+}
 
 export function Toast({ toast, onDismiss }: ToastProps) {
-  const Icon = iconMap[toast.variant];
+  const Icon = iconMap[toast.variant]
 
   useEffect(() => {
     if (toast.duration) {
       const timer = setTimeout(() => {
-        onDismiss(toast.id);
-      }, toast.duration);
+        onDismiss(toast.id)
+      }, toast.duration)
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     }
-  }, [toast.id, toast.duration, onDismiss]);
+  }, [toast.id, toast.duration, onDismiss])
 
   return (
     <motion.div
@@ -73,7 +73,9 @@ export function Toast({ toast, onDismiss }: ToastProps) {
       aria-live={toast.variant === 'error' ? 'assertive' : 'polite'}
     >
       {/* Icon */}
-      <Icon className={cn(iconVariants({ variant: toast.variant }), 'size-5')} />
+      <Icon
+        className={cn(iconVariants({ variant: toast.variant }), 'size-5')}
+      />
 
       {/* Message */}
       <div className="flex-1 text-sm font-medium text-white/90">
@@ -89,5 +91,5 @@ export function Toast({ toast, onDismiss }: ToastProps) {
         <X className="size-4 text-white/60" />
       </button>
     </motion.div>
-  );
+  )
 }

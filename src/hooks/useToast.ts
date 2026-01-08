@@ -1,44 +1,44 @@
-import { useCallback } from 'react';
-import type { ToastVariant } from '@/store/slices/toastSlice';
-import { useAppStore } from '@/store';
+import { useCallback } from 'react'
+import type { ToastVariant } from '@/store/slices/toastSlice'
+import { useAppStore } from '@/store'
 
 export function useToast() {
-  const addToast = useAppStore((state) => state.addToast);
+  const addToast = useAppStore((state) => state.addToast)
 
   const toast = useCallback(
     (message: string, variant: ToastVariant = 'info', duration?: number) => {
-      addToast(message, variant, duration);
+      addToast(message, variant, duration)
     },
-    [addToast]
-  );
+    [addToast],
+  )
 
   const success = useCallback(
     (message: string, duration?: number) => {
-      addToast(message, 'success', duration);
+      addToast(message, 'success', duration)
     },
-    [addToast]
-  );
+    [addToast],
+  )
 
   const error = useCallback(
     (message: string, duration?: number) => {
-      addToast(message, 'error', duration);
+      addToast(message, 'error', duration)
     },
-    [addToast]
-  );
+    [addToast],
+  )
 
   const warning = useCallback(
     (message: string, duration?: number) => {
-      addToast(message, 'warning', duration);
+      addToast(message, 'warning', duration)
     },
-    [addToast]
-  );
+    [addToast],
+  )
 
   const info = useCallback(
     (message: string, duration?: number) => {
-      addToast(message, 'info', duration);
+      addToast(message, 'info', duration)
     },
-    [addToast]
-  );
+    [addToast],
+  )
 
   return {
     toast,
@@ -46,5 +46,5 @@ export function useToast() {
     error,
     warning,
     info,
-  };
+  }
 }

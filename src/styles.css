@@ -1,17 +1,19 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @font-face {
-  font-family: "Work Sans";
+  font-family: 'Work Sans';
   font-style: normal;
-  src: url("/public/fonts/Work_Sans/WorkSans-VariableFont_wght.ttf") format("truetype");
+  src: url('/public/fonts/Work_Sans/WorkSans-VariableFont_wght.ttf')
+    format('truetype');
   font-weight: 100 900;
 }
 
 @font-face {
-  font-family: "Fira Code";
+  font-family: 'Fira Code';
   font-style: normal;
-  src: url("/public/fonts/Fira_Code/FiraCode-VariableFont_wght.ttf") format("truetype");
+  src: url('/public/fonts/Fira_Code/FiraCode-VariableFont_wght.ttf')
+    format('truetype');
   font-weight: 100 900;
 }
 
@@ -118,7 +120,8 @@
 
   .bg-grid {
     background-size: 10px 10px;
-    background-image: linear-gradient(to right, grey 1px, transparent 1px),
+    background-image:
+      linear-gradient(to right, grey 1px, transparent 1px),
       linear-gradient(to bottom, grey 1px, transparent 1px);
   }
 }

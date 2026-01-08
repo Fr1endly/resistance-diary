@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid'
 
 import type {
   CompletedSet,
@@ -9,17 +9,17 @@ import type {
   WorkoutDay,
   WorkoutRoutine,
   WorkoutSession,
-} from '@/types';
-import { useAppStore } from '@/store';
+} from '@/types'
+import { useAppStore } from '@/store'
 
 // Helper to generate unique IDs
-const generateId = () => nanoid();
+const generateId = () => nanoid()
 
 // Helper to add random variation to weight/reps
 const addVariation = (base: number, variationPercent: number = 0.1): number => {
-  const variation = base * variationPercent;
-  return Math.round((base + (Math.random() - 0.5) * 2 * variation) * 2) / 2; // Round to nearest 0.5
-};
+  const variation = base * variationPercent
+  return Math.round((base + (Math.random() - 0.5) * 2 * variation) * 2) / 2 // Round to nearest 0.5
+}
 
 // ============================================
 // MUSCLE GROUPS
@@ -41,7 +41,7 @@ export const mockMuscleGroups: Array<MuscleGroup> = [
   { id: 'abs', name: 'Abs', category: 'core' },
   { id: 'obliques', name: 'Obliques', category: 'core' },
   { id: 'lower-back', name: 'Lower Back', category: 'core' },
-];
+]
 
 // ============================================
 // EXERCISES
@@ -275,86 +275,408 @@ export const mockExercises: Array<Exercise> = [
       { muscleGroupId: 'obliques', percentage: 20 },
     ],
   },
-];
+]
 
 // ============================================
 // WORKOUT ROUTINES
 // ============================================
 const createPPLRoutine = (): WorkoutRoutine => {
-  const routineId = generateId();
-  const now = new Date();
-  const createdAt = new Date(now);
-  createdAt.setMonth(createdAt.getMonth() - 2); // Created 2 months ago
+  const routineId = generateId()
+  const now = new Date()
+  const createdAt = new Date(now)
+  createdAt.setMonth(createdAt.getMonth() - 2) // Created 2 months ago
 
   const pushDay: WorkoutDay = {
     id: generateId(),
     name: 'Push Day',
     order: 0,
     plannedSets: [
-      { id: generateId(), exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, restSeconds: 180, order: 0 },
-      { id: generateId(), exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, restSeconds: 180, order: 1 },
-      { id: generateId(), exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, restSeconds: 180, order: 2 },
-      { id: generateId(), exerciseId: 'ohp', targetReps: 10, targetWeight: 45, restSeconds: 120, order: 3 },
-      { id: generateId(), exerciseId: 'ohp', targetReps: 10, targetWeight: 45, restSeconds: 120, order: 4 },
-      { id: generateId(), exerciseId: 'ohp', targetReps: 10, targetWeight: 45, restSeconds: 120, order: 5 },
-      { id: generateId(), exerciseId: 'incline-bench', targetReps: 12, targetWeight: 28, restSeconds: 90, order: 6 },
-      { id: generateId(), exerciseId: 'incline-bench', targetReps: 12, targetWeight: 28, restSeconds: 90, order: 7 },
-      { id: generateId(), exerciseId: 'incline-bench', targetReps: 12, targetWeight: 28, restSeconds: 90, order: 8 },
-      { id: generateId(), exerciseId: 'lateral-raise', targetReps: 15, targetWeight: 10, restSeconds: 60, order: 9 },
-      { id: generateId(), exerciseId: 'lateral-raise', targetReps: 15, targetWeight: 10, restSeconds: 60, order: 10 },
-      { id: generateId(), exerciseId: 'lateral-raise', targetReps: 15, targetWeight: 10, restSeconds: 60, order: 11 },
-      { id: generateId(), exerciseId: 'tricep-pushdown', targetReps: 12, targetWeight: 25, restSeconds: 60, order: 12 },
-      { id: generateId(), exerciseId: 'tricep-pushdown', targetReps: 12, targetWeight: 25, restSeconds: 60, order: 13 },
-      { id: generateId(), exerciseId: 'tricep-pushdown', targetReps: 12, targetWeight: 25, restSeconds: 60, order: 14 },
+      {
+        id: generateId(),
+        exerciseId: 'bench-press',
+        targetReps: 8,
+        targetWeight: 80,
+        restSeconds: 180,
+        order: 0,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'bench-press',
+        targetReps: 8,
+        targetWeight: 80,
+        restSeconds: 180,
+        order: 1,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'bench-press',
+        targetReps: 8,
+        targetWeight: 80,
+        restSeconds: 180,
+        order: 2,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'ohp',
+        targetReps: 10,
+        targetWeight: 45,
+        restSeconds: 120,
+        order: 3,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'ohp',
+        targetReps: 10,
+        targetWeight: 45,
+        restSeconds: 120,
+        order: 4,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'ohp',
+        targetReps: 10,
+        targetWeight: 45,
+        restSeconds: 120,
+        order: 5,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'incline-bench',
+        targetReps: 12,
+        targetWeight: 28,
+        restSeconds: 90,
+        order: 6,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'incline-bench',
+        targetReps: 12,
+        targetWeight: 28,
+        restSeconds: 90,
+        order: 7,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'incline-bench',
+        targetReps: 12,
+        targetWeight: 28,
+        restSeconds: 90,
+        order: 8,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'lateral-raise',
+        targetReps: 15,
+        targetWeight: 10,
+        restSeconds: 60,
+        order: 9,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'lateral-raise',
+        targetReps: 15,
+        targetWeight: 10,
+        restSeconds: 60,
+        order: 10,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'lateral-raise',
+        targetReps: 15,
+        targetWeight: 10,
+        restSeconds: 60,
+        order: 11,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'tricep-pushdown',
+        targetReps: 12,
+        targetWeight: 25,
+        restSeconds: 60,
+        order: 12,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'tricep-pushdown',
+        targetReps: 12,
+        targetWeight: 25,
+        restSeconds: 60,
+        order: 13,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'tricep-pushdown',
+        targetReps: 12,
+        targetWeight: 25,
+        restSeconds: 60,
+        order: 14,
+      },
     ],
-  };
+  }
 
   const pullDay: WorkoutDay = {
     id: generateId(),
     name: 'Pull Day',
     order: 1,
     plannedSets: [
-      { id: generateId(), exerciseId: 'deadlift', targetReps: 5, targetWeight: 140, restSeconds: 240, order: 0 },
-      { id: generateId(), exerciseId: 'deadlift', targetReps: 5, targetWeight: 140, restSeconds: 240, order: 1 },
-      { id: generateId(), exerciseId: 'deadlift', targetReps: 5, targetWeight: 140, restSeconds: 240, order: 2 },
-      { id: generateId(), exerciseId: 'barbell-row', targetReps: 8, targetWeight: 70, restSeconds: 120, order: 3 },
-      { id: generateId(), exerciseId: 'barbell-row', targetReps: 8, targetWeight: 70, restSeconds: 120, order: 4 },
-      { id: generateId(), exerciseId: 'barbell-row', targetReps: 8, targetWeight: 70, restSeconds: 120, order: 5 },
-      { id: generateId(), exerciseId: 'pull-up', targetReps: 8, targetWeight: 10, restSeconds: 120, order: 6 },
-      { id: generateId(), exerciseId: 'pull-up', targetReps: 8, targetWeight: 10, restSeconds: 120, order: 7 },
-      { id: generateId(), exerciseId: 'pull-up', targetReps: 8, targetWeight: 10, restSeconds: 120, order: 8 },
-      { id: generateId(), exerciseId: 'face-pull', targetReps: 15, targetWeight: 20, restSeconds: 60, order: 9 },
-      { id: generateId(), exerciseId: 'face-pull', targetReps: 15, targetWeight: 20, restSeconds: 60, order: 10 },
-      { id: generateId(), exerciseId: 'face-pull', targetReps: 15, targetWeight: 20, restSeconds: 60, order: 11 },
-      { id: generateId(), exerciseId: 'barbell-curl', targetReps: 12, targetWeight: 30, restSeconds: 60, order: 12 },
-      { id: generateId(), exerciseId: 'barbell-curl', targetReps: 12, targetWeight: 30, restSeconds: 60, order: 13 },
-      { id: generateId(), exerciseId: 'hammer-curl', targetReps: 12, targetWeight: 14, restSeconds: 60, order: 14 },
+      {
+        id: generateId(),
+        exerciseId: 'deadlift',
+        targetReps: 5,
+        targetWeight: 140,
+        restSeconds: 240,
+        order: 0,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'deadlift',
+        targetReps: 5,
+        targetWeight: 140,
+        restSeconds: 240,
+        order: 1,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'deadlift',
+        targetReps: 5,
+        targetWeight: 140,
+        restSeconds: 240,
+        order: 2,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-row',
+        targetReps: 8,
+        targetWeight: 70,
+        restSeconds: 120,
+        order: 3,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-row',
+        targetReps: 8,
+        targetWeight: 70,
+        restSeconds: 120,
+        order: 4,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-row',
+        targetReps: 8,
+        targetWeight: 70,
+        restSeconds: 120,
+        order: 5,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'pull-up',
+        targetReps: 8,
+        targetWeight: 10,
+        restSeconds: 120,
+        order: 6,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'pull-up',
+        targetReps: 8,
+        targetWeight: 10,
+        restSeconds: 120,
+        order: 7,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'pull-up',
+        targetReps: 8,
+        targetWeight: 10,
+        restSeconds: 120,
+        order: 8,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'face-pull',
+        targetReps: 15,
+        targetWeight: 20,
+        restSeconds: 60,
+        order: 9,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'face-pull',
+        targetReps: 15,
+        targetWeight: 20,
+        restSeconds: 60,
+        order: 10,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'face-pull',
+        targetReps: 15,
+        targetWeight: 20,
+        restSeconds: 60,
+        order: 11,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-curl',
+        targetReps: 12,
+        targetWeight: 30,
+        restSeconds: 60,
+        order: 12,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-curl',
+        targetReps: 12,
+        targetWeight: 30,
+        restSeconds: 60,
+        order: 13,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'hammer-curl',
+        targetReps: 12,
+        targetWeight: 14,
+        restSeconds: 60,
+        order: 14,
+      },
     ],
-  };
+  }
 
   const legDay: WorkoutDay = {
     id: generateId(),
     name: 'Leg Day',
     order: 2,
     plannedSets: [
-      { id: generateId(), exerciseId: 'squat', targetReps: 6, targetWeight: 120, restSeconds: 240, order: 0 },
-      { id: generateId(), exerciseId: 'squat', targetReps: 6, targetWeight: 120, restSeconds: 240, order: 1 },
-      { id: generateId(), exerciseId: 'squat', targetReps: 6, targetWeight: 120, restSeconds: 240, order: 2 },
-      { id: generateId(), exerciseId: 'squat', targetReps: 6, targetWeight: 120, restSeconds: 240, order: 3 },
-      { id: generateId(), exerciseId: 'rdl', targetReps: 10, targetWeight: 80, restSeconds: 120, order: 4 },
-      { id: generateId(), exerciseId: 'rdl', targetReps: 10, targetWeight: 80, restSeconds: 120, order: 5 },
-      { id: generateId(), exerciseId: 'rdl', targetReps: 10, targetWeight: 80, restSeconds: 120, order: 6 },
-      { id: generateId(), exerciseId: 'leg-press', targetReps: 12, targetWeight: 180, restSeconds: 120, order: 7 },
-      { id: generateId(), exerciseId: 'leg-press', targetReps: 12, targetWeight: 180, restSeconds: 120, order: 8 },
-      { id: generateId(), exerciseId: 'leg-press', targetReps: 12, targetWeight: 180, restSeconds: 120, order: 9 },
-      { id: generateId(), exerciseId: 'leg-curl', targetReps: 12, targetWeight: 40, restSeconds: 60, order: 10 },
-      { id: generateId(), exerciseId: 'leg-curl', targetReps: 12, targetWeight: 40, restSeconds: 60, order: 11 },
-      { id: generateId(), exerciseId: 'leg-curl', targetReps: 12, targetWeight: 40, restSeconds: 60, order: 12 },
-      { id: generateId(), exerciseId: 'calf-raise', targetReps: 15, targetWeight: 60, restSeconds: 60, order: 13 },
-      { id: generateId(), exerciseId: 'calf-raise', targetReps: 15, targetWeight: 60, restSeconds: 60, order: 14 },
-      { id: generateId(), exerciseId: 'calf-raise', targetReps: 15, targetWeight: 60, restSeconds: 60, order: 15 },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 6,
+        targetWeight: 120,
+        restSeconds: 240,
+        order: 0,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 6,
+        targetWeight: 120,
+        restSeconds: 240,
+        order: 1,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 6,
+        targetWeight: 120,
+        restSeconds: 240,
+        order: 2,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 6,
+        targetWeight: 120,
+        restSeconds: 240,
+        order: 3,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'rdl',
+        targetReps: 10,
+        targetWeight: 80,
+        restSeconds: 120,
+        order: 4,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'rdl',
+        targetReps: 10,
+        targetWeight: 80,
+        restSeconds: 120,
+        order: 5,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'rdl',
+        targetReps: 10,
+        targetWeight: 80,
+        restSeconds: 120,
+        order: 6,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-press',
+        targetReps: 12,
+        targetWeight: 180,
+        restSeconds: 120,
+        order: 7,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-press',
+        targetReps: 12,
+        targetWeight: 180,
+        restSeconds: 120,
+        order: 8,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-press',
+        targetReps: 12,
+        targetWeight: 180,
+        restSeconds: 120,
+        order: 9,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-curl',
+        targetReps: 12,
+        targetWeight: 40,
+        restSeconds: 60,
+        order: 10,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-curl',
+        targetReps: 12,
+        targetWeight: 40,
+        restSeconds: 60,
+        order: 11,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-curl',
+        targetReps: 12,
+        targetWeight: 40,
+        restSeconds: 60,
+        order: 12,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'calf-raise',
+        targetReps: 15,
+        targetWeight: 60,
+        restSeconds: 60,
+        order: 13,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'calf-raise',
+        targetReps: 15,
+        targetWeight: 60,
+        restSeconds: 60,
+        order: 14,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'calf-raise',
+        targetReps: 15,
+        targetWeight: 60,
+        restSeconds: 60,
+        order: 15,
+      },
     ],
-  };
+  }
 
   return {
     id: routineId,
@@ -363,55 +685,230 @@ const createPPLRoutine = (): WorkoutRoutine => {
     days: [pushDay, pullDay, legDay],
     createdAt,
     updatedAt: now,
-  };
-};
+  }
+}
 
 const createUpperLowerRoutine = (): WorkoutRoutine => {
-  const routineId = generateId();
-  const now = new Date();
-  const createdAt = new Date(now);
-  createdAt.setMonth(createdAt.getMonth() - 1);
+  const routineId = generateId()
+  const now = new Date()
+  const createdAt = new Date(now)
+  createdAt.setMonth(createdAt.getMonth() - 1)
 
   const upperDay: WorkoutDay = {
     id: generateId(),
     name: 'Upper Body',
     order: 0,
     plannedSets: [
-      { id: generateId(), exerciseId: 'bench-press', targetReps: 6, targetWeight: 85, restSeconds: 180, order: 0 },
-      { id: generateId(), exerciseId: 'bench-press', targetReps: 6, targetWeight: 85, restSeconds: 180, order: 1 },
-      { id: generateId(), exerciseId: 'bench-press', targetReps: 6, targetWeight: 85, restSeconds: 180, order: 2 },
-      { id: generateId(), exerciseId: 'barbell-row', targetReps: 6, targetWeight: 75, restSeconds: 180, order: 3 },
-      { id: generateId(), exerciseId: 'barbell-row', targetReps: 6, targetWeight: 75, restSeconds: 180, order: 4 },
-      { id: generateId(), exerciseId: 'barbell-row', targetReps: 6, targetWeight: 75, restSeconds: 180, order: 5 },
-      { id: generateId(), exerciseId: 'ohp', targetReps: 8, targetWeight: 50, restSeconds: 120, order: 6 },
-      { id: generateId(), exerciseId: 'ohp', targetReps: 8, targetWeight: 50, restSeconds: 120, order: 7 },
-      { id: generateId(), exerciseId: 'ohp', targetReps: 8, targetWeight: 50, restSeconds: 120, order: 8 },
-      { id: generateId(), exerciseId: 'lat-pulldown', targetReps: 10, targetWeight: 60, restSeconds: 90, order: 9 },
-      { id: generateId(), exerciseId: 'lat-pulldown', targetReps: 10, targetWeight: 60, restSeconds: 90, order: 10 },
-      { id: generateId(), exerciseId: 'lat-pulldown', targetReps: 10, targetWeight: 60, restSeconds: 90, order: 11 },
+      {
+        id: generateId(),
+        exerciseId: 'bench-press',
+        targetReps: 6,
+        targetWeight: 85,
+        restSeconds: 180,
+        order: 0,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'bench-press',
+        targetReps: 6,
+        targetWeight: 85,
+        restSeconds: 180,
+        order: 1,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'bench-press',
+        targetReps: 6,
+        targetWeight: 85,
+        restSeconds: 180,
+        order: 2,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-row',
+        targetReps: 6,
+        targetWeight: 75,
+        restSeconds: 180,
+        order: 3,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-row',
+        targetReps: 6,
+        targetWeight: 75,
+        restSeconds: 180,
+        order: 4,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'barbell-row',
+        targetReps: 6,
+        targetWeight: 75,
+        restSeconds: 180,
+        order: 5,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'ohp',
+        targetReps: 8,
+        targetWeight: 50,
+        restSeconds: 120,
+        order: 6,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'ohp',
+        targetReps: 8,
+        targetWeight: 50,
+        restSeconds: 120,
+        order: 7,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'ohp',
+        targetReps: 8,
+        targetWeight: 50,
+        restSeconds: 120,
+        order: 8,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'lat-pulldown',
+        targetReps: 10,
+        targetWeight: 60,
+        restSeconds: 90,
+        order: 9,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'lat-pulldown',
+        targetReps: 10,
+        targetWeight: 60,
+        restSeconds: 90,
+        order: 10,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'lat-pulldown',
+        targetReps: 10,
+        targetWeight: 60,
+        restSeconds: 90,
+        order: 11,
+      },
     ],
-  };
+  }
 
   const lowerDay: WorkoutDay = {
     id: generateId(),
     name: 'Lower Body',
     order: 1,
     plannedSets: [
-      { id: generateId(), exerciseId: 'squat', targetReps: 5, targetWeight: 130, restSeconds: 240, order: 0 },
-      { id: generateId(), exerciseId: 'squat', targetReps: 5, targetWeight: 130, restSeconds: 240, order: 1 },
-      { id: generateId(), exerciseId: 'squat', targetReps: 5, targetWeight: 130, restSeconds: 240, order: 2 },
-      { id: generateId(), exerciseId: 'deadlift', targetReps: 5, targetWeight: 150, restSeconds: 240, order: 3 },
-      { id: generateId(), exerciseId: 'deadlift', targetReps: 5, targetWeight: 150, restSeconds: 240, order: 4 },
-      { id: generateId(), exerciseId: 'leg-press', targetReps: 10, targetWeight: 200, restSeconds: 120, order: 5 },
-      { id: generateId(), exerciseId: 'leg-press', targetReps: 10, targetWeight: 200, restSeconds: 120, order: 6 },
-      { id: generateId(), exerciseId: 'leg-press', targetReps: 10, targetWeight: 200, restSeconds: 120, order: 7 },
-      { id: generateId(), exerciseId: 'rdl', targetReps: 10, targetWeight: 90, restSeconds: 120, order: 8 },
-      { id: generateId(), exerciseId: 'rdl', targetReps: 10, targetWeight: 90, restSeconds: 120, order: 9 },
-      { id: generateId(), exerciseId: 'rdl', targetReps: 10, targetWeight: 90, restSeconds: 120, order: 10 },
-      { id: generateId(), exerciseId: 'calf-raise', targetReps: 15, targetWeight: 70, restSeconds: 60, order: 11 },
-      { id: generateId(), exerciseId: 'calf-raise', targetReps: 15, targetWeight: 70, restSeconds: 60, order: 12 },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 5,
+        targetWeight: 130,
+        restSeconds: 240,
+        order: 0,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 5,
+        targetWeight: 130,
+        restSeconds: 240,
+        order: 1,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'squat',
+        targetReps: 5,
+        targetWeight: 130,
+        restSeconds: 240,
+        order: 2,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'deadlift',
+        targetReps: 5,
+        targetWeight: 150,
+        restSeconds: 240,
+        order: 3,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'deadlift',
+        targetReps: 5,
+        targetWeight: 150,
+        restSeconds: 240,
+        order: 4,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-press',
+        targetReps: 10,
+        targetWeight: 200,
+        restSeconds: 120,
+        order: 5,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-press',
+        targetReps: 10,
+        targetWeight: 200,
+        restSeconds: 120,
+        order: 6,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'leg-press',
+        targetReps: 10,
+        targetWeight: 200,
+        restSeconds: 120,
+        order: 7,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'rdl',
+        targetReps: 10,
+        targetWeight: 90,
+        restSeconds: 120,
+        order: 8,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'rdl',
+        targetReps: 10,
+        targetWeight: 90,
+        restSeconds: 120,
+        order: 9,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'rdl',
+        targetReps: 10,
+        targetWeight: 90,
+        restSeconds: 120,
+        order: 10,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'calf-raise',
+        targetReps: 15,
+        targetWeight: 70,
+        restSeconds: 60,
+        order: 11,
+      },
+      {
+        id: generateId(),
+        exerciseId: 'calf-raise',
+        targetReps: 15,
+        targetWeight: 70,
+        restSeconds: 60,
+        order: 12,
+      },
     ],
-  };
+  }
 
   return {
     id: routineId,
@@ -420,22 +917,25 @@ const createUpperLowerRoutine = (): WorkoutRoutine => {
     days: [upperDay, lowerDay],
     createdAt,
     updatedAt: now,
-  };
-};
+  }
+}
 
 // ============================================
 // SESSION & COMPLETED SET GENERATION
 // ============================================
 interface GeneratedSessionData {
-  sessions: Array<WorkoutSession>;
-  completedSets: Array<CompletedSet>;
+  sessions: Array<WorkoutSession>
+  completedSets: Array<CompletedSet>
 }
 
-const generateRealisticRepGroups = (targetReps: number, targetWeight: number): Array<RepGroup> => {
-  const groups: Array<RepGroup> = [];
-  let remainingReps = targetReps + Math.floor(Math.random() * 3) - 1; // Slight variation
-  let currentOrder = 0;
-  const actualWeight = addVariation(targetWeight, 0.05);
+const generateRealisticRepGroups = (
+  targetReps: number,
+  targetWeight: number,
+): Array<RepGroup> => {
+  const groups: Array<RepGroup> = []
+  let remainingReps = targetReps + Math.floor(Math.random() * 3) - 1 // Slight variation
+  let currentOrder = 0
+  const actualWeight = addVariation(targetWeight, 0.05)
 
   // Sometimes complete all reps in one go
   if (Math.random() > 0.3) {
@@ -443,59 +943,62 @@ const generateRealisticRepGroups = (targetReps: number, targetWeight: number): A
       reps: remainingReps,
       weight: actualWeight,
       order: currentOrder,
-    });
+    })
   } else {
     // Split into multiple rep groups (rest-pause or form breakdown)
     while (remainingReps > 0) {
       const repsThisGroup = Math.min(
         remainingReps,
-        Math.floor(Math.random() * 4) + Math.ceil(targetReps / 2)
-      );
+        Math.floor(Math.random() * 4) + Math.ceil(targetReps / 2),
+      )
       groups.push({
         reps: repsThisGroup,
         weight: actualWeight,
         order: currentOrder++,
-      });
-      remainingReps -= repsThisGroup;
+      })
+      remainingReps -= repsThisGroup
     }
   }
 
-  return groups;
-};
+  return groups
+}
 
 const generateSessionsForRoutine = (
   routine: WorkoutRoutine,
-  numberOfWeeks: number = 6
+  numberOfWeeks: number = 6,
 ): GeneratedSessionData => {
-  const sessions: Array<WorkoutSession> = [];
-  const completedSets: Array<CompletedSet> = [];
+  const sessions: Array<WorkoutSession> = []
+  const completedSets: Array<CompletedSet> = []
 
-  const today = new Date();
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - numberOfWeeks * 7);
+  const today = new Date()
+  const startDate = new Date(today)
+  startDate.setDate(startDate.getDate() - numberOfWeeks * 7)
 
   // Simulate training schedule
-  const currentDate = new Date(startDate);
-  let dayIndex = 0;
+  const currentDate = new Date(startDate)
+  let dayIndex = 0
 
   while (currentDate <= today) {
     // Train 4-6 days per week with realistic rest patterns
-    const dayOfWeek = currentDate.getDay();
-    const isRestDay = dayOfWeek === 0 || (dayOfWeek === 3 && Math.random() > 0.5); // Sunday off, sometimes Wednesday
+    const dayOfWeek = currentDate.getDay()
+    const isRestDay =
+      dayOfWeek === 0 || (dayOfWeek === 3 && Math.random() > 0.5) // Sunday off, sometimes Wednesday
 
     if (!isRestDay && Math.random() > 0.15) {
       // 85% attendance rate
-      const workoutDay = routine.days[dayIndex % routine.days.length];
-      const sessionId = generateId();
+      const workoutDay = routine.days[dayIndex % routine.days.length]
+      const sessionId = generateId()
 
       // Set workout time between 6am and 8pm
-      const workoutHour = Math.floor(Math.random() * 14) + 6;
-      const sessionStart = new Date(currentDate);
-      sessionStart.setHours(workoutHour, Math.floor(Math.random() * 60), 0, 0);
+      const workoutHour = Math.floor(Math.random() * 14) + 6
+      const sessionStart = new Date(currentDate)
+      sessionStart.setHours(workoutHour, Math.floor(Math.random() * 60), 0, 0)
 
       // Workout duration 45-90 minutes
-      const sessionEnd = new Date(sessionStart);
-      sessionEnd.setMinutes(sessionEnd.getMinutes() + 45 + Math.floor(Math.random() * 45));
+      const sessionEnd = new Date(sessionStart)
+      sessionEnd.setMinutes(
+        sessionEnd.getMinutes() + 45 + Math.floor(Math.random() * 45),
+      )
 
       const session: WorkoutSession = {
         id: sessionId,
@@ -504,46 +1007,54 @@ const generateSessionsForRoutine = (
         startedAt: sessionStart,
         completedAt: sessionEnd,
         notes: Math.random() > 0.8 ? getRandomSessionNote() : undefined,
-      };
+      }
 
-      sessions.push(session);
+      sessions.push(session)
 
       // Generate completed sets for this session
       for (const plannedSet of workoutDay.plannedSets) {
-        const exercise = mockExercises.find((e) => e.id === plannedSet.exerciseId);
-        if (!exercise) continue;
+        const exercise = mockExercises.find(
+          (e) => e.id === plannedSet.exerciseId,
+        )
+        if (!exercise) continue
 
         // Progressive overload: slightly increase weights over time
         const weekNumber = Math.floor(
-          (currentDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)
-        );
-        const progressionMultiplier = 1 + weekNumber * 0.01; // 1% per week
+          (currentDate.getTime() - startDate.getTime()) /
+            (7 * 24 * 60 * 60 * 1000),
+        )
+        const progressionMultiplier = 1 + weekNumber * 0.01 // 1% per week
 
-        const targetWeight = (plannedSet.targetWeight ?? 0) * progressionMultiplier;
+        const targetWeight =
+          (plannedSet.targetWeight ?? 0) * progressionMultiplier
 
         const completedSet: CompletedSet = {
           id: generateId(),
           sessionId,
           exerciseId: plannedSet.exerciseId,
           plannedSetId: plannedSet.id,
-          repGroups: generateRealisticRepGroups(plannedSet.targetReps, targetWeight),
+          repGroups: generateRealisticRepGroups(
+            plannedSet.targetReps,
+            targetWeight,
+          ),
           completedAt: new Date(
-            sessionStart.getTime() + Math.random() * (sessionEnd.getTime() - sessionStart.getTime())
+            sessionStart.getTime() +
+              Math.random() * (sessionEnd.getTime() - sessionStart.getTime()),
           ),
           notes: Math.random() > 0.95 ? getRandomSetNote() : undefined,
-        };
+        }
 
-        completedSets.push(completedSet);
+        completedSets.push(completedSet)
       }
 
-      dayIndex++;
+      dayIndex++
     }
 
-    currentDate.setDate(currentDate.getDate() + 1);
+    currentDate.setDate(currentDate.getDate() + 1)
   }
 
-  return { sessions, completedSets };
-};
+  return { sessions, completedSets }
+}
 
 const getRandomSessionNote = (): string => {
   const notes = [
@@ -557,9 +1068,9 @@ const getRandomSessionNote = (): string => {
     'Back from rest day, fully recovered',
     'Morning session - prefer this timing',
     'Evening workout after work',
-  ];
-  return notes[Math.floor(Math.random() * notes.length)];
-};
+  ]
+  return notes[Math.floor(Math.random() * notes.length)]
+}
 
 const getRandomSetNote = (): string => {
   const notes = [
@@ -569,38 +1080,38 @@ const getRandomSetNote = (): string => {
     'Perfect execution',
     'Slight pain - monitored',
     'Spotter assisted on last rep',
-  ];
-  return notes[Math.floor(Math.random() * notes.length)];
-};
+  ]
+  return notes[Math.floor(Math.random() * notes.length)]
+}
 
 // ============================================
 // MAIN MOCK DATA GENERATION
 // ============================================
 export interface MockDataOptions {
-  weeksOfHistory?: number;
-  includeUpperLower?: boolean;
+  weeksOfHistory?: number
+  includeUpperLower?: boolean
 }
 
 export const generateMockData = (options: MockDataOptions = {}) => {
-  const { weeksOfHistory = 6, includeUpperLower = true } = options;
+  const { weeksOfHistory = 6, includeUpperLower = true } = options
 
-  const muscleGroups = [...mockMuscleGroups];
-  const exercises = [...mockExercises];
-  const routines: Array<WorkoutRoutine> = [];
-  let allSessions: Array<WorkoutSession> = [];
-  let allCompletedSets: Array<CompletedSet> = [];
+  const muscleGroups = [...mockMuscleGroups]
+  const exercises = [...mockExercises]
+  const routines: Array<WorkoutRoutine> = []
+  let allSessions: Array<WorkoutSession> = []
+  let allCompletedSets: Array<CompletedSet> = []
 
   // Generate PPL routine and its sessions
-  const pplRoutine = createPPLRoutine();
-  routines.push(pplRoutine);
-  const pplData = generateSessionsForRoutine(pplRoutine, weeksOfHistory);
-  allSessions = [...allSessions, ...pplData.sessions];
-  allCompletedSets = [...allCompletedSets, ...pplData.completedSets];
+  const pplRoutine = createPPLRoutine()
+  routines.push(pplRoutine)
+  const pplData = generateSessionsForRoutine(pplRoutine, weeksOfHistory)
+  allSessions = [...allSessions, ...pplData.sessions]
+  allCompletedSets = [...allCompletedSets, ...pplData.completedSets]
 
   // Optionally generate Upper/Lower routine
   if (includeUpperLower) {
-    const ulRoutine = createUpperLowerRoutine();
-    routines.push(ulRoutine);
+    const ulRoutine = createUpperLowerRoutine()
+    routines.push(ulRoutine)
   }
 
   return {
@@ -610,15 +1121,15 @@ export const generateMockData = (options: MockDataOptions = {}) => {
     sessions: allSessions,
     completedSets: allCompletedSets,
     activeRoutineId: pplRoutine.id,
-  };
-};
+  }
+}
 
 // Generates a minimal set of mock data (e.g., for testing)
 export const generateMinMockData = () => {
   // One muscle group
   const muscleGroups: Array<MuscleGroup> = [
     { id: 'chest', name: 'Chest', category: 'push' },
-  ];
+  ]
 
   // One exercise
   const exercises: Array<Exercise> = [
@@ -628,7 +1139,7 @@ export const generateMinMockData = () => {
       description: 'Classic compound movement for chest development',
       muscleContributions: [{ muscleGroupId: 'chest', percentage: 100 }],
     },
-  ];
+  ]
 
   // Two planned sets for the exercise
   const plannedSets: Array<PlannedSet> = [
@@ -648,7 +1159,7 @@ export const generateMinMockData = () => {
       restSeconds: 90,
       order: 1,
     },
-  ];
+  ]
 
   // One day with those planned sets
   const days: Array<WorkoutDay> = [
@@ -658,7 +1169,7 @@ export const generateMinMockData = () => {
       order: 0,
       plannedSets,
     },
-  ];
+  ]
 
   // One routine with that day
   const routines: Array<WorkoutRoutine> = [
@@ -670,7 +1181,7 @@ export const generateMinMockData = () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-  ];
+  ]
 
   return {
     muscleGroups,
@@ -679,15 +1190,15 @@ export const generateMinMockData = () => {
     sessions: [] as Array<WorkoutSession>,
     completedSets: [] as Array<CompletedSet>,
     activeRoutineId: routines[0].id,
-  };
+  }
 }
 
 // ============================================
 // STORE POPULATION FUNCTION
 // ============================================
 export const populateStoreWithMockData = (_options: MockDataOptions = {}) => {
-  const store = useAppStore.getState();
-  const mockData = generateMinMockData();
+  const store = useAppStore.getState()
+  const mockData = generateMinMockData()
 
   // Clear existing data first
   useAppStore.setState({
@@ -701,24 +1212,24 @@ export const populateStoreWithMockData = (_options: MockDataOptions = {}) => {
     currentDayIndex: 0,
     currentSetIndex: 0,
     isWorkoutInProgress: false,
-  });
+  })
 
   // Populate with mock data
-  mockData.muscleGroups.forEach((mg) => store.addMuscleGroup(mg));
-  mockData.exercises.forEach((ex) => store.addExercise(ex));
-  mockData.routines.forEach((routine) => store.addRoutine(routine));
+  mockData.muscleGroups.forEach((mg) => store.addMuscleGroup(mg))
+  mockData.exercises.forEach((ex) => store.addExercise(ex))
+  mockData.routines.forEach((routine) => store.addRoutine(routine))
   mockData.sessions.forEach((session) => {
     useAppStore.setState((state) => ({
       sessions: [...state.sessions, session],
-    }));
-  });
-  mockData.completedSets.forEach((cs) => store.addCompletedSet(cs));
+    }))
+  })
+  mockData.completedSets.forEach((cs) => store.addCompletedSet(cs))
 
   // Set active routine
-  useAppStore.setState({ activeRoutineId: mockData.activeRoutineId });
+  useAppStore.setState({ activeRoutineId: mockData.activeRoutineId })
 
-  return mockData;
-};
+  return mockData
+}
 
 // ============================================
 // CONVENIENCE FUNCTIONS
@@ -735,15 +1246,15 @@ export const clearAllData = () => {
     currentDayIndex: 0,
     currentSetIndex: 0,
     isWorkoutInProgress: false,
-  });
-  console.log('🗑️ All data cleared');
-};
+  })
+  console.log('🗑️ All data cleared')
+}
 
 // For development: expose to window
 if (typeof window !== 'undefined') {
-  (window as any).mockData = {
+  ;(window as any).mockData = {
     populate: populateStoreWithMockData,
     clear: clearAllData,
     generate: generateMinMockData,
-  };
+  }
 }

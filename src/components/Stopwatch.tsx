@@ -18,8 +18,7 @@ function formatTime(ms: number): { minutes: string; seconds: string } {
 
 // Play a beep sound using Web Audio API
 function playBeep() {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+  const AudioContextClass = window.AudioContext
   const audioContext = new AudioContextClass()
   const oscillator = audioContext.createOscillator()
   const gainNode = audioContext.createGain()
@@ -31,7 +30,10 @@ function playBeep() {
   oscillator.type = 'sine'
 
   gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3)
+  gainNode.gain.exponentialRampToValueAtTime(
+    0.01,
+    audioContext.currentTime + 0.3,
+  )
 
   oscillator.start(audioContext.currentTime)
   oscillator.stop(audioContext.currentTime + 0.3)
@@ -114,7 +116,12 @@ export function Stopwatch({ className }: StopwatchProps) {
   const hasTime = elapsedMs > 0
 
   return (
-    <div className={cn('flex flex-col justify-center items-center gap-12 p-6', className)}>
+    <div
+      className={cn(
+        'flex flex-col justify-center items-center gap-12 p-6',
+        className,
+      )}
+    >
       {/* Glass container for stopwatch display */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}

@@ -1,14 +1,14 @@
-import { AnimatePresence } from 'motion/react';
-import { Toast } from './Toast';
-import { useAppStore } from '@/store';
+import { AnimatePresence } from 'motion/react'
+import { Toast } from './Toast'
+import { useAppStore } from '@/store'
 
-const MAX_TOASTS = 3;
+const MAX_TOASTS = 3
 
 export function ToastContainer() {
-  const { toasts, removeToast } = useAppStore();
+  const { toasts, removeToast } = useAppStore()
 
   // Limit visible toasts to MAX_TOASTS (show newest)
-  const visibleToasts = toasts.slice(-MAX_TOASTS);
+  const visibleToasts = toasts.slice(-MAX_TOASTS)
 
   return (
     <div
@@ -22,5 +22,5 @@ export function ToastContainer() {
         ))}
       </AnimatePresence>
     </div>
-  );
+  )
 }

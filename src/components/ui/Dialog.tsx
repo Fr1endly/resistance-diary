@@ -12,13 +12,12 @@ interface DialogProps {
   maxWidth?: 'sm' | 'md' | 'lg' | 'full'
 }
 
-
 export default function Dialog({
   title,
   children,
   showCloseButton = true,
   closeOnBackdropClick = true,
-  maxWidth = 'md'
+  maxWidth = 'md',
 }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
   const { isDialogOpen, toggleDialog } = useAppStore()
@@ -51,7 +50,7 @@ export default function Dialog({
     sm: 'max-w-sm',
     md: 'max-w-md',
     lg: 'max-w-lg',
-    full: 'max-w-full mx-4'
+    full: 'max-w-full mx-4',
   }
 
   return (
@@ -75,22 +74,22 @@ export default function Dialog({
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 100 }}
-              transition={{ 
-                type: "spring",
+              transition={{
+                type: 'spring',
                 damping: 25,
-                stiffness: 300
+                stiffness: 300,
               }}
               className={cn(
-                "w-full pointer-events-auto max-h-[90vh] overflow-hidden rounded-3xl",
-                "backdrop-blur-2xl bg-gradient-to-b from-white/10 via-white/5 to-black/20",
-                "border border-white/10",
-                "shadow-2xl shadow-black/40",
-                maxWidthClasses[maxWidth]
+                'w-full pointer-events-auto max-h-[90vh] overflow-hidden rounded-3xl',
+                'backdrop-blur-2xl bg-gradient-to-b from-white/10 via-white/5 to-black/20',
+                'border border-white/10',
+                'shadow-2xl shadow-black/40',
+                maxWidthClasses[maxWidth],
               )}
             >
               {/* Top highlight edge */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-              
+
               {/* Drag indicator */}
               <div className="flex justify-center pt-3 pb-1">
                 <div className="w-12 h-1 rounded-full bg-white/20" />
@@ -108,10 +107,10 @@ export default function Dialog({
                     <button
                       onClick={toggleDialog}
                       className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center ml-auto",
-                        "bg-white/5 border border-white/10",
-                        "text-white/40 hover:text-white/80 hover:bg-white/10",
-                        "transition-all duration-200"
+                        'w-8 h-8 rounded-full flex items-center justify-center ml-auto',
+                        'bg-white/5 border border-white/10',
+                        'text-white/40 hover:text-white/80 hover:bg-white/10',
+                        'transition-all duration-200',
                       )}
                       aria-label="Close dialog"
                     >

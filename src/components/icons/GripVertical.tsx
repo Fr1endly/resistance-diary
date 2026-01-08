@@ -1,6 +1,6 @@
 interface GripVerticalProps {
-  size?: number;
-  className?: string;
+  size?: number
+  className?: string
 }
 
 export function GripVertical({ size = 24, className }: GripVerticalProps) {
@@ -20,5 +20,5 @@ export function GripVertical({ size = 24, className }: GripVerticalProps) {
       <circle cx="9" cy="18" r="1.5" />
       <circle cx="15" cy="18" r="1.5" />
     </svg>
-  );
+  )
 }

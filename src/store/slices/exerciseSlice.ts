@@ -1,14 +1,19 @@
-import type { StateCreator } from 'zustand';
-import type { Exercise } from '@/types';
+import type { StateCreator } from 'zustand'
+import type { Exercise } from '@/types'
 
 export interface ExerciseSlice {
-  exercises: Array<Exercise>;
-  addExercise: (exercise: Exercise) => void;
-  updateExercise: (id: string, updates: Partial<Exercise>) => void;
-  removeExercise: (id: string) => void;
+  exercises: Array<Exercise>
+  addExercise: (exercise: Exercise) => void
+  updateExercise: (id: string, updates: Partial<Exercise>) => void
+  removeExercise: (id: string) => void
 }
 
-export const createExerciseSlice: StateCreator<ExerciseSlice, [], [], ExerciseSlice> = (set) => ({
+export const createExerciseSlice: StateCreator<
+  ExerciseSlice,
+  [],
+  [],
+  ExerciseSlice
+> = (set) => ({
   exercises: [],
 
   addExercise: (exercise) =>
@@ -19,7 +24,7 @@ export const createExerciseSlice: StateCreator<ExerciseSlice, [], [], ExerciseSl
   updateExercise: (id, updates) =>
     set((state) => ({
       exercises: state.exercises.map((ex) =>
-        ex.id === id ? { ...ex, ...updates } : ex
+        ex.id === id ? { ...ex, ...updates } : ex,
       ),
     })),
 
@@ -27,4 +32,4 @@ export const createExerciseSlice: StateCreator<ExerciseSlice, [], [], ExerciseSl
     set((state) => ({
       exercises: state.exercises.filter((ex) => ex.id !== id),
     })),
-});
+})
