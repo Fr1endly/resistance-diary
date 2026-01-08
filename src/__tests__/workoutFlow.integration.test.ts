@@ -19,7 +19,7 @@ import type {
 const createMockExercise = (overrides: Partial<Exercise> = {}): Exercise => ({
   id: `exercise-${Math.random().toString(36).slice(2, 9)}`,
   name: 'Bench Press',
-  muscleGroupIds: ['chest'],
+  muscleContributions: [{ muscleGroupId: 'chest', percentage: 100 }],
   ...overrides,
 })
 
@@ -100,20 +100,20 @@ const setupCleanStore = () => {
     currentSetIndex: 0,
     // Exercise slice (seed with test exercises)
     exercises: [
-      createMockExercise({ id: 'bench-press', name: 'Bench Press', muscleGroupIds: ['chest'] }),
-      createMockExercise({ id: 'squat', name: 'Squat', muscleGroupIds: ['quadriceps', 'glutes'] }),
-      createMockExercise({ id: 'deadlift', name: 'Deadlift', muscleGroupIds: ['back', 'hamstrings'] }),
-      createMockExercise({ id: 'overhead-press', name: 'Overhead Press', muscleGroupIds: ['shoulders'] }),
-      createMockExercise({ id: 'barbell-row', name: 'Barbell Row', muscleGroupIds: ['back'] }),
+      createMockExercise({ id: 'bench-press', name: 'Bench Press', muscleContributions: [{ muscleGroupId: 'chest', percentage: 100 }] }),
+      createMockExercise({ id: 'squat', name: 'Squat', muscleContributions: [{ muscleGroupId: 'quadriceps', percentage: 60 }, { muscleGroupId: 'glutes', percentage: 40 }] }),
+      createMockExercise({ id: 'deadlift', name: 'Deadlift', muscleContributions: [{ muscleGroupId: 'back', percentage: 50 }, { muscleGroupId: 'hamstrings', percentage: 50 }] }),
+      createMockExercise({ id: 'overhead-press', name: 'Overhead Press', muscleContributions: [{ muscleGroupId: 'shoulders', percentage: 100 }] }),
+      createMockExercise({ id: 'barbell-row', name: 'Barbell Row', muscleContributions: [{ muscleGroupId: 'back', percentage: 100 }] }),
     ],
     // Muscle slice
     muscleGroups: [
-      { id: 'chest', name: 'Chest' },
-      { id: 'back', name: 'Back' },
-      { id: 'shoulders', name: 'Shoulders' },
-      { id: 'quadriceps', name: 'Quadriceps' },
-      { id: 'hamstrings', name: 'Hamstrings' },
-      { id: 'glutes', name: 'Glutes' },
+      { id: 'chest', name: 'Chest', category: 'push' },
+      { id: 'back', name: 'Back', category: 'pull' },
+      { id: 'shoulders', name: 'Shoulders', category: 'push' },
+      { id: 'quadriceps', name: 'Quadriceps', category: 'legs' },
+      { id: 'hamstrings', name: 'Hamstrings', category: 'legs' },
+      { id: 'glutes', name: 'Glutes', category: 'legs' },
     ],
   })
 }

@@ -22,7 +22,7 @@ const createMockCompletedSet = (
   id: 'cs-1',
   sessionId: 'session-1',
   exerciseId: 'exercise-1',
-  repGroups: [{ reps: 10, weight: 50 }],
+  repGroups: [{ reps: 10, weight: 50, order: 0 }],
   completedAt: new Date('2024-01-01T10:00:00'),
   ...overrides,
 })
@@ -335,8 +335,8 @@ describe('sessionSlice', () => {
         result.current.addCompletedSet(
           createMockCompletedSet({
             repGroups: [
-              { reps: 10, weight: 50 },
-              { reps: 8, weight: 55 },
+              { reps: 10, weight: 50, order: 0 },
+              { reps: 8, weight: 55, order: 1 },
             ],
           }),
         )
@@ -356,7 +356,7 @@ describe('sessionSlice', () => {
       })
       act(() => {
         result.current.updateCompletedSet('cs-1', {
-          repGroups: [{ reps: 12, weight: 60 }],
+          repGroups: [{ reps: 12, weight: 60, order: 0 }],
         })
       })
 
@@ -372,7 +372,7 @@ describe('sessionSlice', () => {
       })
       act(() => {
         result.current.updateCompletedSet('fake-id', {
-          repGroups: [{ reps: 99, weight: 99 }],
+          repGroups: [{ reps: 99, weight: 99, order: 0 }],
         })
       })
 
@@ -386,19 +386,19 @@ describe('sessionSlice', () => {
         result.current.addCompletedSet(
           createMockCompletedSet({
             id: 'cs-1',
-            repGroups: [{ reps: 10, weight: 50 }],
+            repGroups: [{ reps: 10, weight: 50, order: 0 }],
           }),
         )
         result.current.addCompletedSet(
           createMockCompletedSet({
             id: 'cs-2',
-            repGroups: [{ reps: 8, weight: 60 }],
+            repGroups: [{ reps: 8, weight: 60, order: 0 }],
           }),
         )
       })
       act(() => {
         result.current.updateCompletedSet('cs-1', {
-          repGroups: [{ reps: 15, weight: 70 }],
+          repGroups: [{ reps: 15, weight: 70, order: 0 }],
         })
       })
 
