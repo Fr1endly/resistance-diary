@@ -25,6 +25,7 @@ export function WorkoutPlanForm({
   const exercises = useAppStore((state) => state.exercises)
   const [step, setStep] = useState<'basic' | 'days' | 'summary'>('basic')
   const [currentDayIndex, setCurrentDayIndex] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Initialize form with default values or existing data
   const form = useForm<WorkoutFormValues>({
@@ -134,32 +135,39 @@ export function WorkoutPlanForm({
     }
   }
 
-  const handleFinalSubmit = form.handleSubmit((data) => {
-    const now = new Date()
-    const routine: WorkoutRoutine = {
-      id: initialData?.id || nanoid(),
-      name: data.name,
-      description: data.description || undefined,
-      days: data.days.map((day, idx) => ({
-        id: day.id,
-        name: day.name,
-        order: idx,
-        plannedSets: day.plannedSets.map(
-          (ps, psIdx) =>
-            ({
-              id: ps.id,
-              exerciseId: ps.exerciseId,
-              targetReps: ps.targetReps,
-              targetWeight: ps.targetWeight,
-              restSeconds: ps.restSeconds,
-              order: psIdx,
-            }) as PlannedSet,
-        ),
-      })),
-      createdAt: initialData?.createdAt || now,
-      updatedAt: now,
+  const handleFinalSubmit = form.handleSubmit(async (data) => {
+    setIsSubmitting(true)
+    try {
+      const now = new Date()
+      const routine: WorkoutRoutine = {
+        id: initialData?.id || nanoid(),
+        name: data.name,
+        description: data.description || undefined,
+        days: data.days.map((day, idx) => ({
+          id: day.id,
+          name: day.name,
+          order: idx,
+          plannedSets: day.plannedSets.map(
+            (ps, psIdx) =>
+              ({
+                id: ps.id,
+                exerciseId: ps.exerciseId,
+                targetReps: ps.targetReps,
+                targetWeight: ps.targetWeight,
+                restSeconds: ps.restSeconds,
+                order: psIdx,
+              }) as PlannedSet,
+          ),
+        })),
+        createdAt: initialData?.createdAt || now,
+        updatedAt: now,
+      }
+      // Simulate slight delay for UX feedback
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      onSubmit(routine)
+    } finally {
+      setIsSubmitting(false)
     }
-    onSubmit(routine)
   })
 
   const formValues = form.watch()
@@ -191,6 +199,7 @@ export function WorkoutPlanForm({
         <ReviewStep
           formValues={formValues}
           exercises={exercises}
+          isSubmitting={isSubmitting}
           onBack={() => {
             setCurrentDayIndex(dayFields.length - 1)
             setStep('days')

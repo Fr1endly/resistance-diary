@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
+import { AlertTriangle, ChevronDown, RefreshCw } from 'lucide-react'
 import type { ErrorComponentProps } from '@tanstack/react-router'
 import { ToastContainer } from '@/components/ui/ToastContainer'
+import { cn } from '@/lib/utils'
 
 interface RouterContext {
   user: {
@@ -112,17 +115,89 @@ const RootDocument = ({ children }: rootDocumentProps) => {
   )
 }
 
-export function MyErrorComponent(props: ErrorComponentProps) {
+export function MyErrorComponent({ error, reset }: ErrorComponentProps) {
+  const [showDetails, setShowDetails] = useState(false)
+
+  const handleReload = () => {
+    reset()
+  }
+
   return (
-    <div>
-      <h1>App Error</h1>
-      <pre>{props.error.message}</pre>
+    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-stone-950 to-stone-900">
+      <div
+        className={cn(
+          'max-w-md w-full p-8 text-center',
+          'backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl',
+        )}
+      >
+        {/* Icon */}
+        <div
+          className={cn(
+            'w-16 h-16 mx-auto mb-4 rounded-full',
+            'bg-red-500/20 border border-red-400/30',
+            'flex items-center justify-center',
+          )}
+        >
+          <AlertTriangle className="w-8 h-8 text-red-400" />
+        </div>
 
-      <h2>Full Error</h2>
-      <pre>{JSON.stringify(props.error, null, 2)}</pre>
+        {/* Message */}
+        <h1 className="font-display text-xl font-semibold text-white mb-2">
+          Something went wrong
+        </h1>
+        <p className="text-white/50 text-sm mb-6">
+          {error.message || 'An unexpected error occurred'}
+        </p>
 
-      <h2>info</h2>
-      <pre>{JSON.stringify(props.info, null, 2)}</pre>
+        {/* Actions */}
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={handleReload}
+            className={cn(
+              'w-full px-6 py-3 rounded-xl font-medium',
+              'bg-amber-500/20 border border-amber-400/30 text-amber-100',
+              'hover:bg-amber-500/30 hover:border-amber-400/50',
+              'transition-all duration-200 active:scale-95',
+              'flex items-center justify-center gap-2',
+            )}
+          >
+            <RefreshCw size={18} />
+            Try Again
+          </button>
+
+          <button
+            onClick={() => setShowDetails(!showDetails)}
+            className={cn(
+              'w-full px-4 py-2 rounded-lg text-sm',
+              'text-white/40 hover:text-white/60 hover:bg-white/5',
+              'transition-colors flex items-center justify-center gap-1',
+            )}
+          >
+            {showDetails ? 'Hide' : 'Show'} Details
+            <ChevronDown
+              size={16}
+              className={cn(
+                'transition-transform',
+                showDetails && 'rotate-180',
+              )}
+            />
+          </button>
+        </div>
+
+        {/* Error Details */}
+        {showDetails && (
+          <div
+            className={cn(
+              'mt-4 p-4 rounded-xl text-left',
+              'bg-black/20 border border-white/5',
+            )}
+          >
+            <pre className="text-xs text-white/40 font-mono whitespace-pre-wrap break-words overflow-auto max-h-48">
+              {error.stack || JSON.stringify(error, null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

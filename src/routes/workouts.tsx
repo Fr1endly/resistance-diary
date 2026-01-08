@@ -15,8 +15,10 @@ import PageLayout from '@/components/ui/PageLayout'
 import Dialog from '@/components/ui/Dialog'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import { WorkoutPlanForm } from '@/components/WorkoutPlanForm'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
+import { useToast } from '@/hooks/useToast'
 
 export const Route = createFileRoute('/workouts')({
   component: WorkoutsPage,
@@ -290,6 +292,7 @@ type ViewMode = 'list' | 'create' | 'edit'
 
 function WorkoutsPage() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [view, setView] = useState<ViewMode>('list')
   const [selectedRoutine, setSelectedRoutine] = useState<WorkoutRoutine | null>(
     null,
@@ -338,6 +341,7 @@ function WorkoutsPage() {
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       removeRoutine(deleteTarget.id)
+      toast.success(`"${deleteTarget.name}" deleted`)
       if (selectedRoutine?.id === deleteTarget.id) {
         setSelectedRoutine(null)
       }
@@ -359,8 +363,10 @@ function WorkoutsPage() {
   const handleFormSubmit = (routine: WorkoutRoutine) => {
     if (editingRoutine) {
       updateRoutine(routine.id, routine)
+      toast.success('Routine updated successfully')
     } else {
       addRoutine(routine)
+      toast.success('Routine created successfully')
     }
     setEditingRoutine(null)
     setView('list')
@@ -437,34 +443,15 @@ function WorkoutsPage() {
 
             {/* Routine List */}
             {routines.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center">
-                <div
-                  className={cn(
-                    'w-24 h-24 rounded-full flex items-center justify-center mb-6',
-                    'backdrop-blur-md bg-white/5 border border-white/10',
-                  )}
-                >
-                  <Dumbbell size={40} className="text-white/30" />
-                </div>
-                <p className="font-display text-white/40 text-center mb-2">
-                  No routines yet
-                </p>
-                <p className="text-white/30 text-sm text-center mb-6">
-                  Create your first workout routine to get started
-                </p>
-                <button
-                  onClick={handleCreateRoutine}
-                  className={cn(
-                    'px-6 py-3 rounded-xl font-medium',
-                    'backdrop-blur-md bg-amber-500/20 border border-amber-400/30',
-                    'text-amber-100 transition-all duration-200',
-                    'hover:bg-amber-500/30 hover:border-amber-400/50',
-                    'active:scale-95',
-                  )}
-                >
-                  Create Routine
-                </button>
-              </div>
+              <EmptyState
+                icon={<Dumbbell size={40} className="text-white/30" />}
+                title="No routines yet"
+                description="Create your first workout routine to get started"
+                action={{
+                  label: 'Create Routine',
+                  onClick: handleCreateRoutine,
+                }}
+              />
             ) : (
               <div className="flex-1 overflow-y-auto -mx-1 px-1">
                 <div className="flex flex-col gap-3 pb-4">

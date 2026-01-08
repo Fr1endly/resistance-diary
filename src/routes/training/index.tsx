@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { nanoid } from 'nanoid'
 import { ArrowRight, Plus } from 'lucide-react'
 
-import type { CompletedSet, RepGroup, PlannedSet } from '@/types'
+import type { CompletedSet, PlannedSet, RepGroup } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import SpinnerPicker from '@/components/ui/SpinnerPicker'
 import Chart from '@/components/ui/ChartWithGrid'

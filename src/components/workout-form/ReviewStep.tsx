@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Exercise } from '@/types'
 import type { WorkoutFormValues } from '@/lib/schemas'
 import { cn } from '@/lib/utils'
+import { Spinner } from '@/components/ui/Spinner'
 
 interface ReviewStepProps {
   formValues: WorkoutFormValues
@@ -11,6 +12,7 @@ interface ReviewStepProps {
   onBack: () => void
   onEditBasic: () => void
   onEditDay: (index: number) => void
+  isSubmitting?: boolean
 }
 
 export function ReviewStep({
@@ -19,6 +21,7 @@ export function ReviewStep({
   onBack,
   onEditBasic,
   onEditDay,
+  isSubmitting = false,
 }: ReviewStepProps) {
   const exerciseMap = useMemo(() => {
     const map = new Map<string, string>()
@@ -138,21 +141,33 @@ export function ReviewStep({
         <button
           type="button"
           onClick={onBack}
-          className="px-4 py-2 flex items-center gap-1 text-white/50 hover:text-white/70 transition-colors"
+          disabled={isSubmitting}
+          className="px-4 py-2 flex items-center gap-1 text-white/50 hover:text-white/70 transition-colors disabled:opacity-50"
         >
           <ChevronLeft size={16} />
           Back
         </button>
         <button
           type="submit"
+          disabled={isSubmitting}
           className={cn(
             'px-4 py-2 rounded-xl flex items-center gap-1',
             'bg-amber-500/20 border border-amber-400/30 text-amber-100',
             'hover:bg-amber-500/30 transition-colors',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
           )}
         >
-          Create Routine
-          <ChevronRight size={16} />
+          {isSubmitting ? (
+            <>
+              <Spinner size="sm" />
+              Saving...
+            </>
+          ) : (
+            <>
+              Create Routine
+              <ChevronRight size={16} />
+            </>
+          )}
         </button>
       </div>
     </div>

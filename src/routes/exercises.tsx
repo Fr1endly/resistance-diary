@@ -10,6 +10,8 @@ import type { UseFormReturn } from 'react-hook-form'
 import type { Exercise, MuscleGroup, WorkoutRoutine } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
+import { EmptyState } from '@/components/ui/EmptyState'
+import { Spinner } from '@/components/ui/Spinner'
 import {
   Select,
   SelectContent,
@@ -19,6 +21,7 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
+import { useToast } from '@/hooks/useToast'
 
 export const Route = createFileRoute('/exercises')({
   component: Page,
@@ -134,16 +137,12 @@ function ExerciseList({
         </h4>
 
         {exercises.length === 0 ? (
-          <div
-            className={cn(
-              'rounded-2xl p-6 text-center',
-              'backdrop-blur-xl bg-white/5 border border-white/10',
-            )}
-          >
-            <p className="text-white/50 text-sm">
-              No exercises yet. Create your first one!
-            </p>
-          </div>
+          <EmptyState
+            icon={<Dumbbell size={32} className="text-white/30" />}
+            title="No exercises yet"
+            description="Create your first exercise to start building your workout routines"
+            action={{ label: 'Add Exercise', onClick: onCreateNew }}
+          />
         ) : (
           exercises.map((exercise) => (
             <div
@@ -256,6 +255,7 @@ function ExerciseForm({
   initialData,
 }: ExerciseFormProps) {
   const isEditing = !!initialData
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<ExerciseFormValues>({
     resolver: zodResolver(exerciseFormSchema),
@@ -277,15 +277,22 @@ function ExerciseForm({
     name: 'muscleContributions',
   })
 
-  const handleSubmit = form.handleSubmit((data: ExerciseFormValues) => {
-    const exercise: Exercise = {
-      id: initialData?.id || nanoid(),
-      name: data.name,
-      description: data.description || undefined,
-      muscleContributions: data.muscleContributions,
-      notes: data.notes || undefined,
+  const handleSubmit = form.handleSubmit(async (data: ExerciseFormValues) => {
+    setIsSubmitting(true)
+    try {
+      const exercise: Exercise = {
+        id: initialData?.id || nanoid(),
+        name: data.name,
+        description: data.description || undefined,
+        muscleContributions: data.muscleContributions,
+        notes: data.notes || undefined,
+      }
+      // Simulate slight delay for UX feedback
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      onSubmit(exercise)
+    } finally {
+      setIsSubmitting(false)
     }
-    onSubmit(exercise)
   })
 
   const handleAddContribution = () => {
@@ -421,18 +428,21 @@ function ExerciseForm({
         <button
           type="button"
           onClick={onCancel}
+          disabled={isSubmitting}
           className={cn(
             'flex-1 h-12 rounded-2xl font-medium text-sm',
             'backdrop-blur-md bg-white/5 border border-white/10',
             'text-white/60 transition-all duration-200',
             'hover:bg-white/10 hover:text-white/80',
             'active:scale-[0.98]',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
           )}
         >
           Cancel
         </button>
         <button
           type="submit"
+          disabled={isSubmitting}
           className={cn(
             'flex-1 h-12 rounded-2xl font-semibold text-base',
             'backdrop-blur-md bg-amber-500/20 border border-amber-400/30',
@@ -440,10 +450,20 @@ function ExerciseForm({
             'hover:bg-amber-500/30 hover:border-amber-400/50',
             'active:scale-[0.98]',
             'flex items-center justify-center gap-2',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
           )}
         >
-          {isEditing ? 'Save Changes' : 'Create'}
-          <ChevronRight size={18} />
+          {isSubmitting ? (
+            <>
+              <Spinner size="sm" />
+              Saving...
+            </>
+          ) : (
+            <>
+              {isEditing ? 'Save Changes' : 'Create'}
+              <ChevronRight size={18} />
+            </>
+          )}
         </button>
       </div>
     </form>
@@ -530,6 +550,7 @@ function MuscleContributionInput({
 // ============================================
 
 function Page() {
+  const toast = useToast()
   const [view, setView] = useState<'list' | 'form'>('list')
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Exercise | null>(null)
@@ -560,6 +581,7 @@ function Page() {
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       removeExercise(deleteTarget.id)
+      toast.success(`"${deleteTarget.name}" deleted`)
       setDeleteTarget(null)
     }
   }
@@ -567,8 +589,10 @@ function Page() {
   const handleSubmitExercise = (exercise: Exercise) => {
     if (editingExercise) {
       updateExercise(exercise.id, exercise)
+      toast.success('Exercise updated successfully')
     } else {
       addExercise(exercise)
+      toast.success('Exercise created successfully')
     }
     setEditingExercise(null)
     setView('list')
