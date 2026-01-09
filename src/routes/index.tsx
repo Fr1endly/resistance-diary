@@ -1,12 +1,10 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useEffect } from 'react'
 import { useAppStore } from '@/store/useAppStore'
 import { useVolumeChartData } from '@/hooks/useVolumeChartData'
 import Layout from '@/components/ui/PageLayout'
 import { Button } from '@/components/ui/button'
 import ArrowDiagonal from '@/components/icons/ArrowDiagonal'
 import Chart from '@/components/charts/IndexChart'
-import { populateStoreWithMockData } from '@/lib/mockData'
 
 // import type { WorkoutLogEntry, WorkoutPlan } from "@/types";
 
@@ -60,7 +58,7 @@ const ActionButton = ({ url, text, onClick }: ActionButtonProps) => {
   return (
     <Button
       variant="default"
-      className="w-[250px] h-[75px] rounded-md text-2xl font-bold uppercase text-neutral-100 bg-neutral-900 px-2 py-1"
+      className="w-62.5 h-18.75 rounded-md text-2xl font-bold uppercase text-neutral-100 bg-neutral-900 px-2 py-1"
       onClick={onClick}
     >
       <Link to={url} className="flex justify-center items-center w-full h-full">

@@ -32,7 +32,7 @@ export default ({ data, orientation, title }: ChartProps) => {
                   {value} kg
                 </span>
               </div>
-              <div className="text-nowrap absolute -left-[73px] inset-y-1">
+              <div className="text-nowrap absolute -left-18.25 inset-y-1">
                 <span className="text-xs text-neutral-200 pr-2">{label}</span>
               </div>
             </div>

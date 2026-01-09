@@ -123,7 +123,7 @@ export function MyErrorComponent({ error, reset }: ErrorComponentProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-stone-950 to-stone-900">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-linear-to-br from-stone-950 to-stone-900">
       <div
         className={cn(
           'max-w-md w-full p-8 text-center',
@@ -192,7 +192,7 @@ export function MyErrorComponent({ error, reset }: ErrorComponentProps) {
               'bg-black/20 border border-white/5',
             )}
           >
-            <pre className="text-xs text-white/40 font-mono whitespace-pre-wrap break-words overflow-auto max-h-48">
+            <pre className="text-xs text-white/40 font-mono whitespace-pre-wrap wrap-break-word overflow-auto max-h-48">
               {error.stack || JSON.stringify(error, null, 2)}
             </pre>
           </div>
