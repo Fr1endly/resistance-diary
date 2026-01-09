@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
-import { useAppStore } from '@/store/useAppStore'
 import type { PlannedSet, WorkoutDay, WorkoutRoutine } from '@/types'
+import { useAppStore } from '@/store/useAppStore'
 
 // ============================================
 // TEST HELPERS
@@ -26,9 +26,7 @@ const createMockDay = (overrides?: Partial<WorkoutDay>): WorkoutDay => ({
   ...overrides,
 })
 
-const createMockPlannedSet = (
-  overrides?: Partial<PlannedSet>,
-): PlannedSet => ({
+const createMockPlannedSet = (overrides?: Partial<PlannedSet>): PlannedSet => ({
   id: 'set-1',
   exerciseId: 'exercise-1',
   targetReps: 10,
@@ -69,7 +67,9 @@ describe('workoutSlice', () => {
       const { result } = renderHook(() => useAppStore())
 
       act(() => {
-        result.current.addRoutine(createMockRoutine({ id: 'r1', name: 'First' }))
+        result.current.addRoutine(
+          createMockRoutine({ id: 'r1', name: 'First' }),
+        )
         result.current.addRoutine(
           createMockRoutine({ id: 'r2', name: 'Second' }),
         )
@@ -129,7 +129,9 @@ describe('workoutSlice', () => {
       const { result } = renderHook(() => useAppStore())
 
       act(() => {
-        result.current.addRoutine(createMockRoutine({ id: 'r1', name: 'First' }))
+        result.current.addRoutine(
+          createMockRoutine({ id: 'r1', name: 'First' }),
+        )
         result.current.addRoutine(
           createMockRoutine({ id: 'r2', name: 'Second' }),
         )
@@ -257,7 +259,9 @@ describe('workoutSlice', () => {
       const originalDate = new Date('2024-01-01')
 
       act(() => {
-        result.current.addRoutine(createMockRoutine({ updatedAt: originalDate }))
+        result.current.addRoutine(
+          createMockRoutine({ updatedAt: originalDate }),
+        )
       })
       act(() => {
         result.current.addDayToRoutine('routine-1', createMockDay())

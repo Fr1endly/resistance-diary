@@ -90,13 +90,6 @@ function IndexPage() {
       ? 'Continue'
       : 'Start'
 
-  useEffect(() => {
-    if (routines.length === 0) {
-      populateStoreWithMockData()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // Only run on mount to populate initial data
-
   return (
     <Layout
       middleLeftSlot={

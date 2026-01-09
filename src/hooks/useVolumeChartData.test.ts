@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
+import { act, renderHook } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useVolumeChartData } from './useVolumeChartData'
+import type { CompletedSet, RepGroup, WorkoutSession } from '@/types'
 import { useAppStore } from '@/store/useAppStore'
-import type { WorkoutSession, CompletedSet, RepGroup } from '@/types'
 
 // ============================================================================
 // Mock Helpers
@@ -37,8 +37,8 @@ const createRepGroup = (reps: number, weight: number, order = 0): RepGroup => ({
 
 const setupStore = (state: {
   activeRoutineId?: string | null
-  sessions?: WorkoutSession[]
-  completedSets?: CompletedSet[]
+  sessions?: Array<WorkoutSession>
+  completedSets?: Array<CompletedSet>
 }) => {
   act(() => {
     useAppStore.setState({
@@ -95,7 +95,9 @@ describe('useVolumeChartData', () => {
     it('returns empty result when sessions do not match activeRoutineId', () => {
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'other-routine' })],
+        sessions: [
+          createMockSession({ id: 'session-1', routineId: 'other-routine' }),
+        ],
         completedSets: [createMockCompletedSet({ sessionId: 'session-1' })],
       })
 
@@ -107,7 +109,9 @@ describe('useVolumeChartData', () => {
     it('returns empty result when sessions have no completed sets', () => {
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1' })],
+        sessions: [
+          createMockSession({ id: 'session-1', routineId: 'routine-1' }),
+        ],
         completedSets: [],
       })
 
@@ -128,7 +132,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -149,14 +159,20 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
             repGroups: [
               createRepGroup(10, 50, 0), // 500
-              createRepGroup(8, 60, 1),  // 480
-              createRepGroup(6, 70, 2),  // 420
+              createRepGroup(8, 60, 1), // 480
+              createRepGroup(6, 70, 2), // 420
             ],
             completedAt: new Date(),
           }),
@@ -174,7 +190,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             id: 'set-1',
@@ -202,7 +224,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -223,7 +251,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -244,7 +278,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -265,7 +305,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -286,7 +332,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -321,8 +373,16 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-included', routineId: 'routine-1', startedAt: includedDate }),
-          createMockSession({ id: 'session-excluded', routineId: 'routine-1', startedAt: excludedDate }),
+          createMockSession({
+            id: 'session-included',
+            routineId: 'routine-1',
+            startedAt: includedDate,
+          }),
+          createMockSession({
+            id: 'session-excluded',
+            routineId: 'routine-1',
+            startedAt: excludedDate,
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -357,8 +417,16 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-included', routineId: 'routine-1', startedAt: includedDate }),
-          createMockSession({ id: 'session-excluded', routineId: 'routine-1', startedAt: excludedDate }),
+          createMockSession({
+            id: 'session-included',
+            routineId: 'routine-1',
+            startedAt: includedDate,
+          }),
+          createMockSession({
+            id: 'session-excluded',
+            routineId: 'routine-1',
+            startedAt: excludedDate,
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -392,7 +460,11 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: boundaryDate }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: boundaryDate,
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -419,7 +491,11 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: justBeforeCutoff }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: justBeforeCutoff,
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -445,7 +521,11 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: decemberDate }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: decemberDate,
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -472,7 +552,11 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: lastYearDate }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: lastYearDate,
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -502,8 +586,16 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() }),
-          createMockSession({ id: 'session-2', routineId: 'routine-2', startedAt: new Date() }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+          createMockSession({
+            id: 'session-2',
+            routineId: 'routine-2',
+            startedAt: new Date(),
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -533,7 +625,11 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-other', routineId: 'other-routine', startedAt: new Date() }),
+          createMockSession({
+            id: 'session-other',
+            routineId: 'other-routine',
+            startedAt: new Date(),
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -556,8 +652,16 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() }),
-          createMockSession({ id: 'session-2', routineId: 'routine-2', startedAt: new Date() }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+          createMockSession({
+            id: 'session-2',
+            routineId: 'routine-2',
+            startedAt: new Date(),
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -602,7 +706,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: sameDay })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: sameDay,
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             id: 'set-1',
@@ -635,8 +745,16 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date('2026-01-06T10:00:00Z') }),
-          createMockSession({ id: 'session-2', routineId: 'routine-1', startedAt: new Date('2026-01-08T10:00:00Z') }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-06T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'session-2',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-08T10:00:00Z'),
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -666,9 +784,21 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date('2026-01-08T10:00:00Z') }),
-          createMockSession({ id: 'session-2', routineId: 'routine-1', startedAt: new Date('2026-01-05T10:00:00Z') }),
-          createMockSession({ id: 'session-3', routineId: 'routine-1', startedAt: new Date('2026-01-07T10:00:00Z') }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-08T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'session-2',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-05T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'session-3',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-07T10:00:00Z'),
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -707,7 +837,13 @@ describe('useVolumeChartData', () => {
 
       setupStore({
         activeRoutineId: 'routine-1',
-        sessions: [createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date() })],
+        sessions: [
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date(),
+          }),
+        ],
         completedSets: [
           createMockCompletedSet({
             sessionId: 'session-1',
@@ -729,8 +865,16 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'session-1', routineId: 'routine-1', startedAt: new Date('2026-01-08T08:00:00Z') }),
-          createMockSession({ id: 'session-2', routineId: 'routine-1', startedAt: new Date('2026-01-08T18:00:00Z') }),
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-08T08:00:00Z'),
+          }),
+          createMockSession({
+            id: 'session-2',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-08T18:00:00Z'),
+          }),
         ],
         completedSets: [
           createMockCompletedSet({
@@ -768,18 +912,55 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'routine-1',
         sessions: [
-          createMockSession({ id: 'mon', routineId: 'routine-1', startedAt: new Date('2026-01-05T10:00:00Z') }),
-          createMockSession({ id: 'wed', routineId: 'routine-1', startedAt: new Date('2026-01-07T10:00:00Z') }),
-          createMockSession({ id: 'fri', routineId: 'routine-1', startedAt: new Date('2026-01-09T10:00:00Z') }), // future, but still valid
+          createMockSession({
+            id: 'mon',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-05T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'wed',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-07T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'fri',
+            routineId: 'routine-1',
+            startedAt: new Date('2026-01-09T10:00:00Z'),
+          }), // future, but still valid
         ],
         completedSets: [
           // Monday: 3 sets of squats
-          createMockCompletedSet({ id: 'mon-1', sessionId: 'mon', repGroups: [createRepGroup(5, 100)], completedAt: new Date('2026-01-05T10:00:00Z') }),
-          createMockCompletedSet({ id: 'mon-2', sessionId: 'mon', repGroups: [createRepGroup(5, 100)], completedAt: new Date('2026-01-05T10:15:00Z') }),
-          createMockCompletedSet({ id: 'mon-3', sessionId: 'mon', repGroups: [createRepGroup(5, 100)], completedAt: new Date('2026-01-05T10:30:00Z') }),
+          createMockCompletedSet({
+            id: 'mon-1',
+            sessionId: 'mon',
+            repGroups: [createRepGroup(5, 100)],
+            completedAt: new Date('2026-01-05T10:00:00Z'),
+          }),
+          createMockCompletedSet({
+            id: 'mon-2',
+            sessionId: 'mon',
+            repGroups: [createRepGroup(5, 100)],
+            completedAt: new Date('2026-01-05T10:15:00Z'),
+          }),
+          createMockCompletedSet({
+            id: 'mon-3',
+            sessionId: 'mon',
+            repGroups: [createRepGroup(5, 100)],
+            completedAt: new Date('2026-01-05T10:30:00Z'),
+          }),
           // Wednesday: 2 sets of deadlifts
-          createMockCompletedSet({ id: 'wed-1', sessionId: 'wed', repGroups: [createRepGroup(5, 150)], completedAt: new Date('2026-01-07T10:00:00Z') }),
-          createMockCompletedSet({ id: 'wed-2', sessionId: 'wed', repGroups: [createRepGroup(5, 150)], completedAt: new Date('2026-01-07T10:15:00Z') }),
+          createMockCompletedSet({
+            id: 'wed-1',
+            sessionId: 'wed',
+            repGroups: [createRepGroup(5, 150)],
+            completedAt: new Date('2026-01-07T10:00:00Z'),
+          }),
+          createMockCompletedSet({
+            id: 'wed-2',
+            sessionId: 'wed',
+            repGroups: [createRepGroup(5, 150)],
+            completedAt: new Date('2026-01-07T10:15:00Z'),
+          }),
         ],
       })
 
@@ -789,8 +970,14 @@ describe('useVolumeChartData', () => {
       // Wednesday: 2 × (5 × 150) = 1500
       expect(result.current.totalVolume).toBe(3000)
       expect(result.current.chartData).toHaveLength(2)
-      expect(result.current.chartData[0]).toEqual({ label: '2026-01-05', value: 1500 })
-      expect(result.current.chartData[1]).toEqual({ label: '2026-01-07', value: 1500 })
+      expect(result.current.chartData[0]).toEqual({
+        label: '2026-01-05',
+        value: 1500,
+      })
+      expect(result.current.chartData[1]).toEqual({
+        label: '2026-01-07',
+        value: 1500,
+      })
     })
 
     it('correctly filters mixed routine data', () => {
@@ -800,14 +987,41 @@ describe('useVolumeChartData', () => {
       setupStore({
         activeRoutineId: 'push-pull',
         sessions: [
-          createMockSession({ id: 'pp-1', routineId: 'push-pull', startedAt: new Date('2026-01-06T10:00:00Z') }),
-          createMockSession({ id: 'legs-1', routineId: 'legs', startedAt: new Date('2026-01-07T10:00:00Z') }),
-          createMockSession({ id: 'pp-2', routineId: 'push-pull', startedAt: new Date('2026-01-08T10:00:00Z') }),
+          createMockSession({
+            id: 'pp-1',
+            routineId: 'push-pull',
+            startedAt: new Date('2026-01-06T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'legs-1',
+            routineId: 'legs',
+            startedAt: new Date('2026-01-07T10:00:00Z'),
+          }),
+          createMockSession({
+            id: 'pp-2',
+            routineId: 'push-pull',
+            startedAt: new Date('2026-01-08T10:00:00Z'),
+          }),
         ],
         completedSets: [
-          createMockCompletedSet({ id: 'set-pp1', sessionId: 'pp-1', repGroups: [createRepGroup(10, 80)], completedAt: new Date('2026-01-06T10:00:00Z') }),
-          createMockCompletedSet({ id: 'set-legs', sessionId: 'legs-1', repGroups: [createRepGroup(10, 200)], completedAt: new Date('2026-01-07T10:00:00Z') }),
-          createMockCompletedSet({ id: 'set-pp2', sessionId: 'pp-2', repGroups: [createRepGroup(10, 80)], completedAt: new Date('2026-01-08T10:00:00Z') }),
+          createMockCompletedSet({
+            id: 'set-pp1',
+            sessionId: 'pp-1',
+            repGroups: [createRepGroup(10, 80)],
+            completedAt: new Date('2026-01-06T10:00:00Z'),
+          }),
+          createMockCompletedSet({
+            id: 'set-legs',
+            sessionId: 'legs-1',
+            repGroups: [createRepGroup(10, 200)],
+            completedAt: new Date('2026-01-07T10:00:00Z'),
+          }),
+          createMockCompletedSet({
+            id: 'set-pp2',
+            sessionId: 'pp-2',
+            repGroups: [createRepGroup(10, 80)],
+            completedAt: new Date('2026-01-08T10:00:00Z'),
+          }),
         ],
       })
 

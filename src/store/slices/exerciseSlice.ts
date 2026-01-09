@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand'
 import type { Exercise } from '@/types'
+import { DEFAULT_EXERCISES } from '@/lib/defaultData'
 
 export interface ExerciseSlice {
   exercises: Array<Exercise>
@@ -14,7 +15,7 @@ export const createExerciseSlice: StateCreator<
   [],
   ExerciseSlice
 > = (set) => ({
-  exercises: [],
+  exercises: DEFAULT_EXERCISES,
 
   addExercise: (exercise) =>
     set((state) => ({

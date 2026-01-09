@@ -1,16 +1,16 @@
-import { renderHook, act } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
+import { act, renderHook } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type {
+  CompletedSet,
+  Exercise,
+  PlannedSet,
+  RepGroup,
+  WorkoutDay,
+  WorkoutRoutine,
+  WorkoutSession,
+} from '@/types'
 import { useAppStore } from '@/store/useAppStore'
 import { useVolumeChartData } from '@/hooks/useVolumeChartData'
-import type {
-  WorkoutRoutine,
-  WorkoutDay,
-  PlannedSet,
-  WorkoutSession,
-  CompletedSet,
-  RepGroup,
-  Exercise,
-} from '@/types'
 
 // ============================================================================
 // Mock Data Factories
@@ -100,11 +100,37 @@ const setupCleanStore = () => {
     currentSetIndex: 0,
     // Exercise slice (seed with test exercises)
     exercises: [
-      createMockExercise({ id: 'bench-press', name: 'Bench Press', muscleContributions: [{ muscleGroupId: 'chest', percentage: 100 }] }),
-      createMockExercise({ id: 'squat', name: 'Squat', muscleContributions: [{ muscleGroupId: 'quadriceps', percentage: 60 }, { muscleGroupId: 'glutes', percentage: 40 }] }),
-      createMockExercise({ id: 'deadlift', name: 'Deadlift', muscleContributions: [{ muscleGroupId: 'back', percentage: 50 }, { muscleGroupId: 'hamstrings', percentage: 50 }] }),
-      createMockExercise({ id: 'overhead-press', name: 'Overhead Press', muscleContributions: [{ muscleGroupId: 'shoulders', percentage: 100 }] }),
-      createMockExercise({ id: 'barbell-row', name: 'Barbell Row', muscleContributions: [{ muscleGroupId: 'back', percentage: 100 }] }),
+      createMockExercise({
+        id: 'bench-press',
+        name: 'Bench Press',
+        muscleContributions: [{ muscleGroupId: 'chest', percentage: 100 }],
+      }),
+      createMockExercise({
+        id: 'squat',
+        name: 'Squat',
+        muscleContributions: [
+          { muscleGroupId: 'quadriceps', percentage: 60 },
+          { muscleGroupId: 'glutes', percentage: 40 },
+        ],
+      }),
+      createMockExercise({
+        id: 'deadlift',
+        name: 'Deadlift',
+        muscleContributions: [
+          { muscleGroupId: 'back', percentage: 50 },
+          { muscleGroupId: 'hamstrings', percentage: 50 },
+        ],
+      }),
+      createMockExercise({
+        id: 'overhead-press',
+        name: 'Overhead Press',
+        muscleContributions: [{ muscleGroupId: 'shoulders', percentage: 100 }],
+      }),
+      createMockExercise({
+        id: 'barbell-row',
+        name: 'Barbell Row',
+        muscleContributions: [{ muscleGroupId: 'back', percentage: 100 }],
+      }),
     ],
     // Muscle slice
     muscleGroups: [
@@ -149,9 +175,27 @@ describe('Workout Flow Integration', () => {
             name: 'Push',
             order: 0,
             plannedSets: [
-              createMockPlannedSet({ id: 'ps-1', exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, order: 0 }),
-              createMockPlannedSet({ id: 'ps-2', exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, order: 1 }),
-              createMockPlannedSet({ id: 'ps-3', exerciseId: 'overhead-press', targetReps: 10, targetWeight: 40, order: 2 }),
+              createMockPlannedSet({
+                id: 'ps-1',
+                exerciseId: 'bench-press',
+                targetReps: 8,
+                targetWeight: 80,
+                order: 0,
+              }),
+              createMockPlannedSet({
+                id: 'ps-2',
+                exerciseId: 'bench-press',
+                targetReps: 8,
+                targetWeight: 80,
+                order: 1,
+              }),
+              createMockPlannedSet({
+                id: 'ps-3',
+                exerciseId: 'overhead-press',
+                targetReps: 10,
+                targetWeight: 40,
+                order: 2,
+              }),
             ],
           }),
           createMockDay({
@@ -159,8 +203,20 @@ describe('Workout Flow Integration', () => {
             name: 'Pull',
             order: 1,
             plannedSets: [
-              createMockPlannedSet({ id: 'ps-4', exerciseId: 'deadlift', targetReps: 5, targetWeight: 120, order: 0 }),
-              createMockPlannedSet({ id: 'ps-5', exerciseId: 'barbell-row', targetReps: 8, targetWeight: 60, order: 1 }),
+              createMockPlannedSet({
+                id: 'ps-4',
+                exerciseId: 'deadlift',
+                targetReps: 5,
+                targetWeight: 120,
+                order: 0,
+              }),
+              createMockPlannedSet({
+                id: 'ps-5',
+                exerciseId: 'barbell-row',
+                targetReps: 8,
+                targetWeight: 60,
+                order: 1,
+              }),
             ],
           }),
           createMockDay({
@@ -168,8 +224,20 @@ describe('Workout Flow Integration', () => {
             name: 'Legs',
             order: 2,
             plannedSets: [
-              createMockPlannedSet({ id: 'ps-6', exerciseId: 'squat', targetReps: 5, targetWeight: 100, order: 0 }),
-              createMockPlannedSet({ id: 'ps-7', exerciseId: 'squat', targetReps: 5, targetWeight: 100, order: 1 }),
+              createMockPlannedSet({
+                id: 'ps-6',
+                exerciseId: 'squat',
+                targetReps: 5,
+                targetWeight: 100,
+                order: 0,
+              }),
+              createMockPlannedSet({
+                id: 'ps-7',
+                exerciseId: 'squat',
+                targetReps: 5,
+                targetWeight: 100,
+                order: 1,
+              }),
             ],
           }),
         ],
@@ -204,9 +272,15 @@ describe('Workout Flow Integration', () => {
       const { result } = renderHook(() => useAppStore())
 
       act(() => {
-        result.current.addRoutine(createMockRoutine({ id: 'routine-1', name: 'Routine 1' }))
-        result.current.addRoutine(createMockRoutine({ id: 'routine-2', name: 'Routine 2' }))
-        result.current.addRoutine(createMockRoutine({ id: 'routine-3', name: 'Routine 3' }))
+        result.current.addRoutine(
+          createMockRoutine({ id: 'routine-1', name: 'Routine 1' }),
+        )
+        result.current.addRoutine(
+          createMockRoutine({ id: 'routine-2', name: 'Routine 2' }),
+        )
+        result.current.addRoutine(
+          createMockRoutine({ id: 'routine-3', name: 'Routine 3' }),
+        )
       })
 
       expect(result.current.routines).toHaveLength(3)
@@ -340,9 +414,24 @@ describe('Workout Flow Integration', () => {
           createMockDay({
             id: 'day-1',
             plannedSets: [
-              createMockPlannedSet({ id: 'ps-1', exerciseId: 'bench-press', targetReps: 8, targetWeight: 80 }),
-              createMockPlannedSet({ id: 'ps-2', exerciseId: 'bench-press', targetReps: 8, targetWeight: 80 }),
-              createMockPlannedSet({ id: 'ps-3', exerciseId: 'squat', targetReps: 5, targetWeight: 100 }),
+              createMockPlannedSet({
+                id: 'ps-1',
+                exerciseId: 'bench-press',
+                targetReps: 8,
+                targetWeight: 80,
+              }),
+              createMockPlannedSet({
+                id: 'ps-2',
+                exerciseId: 'bench-press',
+                targetReps: 8,
+                targetWeight: 80,
+              }),
+              createMockPlannedSet({
+                id: 'ps-3',
+                exerciseId: 'squat',
+                targetReps: 5,
+                targetWeight: 100,
+              }),
             ],
           }),
         ],
@@ -402,9 +491,9 @@ describe('Workout Flow Integration', () => {
         exerciseId: 'bench-press',
         plannedSetId: 'ps-1',
         repGroups: [
-          createRepGroup(8, 80, 0),  // Main set: 640kg volume
-          createRepGroup(6, 60, 1),  // Drop set 1: 360kg volume
-          createRepGroup(5, 40, 2),  // Drop set 2: 200kg volume
+          createRepGroup(8, 80, 0), // Main set: 640kg volume
+          createRepGroup(6, 60, 1), // Drop set 1: 360kg volume
+          createRepGroup(5, 40, 2), // Drop set 2: 200kg volume
         ],
       })
 
@@ -413,7 +502,7 @@ describe('Workout Flow Integration', () => {
       })
 
       expect(result.current.completedSets[0].repGroups).toHaveLength(3)
-      
+
       // Total volume: 640 + 360 + 200 = 1200kg
       const totalVolume = result.current.completedSets[0].repGroups.reduce(
         (sum, rg) => sum + rg.reps * rg.weight,
@@ -435,14 +524,18 @@ describe('Workout Flow Integration', () => {
       expect(result.current.currentSetIndex).toBe(0)
 
       act(() => {
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-1', plannedSetId: 'ps-1' }))
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-1', plannedSetId: 'ps-1' }),
+        )
         result.current.nextSet()
       })
 
       expect(result.current.currentSetIndex).toBe(1)
 
       act(() => {
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-2', plannedSetId: 'ps-2' }))
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-2', plannedSetId: 'ps-2' }),
+        )
         result.current.nextSet()
       })
 
@@ -498,7 +591,9 @@ describe('Workout Flow Integration', () => {
         result.current.completeSession()
       })
 
-      expect(result.current.sessions[0].completedAt).toEqual(new Date('2026-01-08T10:30:00Z'))
+      expect(result.current.sessions[0].completedAt).toEqual(
+        new Date('2026-01-08T10:30:00Z'),
+      )
     })
 
     it('clears workout state on completion', () => {
@@ -506,7 +601,9 @@ describe('Workout Flow Integration', () => {
 
       act(() => {
         result.current.startSession(createMockSession({ id: 'session-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ sessionId: 'session-1' }))
+        result.current.addCompletedSet(
+          createMockCompletedSet({ sessionId: 'session-1' }),
+        )
         result.current.nextSet()
       })
 
@@ -528,14 +625,24 @@ describe('Workout Flow Integration', () => {
 
       act(() => {
         result.current.startSession(createMockSession({ id: 'session-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-1', sessionId: 'session-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-2', sessionId: 'session-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-3', sessionId: 'session-1' }))
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-1', sessionId: 'session-1' }),
+        )
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-2', sessionId: 'session-1' }),
+        )
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-3', sessionId: 'session-1' }),
+        )
         result.current.completeSession()
       })
 
       expect(result.current.completedSets).toHaveLength(3)
-      expect(result.current.completedSets.every((cs) => cs.sessionId === 'session-1')).toBe(true)
+      expect(
+        result.current.completedSets.every(
+          (cs) => cs.sessionId === 'session-1',
+        ),
+      ).toBe(true)
     })
   })
 
@@ -560,9 +667,27 @@ describe('Workout Flow Integration', () => {
             name: 'Push Day',
             order: 0,
             plannedSets: [
-              createMockPlannedSet({ id: 'ps-1', exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, order: 0 }),
-              createMockPlannedSet({ id: 'ps-2', exerciseId: 'bench-press', targetReps: 8, targetWeight: 80, order: 1 }),
-              createMockPlannedSet({ id: 'ps-3', exerciseId: 'overhead-press', targetReps: 10, targetWeight: 40, order: 2 }),
+              createMockPlannedSet({
+                id: 'ps-1',
+                exerciseId: 'bench-press',
+                targetReps: 8,
+                targetWeight: 80,
+                order: 0,
+              }),
+              createMockPlannedSet({
+                id: 'ps-2',
+                exerciseId: 'bench-press',
+                targetReps: 8,
+                targetWeight: 80,
+                order: 1,
+              }),
+              createMockPlannedSet({
+                id: 'ps-3',
+                exerciseId: 'overhead-press',
+                targetReps: 10,
+                targetWeight: 40,
+                order: 2,
+              }),
             ],
           }),
         ],
@@ -669,7 +794,9 @@ describe('Workout Flow Integration', () => {
 
       // Session should have completedAt
       const completedSession = result.current.sessions[0]
-      expect(completedSession.completedAt).toEqual(new Date('2026-01-08T09:20:00Z'))
+      expect(completedSession.completedAt).toEqual(
+        new Date('2026-01-08T09:20:00Z'),
+      )
 
       // All completed sets preserved
       expect(result.current.completedSets).toHaveLength(3)
@@ -759,23 +886,61 @@ describe('Workout Flow Integration', () => {
 
       // Create two routines
       act(() => {
-        result.current.addRoutine(createMockRoutine({ id: 'routine-a', days: [createMockDay({ id: 'day-a' })] }))
-        result.current.addRoutine(createMockRoutine({ id: 'routine-b', days: [createMockDay({ id: 'day-b' })] }))
+        result.current.addRoutine(
+          createMockRoutine({
+            id: 'routine-a',
+            days: [createMockDay({ id: 'day-a' })],
+          }),
+        )
+        result.current.addRoutine(
+          createMockRoutine({
+            id: 'routine-b',
+            days: [createMockDay({ id: 'day-b' })],
+          }),
+        )
       })
 
       // Complete session for routine A
       act(() => {
         result.current.setActiveRoutine('routine-a')
-        result.current.startSession(createMockSession({ id: 'session-a', routineId: 'routine-a', dayId: 'day-a', startedAt: new Date() }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-a', sessionId: 'session-a', repGroups: [createRepGroup(10, 100)], completedAt: new Date() }))
+        result.current.startSession(
+          createMockSession({
+            id: 'session-a',
+            routineId: 'routine-a',
+            dayId: 'day-a',
+            startedAt: new Date(),
+          }),
+        )
+        result.current.addCompletedSet(
+          createMockCompletedSet({
+            id: 'cs-a',
+            sessionId: 'session-a',
+            repGroups: [createRepGroup(10, 100)],
+            completedAt: new Date(),
+          }),
+        )
         result.current.completeSession()
       })
 
       // Complete session for routine B
       act(() => {
         result.current.setActiveRoutine('routine-b')
-        result.current.startSession(createMockSession({ id: 'session-b', routineId: 'routine-b', dayId: 'day-b', startedAt: new Date() }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-b', sessionId: 'session-b', repGroups: [createRepGroup(10, 200)], completedAt: new Date() }))
+        result.current.startSession(
+          createMockSession({
+            id: 'session-b',
+            routineId: 'routine-b',
+            dayId: 'day-b',
+            startedAt: new Date(),
+          }),
+        )
+        result.current.addCompletedSet(
+          createMockCompletedSet({
+            id: 'cs-b',
+            sessionId: 'session-b',
+            repGroups: [createRepGroup(10, 200)],
+            completedAt: new Date(),
+          }),
+        )
         result.current.completeSession()
       })
 
@@ -803,11 +968,26 @@ describe('Workout Flow Integration', () => {
       const { result } = renderHook(() => useAppStore())
 
       act(() => {
-        result.current.addRoutine(createMockRoutine({ id: 'routine-1', days: [createMockDay({ id: 'day-1' })] }))
+        result.current.addRoutine(
+          createMockRoutine({
+            id: 'routine-1',
+            days: [createMockDay({ id: 'day-1' })],
+          }),
+        )
         result.current.setActiveRoutine('routine-1')
-        result.current.startSession(createMockSession({ id: 'session-1', routineId: 'routine-1', dayId: 'day-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-1', sessionId: 'session-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-2', sessionId: 'session-1' }))
+        result.current.startSession(
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            dayId: 'day-1',
+          }),
+        )
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-1', sessionId: 'session-1' }),
+        )
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-2', sessionId: 'session-1' }),
+        )
       })
 
       expect(result.current.completedSets).toHaveLength(2)
@@ -829,14 +1009,18 @@ describe('Workout Flow Integration', () => {
       // Complete a session first
       act(() => {
         result.current.startSession(createMockSession({ id: 'session-1' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-1', sessionId: 'session-1' }))
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-1', sessionId: 'session-1' }),
+        )
         result.current.completeSession()
       })
 
       // Start and cancel another session
       act(() => {
         result.current.startSession(createMockSession({ id: 'session-2' }))
-        result.current.addCompletedSet(createMockCompletedSet({ id: 'cs-2', sessionId: 'session-2' }))
+        result.current.addCompletedSet(
+          createMockCompletedSet({ id: 'cs-2', sessionId: 'session-2' }),
+        )
         result.current.cancelSession()
       })
 
@@ -851,9 +1035,20 @@ describe('Workout Flow Integration', () => {
       const { result } = renderHook(() => useAppStore())
 
       act(() => {
-        result.current.addRoutine(createMockRoutine({ id: 'routine-1', days: [createMockDay({ id: 'day-1' })] }))
+        result.current.addRoutine(
+          createMockRoutine({
+            id: 'routine-1',
+            days: [createMockDay({ id: 'day-1' })],
+          }),
+        )
         result.current.setActiveRoutine('routine-1')
-        result.current.startSession(createMockSession({ id: 'session-1', routineId: 'routine-1', dayId: 'day-1' }))
+        result.current.startSession(
+          createMockSession({
+            id: 'session-1',
+            routineId: 'routine-1',
+            dayId: 'day-1',
+          }),
+        )
       })
 
       expect(result.current.isWorkoutInProgress).toBe(true)

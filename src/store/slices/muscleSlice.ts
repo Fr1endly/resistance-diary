@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand'
 import type { MuscleGroup } from '@/types'
+import { DEFAULT_MUSCLE_GROUPS } from '@/lib/defaultData'
 
 export interface MuscleSlice {
   muscleGroups: Array<MuscleGroup>
@@ -14,7 +15,7 @@ export const createMuscleSlice: StateCreator<
   [],
   MuscleSlice
 > = (set) => ({
-  muscleGroups: [],
+  muscleGroups: DEFAULT_MUSCLE_GROUPS,
 
   addMuscleGroup: (muscleGroup) =>
     set((state) => ({

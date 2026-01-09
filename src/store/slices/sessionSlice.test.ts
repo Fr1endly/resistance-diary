@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { act, renderHook } from '@testing-library/react'
-import { useAppStore } from '@/store/useAppStore'
 import type { CompletedSet, WorkoutSession } from '@/types'
+import { useAppStore } from '@/store/useAppStore'
 
 // ============================================
 // TEST HELPERS
@@ -57,9 +57,9 @@ describe('sessionSlice', () => {
       })
 
       expect(result.current.sessions).toHaveLength(1)
-      expect(result.current.sessions[0].startedAt.getTime()).toBeGreaterThanOrEqual(
-        before.getTime(),
-      )
+      expect(
+        result.current.sessions[0].startedAt.getTime(),
+      ).toBeGreaterThanOrEqual(before.getTime())
     })
 
     it('sets isWorkoutInProgress to true', () => {

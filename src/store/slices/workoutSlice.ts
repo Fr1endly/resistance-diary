@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand'
 import type { PlannedSet, WorkoutDay, WorkoutRoutine } from '@/types'
+import { DEFAULT_ROUTINES } from '@/lib/defaultData'
 
 export interface WorkoutSlice {
   routines: Array<WorkoutRoutine>
@@ -38,7 +39,7 @@ export const createWorkoutSlice: StateCreator<
   [],
   WorkoutSlice
 > = (set) => ({
-  routines: [],
+  routines: DEFAULT_ROUTINES,
   activeRoutineId: null,
 
   addRoutine: (routine) =>
