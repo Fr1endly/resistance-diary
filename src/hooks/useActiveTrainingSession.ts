@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import type { PlannedSet, Exercise } from '@/types'
+import type { Exercise, PlannedSet } from '@/types'
 import { useAppStore } from '@/store/useAppStore'
 
 export interface ActiveTrainingSessionData {
   isWorkoutInProgress: boolean
   activeSessionId: string | null
   currentSetIndex: number
-  plannedSets: PlannedSet[]
+  plannedSets: Array<PlannedSet>
   currentPlannedSet: PlannedSet | undefined
   currentExercise: Exercise | undefined
   currentSetForExercise: number

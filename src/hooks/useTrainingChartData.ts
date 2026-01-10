@@ -5,7 +5,7 @@ import { useAppStore } from '@/store/useAppStore'
 
 interface TrainingChartDataParams {
   exerciseId: string | undefined
-  stagedRepGroups: RepGroup[]
+  stagedRepGroups: Array<RepGroup>
   currentReps: number
   currentWeight: number
 }

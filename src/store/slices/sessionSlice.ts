@@ -19,6 +19,12 @@ export interface SessionSlice {
   updateCompletedSet: (id: string, updates: Partial<CompletedSet>) => void
   removeCompletedSet: (id: string) => void
 
+  // Import/Export
+  importCompletedSets: (
+    sets: Array<CompletedSet>,
+    mode: 'replace' | 'merge',
+  ) => void
+
   // Navigation
   setCurrentDayIndex: (index: number) => void
   setCurrentSetIndex: (index: number) => void
@@ -92,6 +98,17 @@ export const createSessionSlice: StateCreator<
     set((state) => ({
       completedSets: state.completedSets.filter((cs) => cs.id !== id),
     })),
+
+  importCompletedSets: (sets, mode) =>
+    set((state) => {
+      if (mode === 'replace') {
+        return { completedSets: sets }
+      }
+      // Merge mode: add only sets with new IDs
+      const existingIds = new Set(state.completedSets.map((cs) => cs.id))
+      const newSets = sets.filter((s) => !existingIds.has(s.id))
+      return { completedSets: [...state.completedSets, ...newSets] }
+    }),
 
   setCurrentDayIndex: (index) => set({ currentDayIndex: index }),
 

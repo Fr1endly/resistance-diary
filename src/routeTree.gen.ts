@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkoutsRouteImport } from './routes/workouts'
 import { Route as OverviewRouteImport } from './routes/overview'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ExercisesRouteImport } from './routes/exercises'
 import { Route as ClockRouteImport } from './routes/clock'
 import { Route as IndexRouteImport } from './routes/index'
@@ -25,6 +26,11 @@ const WorkoutsRoute = WorkoutsRouteImport.update({
 const OverviewRoute = OverviewRouteImport.update({
   id: '/overview',
   path: '/overview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesRoute = ExercisesRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clock': typeof ClockRoute
   '/exercises': typeof ExercisesRoute
+  '/history': typeof HistoryRoute
   '/overview': typeof OverviewRoute
   '/workouts': typeof WorkoutsRoute
   '/training/details': typeof TrainingDetailsRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clock': typeof ClockRoute
   '/exercises': typeof ExercisesRoute
+  '/history': typeof HistoryRoute
   '/overview': typeof OverviewRoute
   '/workouts': typeof WorkoutsRoute
   '/training/details': typeof TrainingDetailsRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/clock': typeof ClockRoute
   '/exercises': typeof ExercisesRoute
+  '/history': typeof HistoryRoute
   '/overview': typeof OverviewRoute
   '/workouts': typeof WorkoutsRoute
   '/training/details': typeof TrainingDetailsRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/clock'
     | '/exercises'
+    | '/history'
     | '/overview'
     | '/workouts'
     | '/training/details'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/clock'
     | '/exercises'
+    | '/history'
     | '/overview'
     | '/workouts'
     | '/training/details'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/clock'
     | '/exercises'
+    | '/history'
     | '/overview'
     | '/workouts'
     | '/training/details'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClockRoute: typeof ClockRoute
   ExercisesRoute: typeof ExercisesRoute
+  HistoryRoute: typeof HistoryRoute
   OverviewRoute: typeof OverviewRoute
   WorkoutsRoute: typeof WorkoutsRoute
   TrainingDetailsRoute: typeof TrainingDetailsRoute
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/overview'
       fullPath: '/overview'
       preLoaderRoute: typeof OverviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClockRoute: ClockRoute,
   ExercisesRoute: ExercisesRoute,
+  HistoryRoute: HistoryRoute,
   OverviewRoute: OverviewRoute,
   WorkoutsRoute: WorkoutsRoute,
   TrainingDetailsRoute: TrainingDetailsRoute,

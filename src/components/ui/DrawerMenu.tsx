@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import type {ReactNode} from 'react';
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -28,20 +28,30 @@ export default function Menu({
 }: NavDrawerProps) {
   return (
     <Drawer>
-      <DrawerContent className="bg-yellow-500 font-display">
+      <DrawerContent className="bg-yellow-500 font-display ">
         <div className="w-full flex flex-col justify-end items-end">
           <DrawerHeader>
-            <DrawerTitle>Navigation.</DrawerTitle>
+            <DrawerTitle className="text-neutral-950">Navigation</DrawerTitle>
           </DrawerHeader>
-          <div className="p-4 pb-0">
-            <div className="flex flex-col items-end justify-end gap-3">
-              <Link to="/">Home</Link>
-              <Link to="/workouts">Workouts</Link>
-              <Link to="/exercises">Exercises</Link>
+          <div className="p-4 pb-0 w-full">
+            <div className="flex flex-col items-end justify-end gap-3 text-neutral-800">
+              <Link to="/" className=" hover:text-white">
+                Home
+              </Link>
+              <Link to="/workouts" className="">
+                Workouts
+              </Link>
+              <Link to="/exercises" className="">
+                Exercises
+              </Link>
+              <Link to="/history" className="">
+                History
+              </Link>
             </div>
+
             <div className="h-[35px]" />
           </div>
-          <DrawerFooter className="p-6 flex justify-center items-center">
+          <DrawerFooter className="p-6 flex justify-center items-center ">
             <DrawerClose asChild>
               <Button
                 variant="outline"
