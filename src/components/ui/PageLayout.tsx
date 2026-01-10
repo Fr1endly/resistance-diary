@@ -9,7 +9,7 @@ import Dialog from '@/components/ui/Dialog'
 
 // Layout height configuration by variant
 const LAYOUT_CONFIG = {
-  sectioned: { upper: '65%', middle: '80%', bottom: '35%' },
+  sectioned: { upper: '61%', middle: '80%', bottom: '39%' },
   glass: { upper: '15%', middle: '0', bottom: '85%' },
 } as const
 
