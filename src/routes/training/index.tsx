@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { nanoid } from 'nanoid'
 
 import type { CompletedSet, RepGroup } from '@/types'
+import { cn } from '@/lib/utils'
 import PageLayout from '@/components/ui/PageLayout'
 import {
   FloatingBadge,
@@ -198,11 +199,44 @@ function TrainingPage() {
           totalSets={currentExerciseProgress.total}
         />
       }
-      middleLeftSlot={<TrainingChart data={chartData} stagedCount={stagedCount} />}
+      middleLeftSlot={
+        <div className="w-full h-full flex flex-col">
+          {/* Target badges */}
+          <div className="flex justify-center my-4 gap-2">
+            <div
+              className={cn(
+                'px-4 py-1.5 rounded-full',
+                'bg-neutral-900 border border-white/10 shadow-lg',
+              )}
+            >
+              <span className="text-neutral-200 text-sm">Target: </span>
+              <span className="text-neutral-100 font-mono font-bold">
+                {currentPlannedSet.targetReps}
+              </span>
+              <span className="text-neutral-200 text-sm"> reps</span>
+            </div>
+
+            {currentPlannedSet.targetWeight && (
+              <div
+                className={cn(
+                  'px-4 py-1.5 rounded-full',
+                  'bg-neutral-900 border border-white/10 shadow-lg',
+                )}
+              >
+                <span className="text-neutral-200 text-sm">Target: </span>
+                <span className="text-neutral-100 font-mono font-bold">
+                  {currentPlannedSet.targetWeight}
+                </span>
+                <span className="text-neutral-200 text-sm"> kg</span>
+              </div>
+            )}
+          </div>
+          <TrainingChart data={chartData} stagedCount={stagedCount} />
+        </div>
+      }
       bottomUpper={
         <div className="relative w-full h-full flex flex-col justify-end gap-8">
           <FloatingControls
-            repTarget={currentPlannedSet.targetReps}
             reps={reps}
             weight={weight}
             onRepsChange={handleRepsChange}

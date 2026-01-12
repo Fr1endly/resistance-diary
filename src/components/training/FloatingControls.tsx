@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import SpinnerPicker from '@/components/ui/SpinnerPicker'
 
 interface FloatingControlsProps {
-  repTarget: number
   reps: number
   weight: number
   onRepsChange: (value: number) => void
@@ -15,7 +14,6 @@ interface FloatingControlsProps {
 }
 
 export const FloatingControls = memo(function FloatingControls({
-  repTarget,
   reps,
   weight,
   onRepsChange,
@@ -32,24 +30,8 @@ export const FloatingControls = memo(function FloatingControls({
           'backdrop-blur-2xl border border-white/10',
         )}
       >
-        {/* Target badge */}
-        <div className="flex justify-center mb-4">
-          <div
-            className={cn(
-              'px-4 py-1.5 rounded-full',
-              'bg-neutral-900 border border-white/10',
-            )}
-          >
-            <span className="text-neutral-200 text-sm">Target: </span>
-            <span className="text-neutral-100 font-mono font-bold">
-              {repTarget}
-            </span>
-            <span className="text-neutral-200 text-sm"> reps</span>
-          </div>
-        </div>
-
         {/* Inline inputs with divider */}
-        <div className="flex items-center gap-4 mb-1">
+        <div className="flex items-center gap-4 mb-3">
           <div className="flex-1 flex flex-col items-center ">
             <div
               className={cn(
@@ -101,7 +83,7 @@ export const FloatingControls = memo(function FloatingControls({
         </div>
 
         {/* Action buttons */}
-        <div className="flex gap-3">
+        <div className="flex gap-2 justify-evenly items-center">
           <button
             onClick={onAddRepGroup}
             className={cn(

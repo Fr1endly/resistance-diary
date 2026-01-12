@@ -13,7 +13,7 @@ export const FloatingBadge = memo(function FloatingBadge({
   totalSets,
 }: FloatingBadgeProps) {
   return (
-    <div className="w-full px-5 flex justify-end items-center">
+    <div className="w-full px-5 flex justify-center items-center">
       <div
         className={cn(
           'inline-flex items-center gap-3 px-4 py-2.5 rounded-full',

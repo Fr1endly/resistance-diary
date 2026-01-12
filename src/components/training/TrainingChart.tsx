@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react'
 import type { RepGroup } from '@/types'
-import Chart from '@/components/ui/ChartWithGrid'
+import Chart from '@/components/charts/ChartWithGrid'
 
 interface TrainingChartProps {
   data: Array<Array<RepGroup>>
