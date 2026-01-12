@@ -87,7 +87,11 @@ export function WorkoutPlanForm({
   const handleDayNext = async () => {
     // Validate current day
     const valid = await form.trigger(`days.${currentDayIndex}`)
-    if (!valid) return
+    if (!valid) {
+      console.log('Validation failed for day:', currentDayIndex)
+      console.log('Current form errors:', form.formState.errors)
+      return
+    }
 
     if (currentDayIndex < dayFields.length - 1) {
       setCurrentDayIndex(currentDayIndex + 1)
@@ -107,7 +111,11 @@ export function WorkoutPlanForm({
   const handleAddDay = async () => {
     // Validate current day before adding new one
     const valid = await form.trigger(`days.${currentDayIndex}`)
-    if (!valid) return
+    if (!valid) {
+      console.log('Validation failed for day:', currentDayIndex)
+      console.log('Current form errors:', form.formState.errors)
+      return
+    }
 
     appendDay({
       id: nanoid(),

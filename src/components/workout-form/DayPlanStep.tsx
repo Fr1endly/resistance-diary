@@ -28,6 +28,12 @@ interface DayPlanStepProps {
   onRemoveDay: () => void
 }
 
+const setValueAsOptionalNumber = (v: string | number | null | undefined) => {
+  if (v === '' || v === null || v === undefined) return undefined
+  const num = Number(v)
+  return Number.isNaN(num) ? undefined : num
+}
+
 export function DayPlanStep({
   form,
   exercises,
@@ -331,9 +337,7 @@ const PlannedSetInput = memo(function PlannedSetInput({
                 )}
                 {...form.register(
                   `days.${dayIndex}.plannedSets.${index}.targetReps`,
-                  {
-                    valueAsNumber: true,
-                  },
+                  { valueAsNumber: true }
                 )}
               />
             </div>
@@ -357,9 +361,7 @@ const PlannedSetInput = memo(function PlannedSetInput({
                 )}
                 {...form.register(
                   `days.${dayIndex}.plannedSets.${index}.targetWeight`,
-                  {
-                    valueAsNumber: true,
-                  },
+                  { setValueAs: setValueAsOptionalNumber }
                 )}
               />
             </div>
@@ -383,9 +385,7 @@ const PlannedSetInput = memo(function PlannedSetInput({
                 )}
                 {...form.register(
                   `days.${dayIndex}.plannedSets.${index}.restSeconds`,
-                  {
-                    valueAsNumber: true,
-                  },
+                  { setValueAs: setValueAsOptionalNumber }
                 )}
               />
             </div>
