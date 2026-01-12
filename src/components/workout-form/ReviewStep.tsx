@@ -137,7 +137,7 @@ export function ReviewStep({
         </div>
       </div>
 
-      <div className="flex justify-between pt-6 mt-auto border-t border-white/5 bg-zinc-950 z-10">
+      <div className="flex justify-between pt-6 mt-auto border-t border-white/5 z-10">
         <button
           type="button"
           onClick={onBack}
@@ -170,6 +170,7 @@ export function ReviewStep({
           )}
         </button>
       </div>
+      <div  className='h-14'/>
     </div>
   )
 }

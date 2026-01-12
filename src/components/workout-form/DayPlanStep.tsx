@@ -193,7 +193,7 @@ export function DayPlanStep({
         </button>
       </div>
 
-      <div className="flex justify-between pt-4 mt-2 border-t border-white/5 z-10">
+      <div className="flex items-start justify-between pt-4 mt-2 z-10">
         <button
           type="button"
           onClick={onPrevious}
@@ -227,6 +227,7 @@ export function DayPlanStep({
           </button>
         </div>
       </div>
+      <div className="h-14" />
     </div>
   )
 }
