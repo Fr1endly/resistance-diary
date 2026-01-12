@@ -2,6 +2,7 @@ import { Reorder, useDragControls } from 'motion/react'
 import { ChevronLeft, ChevronRight, Plus, Trash2, X } from 'lucide-react'
 import { Controller, useFieldArray } from 'react-hook-form'
 import { nanoid } from 'nanoid'
+import { useRef, useState, useCallback, memo } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 
 import type { Exercise } from '@/types'
@@ -37,10 +38,42 @@ export function DayPlanStep({
   onAddDay,
   onRemoveDay,
 }: DayPlanStepProps) {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control: form.control,
     name: `days.${dayIndex}.plannedSets`,
   })
+
+  // State for visual order during drag - Motion needs this to animate positions
+  const [dragOrder, setDragOrder] = useState<typeof fields | null>(null)
+  const isDraggingRef = useRef(false)
+
+  // Use drag order during drag, otherwise use RHF fields
+  const displayFields = dragOrder ?? fields
+
+  const handleDragStart = useCallback(() => {
+    isDraggingRef.current = true
+    setDragOrder([...fields])
+  }, [fields])
+
+  const handleDragEnd = useCallback(() => {
+    if (dragOrder && isDraggingRef.current) {
+      // Check if order actually changed
+      const orderChanged = fields.some((f, i) => f.id !== dragOrder[i]?.id)
+
+      if (orderChanged) {
+        // Replace entire array with new order
+        replace(dragOrder)
+      }
+    }
+    isDraggingRef.current = false
+    setDragOrder(null)
+  }, [fields, dragOrder, replace])
+
+  const handleReorder = useCallback((newOrder: typeof fields) => {
+    if (isDraggingRef.current) {
+      setDragOrder(newOrder)
+    }
+  }, [])
 
   const dayErrors = form.formState.errors.days?.[dayIndex]
 
@@ -112,34 +145,29 @@ export function DayPlanStep({
 
         <Reorder.Group
           axis="y"
-          values={fields}
-          onReorder={() => {
-            // Need to map new order back to react-hook-form move calls
-            // This is simplified; robust DnD with useFieldArray is tricky
-            // For now, let's just use the move helper if drag completes
-            // But Reorder.Group requires state update.
-            // With RHF, it's better to act on drop.
-            // Using a simple move implementation here for UI proof-of-concept
-            // const _oldIndex = fields.findIndex((f) => f.id === newOrder[0].id)
-            // This naive implementation needs proper handling in a real DnD context
-            // For this refactor, we'll retain the Reorder.Group structure but note limitations
-            // For production, consider dnd-kit or react-beautiful-dnd with RHF
-          }}
+          values={displayFields}
+          onReorder={handleReorder}
           className="space-y-3"
         >
-          {fields.map((field, index) => (
-            <PlannedSetInput
-              key={field.id}
-              field={field}
-              index={index}
-              form={form}
-              dayIndex={dayIndex}
-              exercises={exercises}
-              onRemove={() => remove(index)}
-              canRemove={fields.length > 1}
-              getExerciseName={getExerciseName}
-            />
-          ))}
+          {displayFields.map((field) => {
+            // Find actual index in RHF fields for form binding
+            const rhfIndex = fields.findIndex((f) => f.id === field.id)
+            return (
+              <PlannedSetInput
+                key={field.id}
+                field={field}
+                index={rhfIndex}
+                form={form}
+                dayIndex={dayIndex}
+                exercises={exercises}
+                onRemove={() => remove(rhfIndex)}
+                canRemove={fields.length > 1}
+                getExerciseName={getExerciseName}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              />
+            )
+          })}
         </Reorder.Group>
 
         <button
@@ -165,7 +193,7 @@ export function DayPlanStep({
         </button>
       </div>
 
-      <div className="flex justify-between pt-4 mt-2 border-t border-white/5 bg-zinc-950 z-10">
+      <div className="flex justify-between pt-4 mt-2 border-t border-white/5 z-10">
         <button
           type="button"
           onClick={onPrevious}
@@ -203,7 +231,7 @@ export function DayPlanStep({
   )
 }
 
-function PlannedSetInput({
+const PlannedSetInput = memo(function PlannedSetInput({
   field,
   index,
   form,
@@ -212,6 +240,8 @@ function PlannedSetInput({
   onRemove,
   canRemove,
   getExerciseName,
+  onDragStart,
+  onDragEnd,
 }: {
   field: any
   index: number
@@ -221,6 +251,8 @@ function PlannedSetInput({
   onRemove: () => void
   canRemove: boolean
   getExerciseName: (id: string) => string
+  onDragStart: () => void
+  onDragEnd: () => void
 }) {
   const controls = useDragControls()
   const error = form.formState.errors.days?.[dayIndex]?.plannedSets?.[index]
@@ -230,6 +262,11 @@ function PlannedSetInput({
       value={field}
       dragListener={false}
       dragControls={controls}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      layout
+      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      whileDrag={{ scale: 1.02, boxShadow: '0 8px 20px rgba(0,0,0,0.3)', zIndex: 50 }}
       className="bg-white/5 rounded-xl border border-white/10 overflow-hidden"
     >
       <div className="p-3 pl-2 flex gap-3">
@@ -367,4 +404,4 @@ function PlannedSetInput({
       </div>
     </Reorder.Item>
   )
-}
+})
