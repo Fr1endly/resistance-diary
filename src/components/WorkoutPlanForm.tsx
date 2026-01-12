@@ -46,22 +46,22 @@ export function WorkoutPlanForm({
           order: ps.order,
         })),
       })) || [
-        {
-          id: nanoid(),
-          name: 'Day 1',
-          order: 0,
-          plannedSets: [
-            {
-              id: nanoid(),
-              exerciseId: '',
-              targetReps: 10,
-              targetWeight: undefined,
-              restSeconds: 60,
-              order: 0,
-            },
-          ],
-        },
-      ],
+          {
+            id: nanoid(),
+            name: 'Day 1',
+            order: 0,
+            plannedSets: [
+              {
+                id: nanoid(),
+                exerciseId: '',
+                targetReps: 10,
+                targetWeight: undefined,
+                restSeconds: 60,
+                order: 0,
+              },
+            ],
+          },
+        ],
     },
     mode: 'onBlur',
   })

@@ -1,11 +1,17 @@
 import { z } from 'zod'
 
+// Helper for optional number fields that might receive NaN from valueAsNumber or null
+const optionalNumberSchema = z.preprocess(
+  (val) => (typeof val === 'number' && isNaN(val)) || val === null ? undefined : val,
+  z.number().optional()
+).optional()
+
 export const plannedSetSchema = z.object({
   id: z.string(),
   exerciseId: z.string().min(1, 'Exercise is required'),
   targetReps: z.number().min(1, 'At least 1 rep required'),
-  targetWeight: z.number().optional(),
-  restSeconds: z.number().optional(),
+  targetWeight: optionalNumberSchema,
+  restSeconds: optionalNumberSchema,
   order: z.number(),
 })
 
