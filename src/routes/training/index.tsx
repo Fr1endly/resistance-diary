@@ -98,6 +98,13 @@ function TrainingPage() {
     setReps(0) // Reset reps for next input
   }, [reps, weight, stagedRepGroups.length, toast])
 
+  const handleUnstage = useCallback(() => {
+    setStagedRepGroups((prev) => {
+      if (prev.length === 0) return prev
+      return prev.slice(0, -1)
+    })
+  }, [])
+
   const handleFinishSet = useCallback(() => {
     if (!currentPlannedSet || !activeSessionId) return
 
@@ -172,10 +179,10 @@ function TrainingPage() {
             {JSON.stringify({ currentExercise, currentPlannedSet })}
 
             {JSON.stringify({ activeSessionId })}
-            {JSON.stringify({ })}
+            {JSON.stringify({})}
           </div>
         }
-      
+
       />
 
     )
@@ -202,6 +209,7 @@ function TrainingPage() {
             onWeightChange={handleWeightChange}
             onAddRepGroup={handleAddRepGroup}
             onFinishSet={handleFinishSet}
+            onUnstage={handleUnstage}
           />
         </div>
       }

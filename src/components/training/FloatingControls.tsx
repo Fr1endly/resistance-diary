@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ArrowRight, Plus } from 'lucide-react'
+import { ArrowRight, Plus, RotateCcw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import SpinnerPicker from '@/components/ui/SpinnerPicker'
 
@@ -11,6 +11,7 @@ interface FloatingControlsProps {
   onWeightChange: (value: number) => void
   onAddRepGroup: () => void
   onFinishSet: () => void
+  onUnstage: () => void
 }
 
 export const FloatingControls = memo(function FloatingControls({
@@ -21,6 +22,7 @@ export const FloatingControls = memo(function FloatingControls({
   onWeightChange,
   onAddRepGroup,
   onFinishSet,
+  onUnstage,
 }: FloatingControlsProps) {
   return (
     <div className="w-full">
@@ -47,8 +49,8 @@ export const FloatingControls = memo(function FloatingControls({
         </div>
 
         {/* Inline inputs with divider */}
-        <div className="flex items-center gap-4 mb-5">
-          <div className="flex-1 flex flex-col items-center">
+        <div className="flex items-center gap-4 mb-1">
+          <div className="flex-1 flex flex-col items-center ">
             <div
               className={cn(
                 'w-full rounded-xl overflow-hidden mb-1',
@@ -61,12 +63,12 @@ export const FloatingControls = memo(function FloatingControls({
                 min={0}
                 max={100}
                 step={1}
-                containerHeight={70}
+                containerHeight={80}
                 itemHeight={50}
                 friction={0.75}
               />
             </div>
-            <span className="text-[10px] text-neutral-400 uppercase tracking-wider">
+            <span className="text-[10px] text-neutral-900 uppercase tracking-wider">
               Reps
             </span>
           </div>
@@ -87,12 +89,12 @@ export const FloatingControls = memo(function FloatingControls({
                 max={500}
                 step={2.5}
                 suffix="kg"
-                containerHeight={70}
+                containerHeight={80}
                 itemHeight={50}
                 friction={0.75}
               />
             </div>
-            <span className="text-[10px] text-neutral-400 uppercase tracking-wider">
+            <span className="text-[10px] text-neutral-900 uppercase tracking-wider">
               Weight
             </span>
           </div>
@@ -103,10 +105,9 @@ export const FloatingControls = memo(function FloatingControls({
           <button
             onClick={onAddRepGroup}
             className={cn(
-              'flex-1 h-14 rounded-2xl font-bold',
+              'rounded-full font-bold h-12 w-12',
+              'inset-shadow-sm inset-shadow-neutral-500',
               'bg-neutral-800 text-neutral-100 border border-neutral-700',
-              'transition-all duration-200',
-              'hover:bg-neutral-700 hover:border-neutral-600',
               'active:scale-[0.98]',
               'flex items-center justify-center gap-2',
             )}
@@ -114,19 +115,30 @@ export const FloatingControls = memo(function FloatingControls({
             <Plus size={24} />
           </button>
           <button
-            onClick={onFinishSet}
+            onClick={onUnstage}
             className={cn(
-              'flex-1 h-14 rounded-2xl font-bold',
+              'rounded-full font-bold h-12 w-12',
+              'inset-shadow-sm inset-shadow-neutral-500',
               'bg-neutral-800 text-neutral-100 border border-neutral-700',
-              'transition-all duration-200',
-              'hover:bg-neutral-700 hover:border-neutral-600',
               'active:scale-[0.98]',
               'flex items-center justify-center gap-2',
             )}
           >
-            Complete Set
+            <RotateCcw size={20} />
+          </button>
+          <button
+            onClick={onFinishSet}
+            className={cn(
+              'rounded-full font-bold h-12 w-12',
+              'inset-shadow-sm inset-shadow-neutral-500',
+              'bg-neutral-800 text-neutral-100 border border-neutral-700',
+              'active:scale-[0.98]',
+              'flex items-center justify-center gap-2',
+            )}
+          >
             <ArrowRight size={20} />
           </button>
+
         </div>
       </div>
     </div>
