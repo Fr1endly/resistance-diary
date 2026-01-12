@@ -143,12 +143,12 @@ export function WorkoutPlanForm({
         id: initialData?.id || nanoid(),
         name: data.name,
         description: data.description || undefined,
-        days: data.days.map((day, idx) => ({
+        days: data.days.map((day: any, idx: number) => ({
           id: day.id,
           name: day.name,
           order: idx,
           plannedSets: day.plannedSets.map(
-            (ps, psIdx) =>
+            (ps: any, psIdx: number) =>
               ({
                 id: ps.id,
                 exerciseId: ps.exerciseId,

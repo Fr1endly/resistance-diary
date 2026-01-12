@@ -1,10 +1,11 @@
 import { z } from 'zod'
 
 // Helper for optional number fields that might receive NaN from valueAsNumber or null
-const optionalNumberSchema = z.preprocess(
-  (val) => (typeof val === 'number' && isNaN(val)) || val === null ? undefined : val,
-  z.number().optional()
-).optional()
+const optionalNumberSchema = z
+  .union([z.number(), z.nan(), z.null(), z.undefined()])
+  .catch(undefined)
+  .transform((val) => (typeof val === 'number' && isNaN(val) ? undefined : val))
+  .optional()
 
 export const plannedSetSchema = z.object({
   id: z.string(),
