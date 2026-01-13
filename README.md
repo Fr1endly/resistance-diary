@@ -1,3 +1,80 @@
+# Fitness Tracker App
+
+A modern Progressive Web App (PWA) for logging resistance training workouts. Create routines, track sessions, and visualize your progress over time.
+
+## Features
+
+- Create and manage workout routines with custom days and planned sets
+- Log completed workout sessions and track training volume
+- Visualize progress with custom charts (no charting library)
+- Responsive, offline-capable PWA
+- Data export/import (CSV)
+- Glass-morphism UI with smooth animations
+
+## Tech Stack
+
+- **React 19** + **TypeScript** (Vite)
+- **TanStack Router** (file-based routing)
+- **Zustand** (state management, slice pattern)
+- **Tailwind CSS v4** (utility-first styling)
+- **Framer Motion** (animations)
+- Custom chart components
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+App runs at [http://localhost:3000](http://localhost:3000).
+
+## Scripts
+
+- `npm run dev` – Start development server
+- `npm run build` – Production build
+- `npm run test` – Run tests (Vitest)
+- `npm run check` – Format + lint fix
+
+## Project Structure
+
+- `src/routes/` – App routes (auto-generated)
+- `src/components/` – UI and feature components
+- `src/store/` – Zustand slices and store
+- `src/types/` – Domain types
+- `src/lib/` – Utilities, schemas, default data
+
+## Styling
+
+- Tailwind CSS with custom CSS variables
+- Fonts: Work Sans (display), Fira Code (mono)
+- Theming via oklch color variables
+
+## State Management
+
+- Zustand store, composed of slices:
+  - `muscleSlice`, `exerciseSlice`, `workoutSlice`, `sessionSlice`, `settingsSlice`
+- State persisted to localStorage
+
+## Routing
+
+- TanStack Router, file-based
+- Add routes in `src/routes/`
+- Root layout: `src/routes/__root.tsx`
+
+## Testing
+
+- Vitest + Testing Library
+- Test files co-located with components
+
+## Data Export/Import
+
+- Export workout history as CSV
+- Import data via UI
+
+## License
+
+MIT
 Welcome to your new TanStack app!
 
 # Getting Started
