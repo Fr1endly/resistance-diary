@@ -14,10 +14,10 @@ export interface ActiveTrainingSessionData {
   currentExerciseProgress: { total: number; completed: number }
   // Actions
   addCompletedSet: typeof useAppStore.getState extends () => infer S
-    ? S extends { addCompletedSet: infer F }
-      ? F
-      : never
-    : never
+  ? S extends { addCompletedSet: infer F }
+  ? F
+  : never
+  : never
   nextSet: () => void
   completeSession: () => void
 }
@@ -27,6 +27,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     isWorkoutInProgress,
     activeSessionId,
     activeRoutineId,
+    currentDayIndex,
     currentSetIndex,
     routines,
     exercises,
@@ -40,6 +41,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
       isWorkoutInProgress: state.isWorkoutInProgress,
       activeSessionId: state.activeSessionId,
       activeRoutineId: state.activeRoutineId,
+      currentDayIndex: state.currentDayIndex,
       currentSetIndex: state.currentSetIndex,
       routines: state.routines,
       exercises: state.exercises,
@@ -130,6 +132,19 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     currentExerciseProgress,
     addCompletedSet,
     nextSet,
-    completeSession,
+    completeSession: () => {
+      // Complete the session in store
+      completeSession()
+
+      // Advance to next day
+      if (activeRoutine?.days.length) {
+        let nextDayIndex = currentDayIndex + 1
+        // Wrap around if we reached the end
+        if (nextDayIndex >= activeRoutine.days.length) {
+          nextDayIndex = 0
+        }
+        useAppStore.getState().setCurrentDayIndex(nextDayIndex)
+      }
+    },
   }
 }
