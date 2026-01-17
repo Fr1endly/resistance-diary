@@ -231,7 +231,7 @@ function TrainingPage() {
               </div>
             )}
           </div>
-          <TrainingChart data={chartData} stagedCount={stagedCount} />
+          <TrainingChart data={chartData} stagedCount={stagedCount} currentCount={reps} />
         </div>
       }
       bottomUpper={

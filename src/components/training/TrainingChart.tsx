@@ -5,11 +5,13 @@ import Chart from '@/components/charts/ChartWithGrid'
 interface TrainingChartProps {
   data: Array<Array<RepGroup>>
   stagedCount?: number
+  currentCount: number
 }
 
 export const TrainingChart = memo(function TrainingChart({
   data,
   stagedCount = 0,
+  currentCount = 0,
 }: TrainingChartProps) {
   const processedData = useMemo(() => {
     if (!data.length) return []
@@ -22,12 +24,13 @@ export const TrainingChart = memo(function TrainingChart({
   }, [data])
 
   return (
-    <div className="w-full h-[280px] flex items-start justify-center bg-black/20 rounded-xs py-4">
-      <div className="w-full h-full max-h-[280px] overflow-hidden p-2">
+    <div className="w-full h-70 flex items-start justify-center bg-black/20 rounded-xs py-4">
+      <div className="w-full h-full max-h-70 overflow-hidden p-2">
         <Chart
           processedData={processedData}
           title=""
           stagedCount={stagedCount}
+          currentCount={currentCount}
         />
       </div>
     </div>
