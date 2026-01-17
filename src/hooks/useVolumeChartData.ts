@@ -28,6 +28,11 @@ export function useVolumeChartData(daysBack: number = 31): VolumeChartData {
     let total = 0
 
     for (const set of completedSets) {
+      // Filter by date range
+      if (new Date(set.completedAt) < cutoffDate) {
+        continue
+      }
+
       const dateKey = new Date(set.completedAt).toISOString().split('T')[0]
       const setVolume = set.repGroups.reduce(
         (sum, group) => sum + group.reps * group.weight,

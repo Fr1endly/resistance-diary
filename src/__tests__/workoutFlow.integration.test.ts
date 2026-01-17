@@ -878,7 +878,7 @@ describe('Workout Flow Integration', () => {
       })
     })
 
-    it('isolates sessions by routine for volume tracking', () => {
+    it('tracks volume across all routines', () => {
       vi.useFakeTimers()
       vi.setSystemTime(new Date('2026-01-08T12:00:00Z'))
 
@@ -915,7 +915,7 @@ describe('Workout Flow Integration', () => {
           createMockCompletedSet({
             id: 'cs-a',
             sessionId: 'session-a',
-            repGroups: [createRepGroup(10, 100)],
+            repGroups: [createRepGroup(10, 100)], // 1000kg
             completedAt: new Date(),
           }),
         )
@@ -937,25 +937,25 @@ describe('Workout Flow Integration', () => {
           createMockCompletedSet({
             id: 'cs-b',
             sessionId: 'session-b',
-            repGroups: [createRepGroup(10, 200)],
+            repGroups: [createRepGroup(10, 200)], // 2000kg
             completedAt: new Date(),
           }),
         )
         result.current.completeSession()
       })
 
-      // Check volume for routine B (active)
-      const { result: volumeB } = renderHook(() => useVolumeChartData(7))
-      expect(volumeB.current.totalVolume).toBe(2000) // Only routine B
+      // Volume tracking now includes all routines regardless of activeRoutineId
+      const { result: volumeResult } = renderHook(() => useVolumeChartData(7))
+      expect(volumeResult.current.totalVolume).toBe(3000) // Both routines: 1000 + 2000
 
-      // Switch to routine A
+      // Switching active routine doesn't affect volume tracking
       act(() => {
         result.current.setActiveRoutine('routine-a')
       })
 
-      // Re-render volume hook
-      const { result: volumeA } = renderHook(() => useVolumeChartData(7))
-      expect(volumeA.current.totalVolume).toBe(1000) // Only routine A
+      // Re-render volume hook - should still show combined volume
+      const { result: volumeAfterSwitch } = renderHook(() => useVolumeChartData(7))
+      expect(volumeAfterSwitch.current.totalVolume).toBe(3000) // Still both routines
     })
   })
 

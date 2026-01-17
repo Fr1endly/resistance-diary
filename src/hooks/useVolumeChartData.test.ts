@@ -18,6 +18,9 @@ const createMockSession = (
   ...overrides,
 })
 
+/*
+ Creates a completed set with 500 volume
+*/
 const createMockCompletedSet = (
   overrides: Partial<CompletedSet> = {},
 ): CompletedSet => ({
@@ -67,6 +70,9 @@ describe('useVolumeChartData', () => {
     vi.useRealTimers()
   })
 
+
+
+
   // ==========================================================================
   // Empty/No Data Scenarios
   // ==========================================================================
@@ -85,20 +91,6 @@ describe('useVolumeChartData', () => {
         activeRoutineId: 'routine-1',
         sessions: [],
         completedSets: [],
-      })
-
-      const { result } = renderHook(() => useVolumeChartData())
-
-      expect(result.current).toEqual({ chartData: [], totalVolume: 0 })
-    })
-
-    it('returns empty result when sessions do not match activeRoutineId', () => {
-      setupStore({
-        activeRoutineId: 'routine-1',
-        sessions: [
-          createMockSession({ id: 'session-1', routineId: 'other-routine' }),
-        ],
-        completedSets: [createMockCompletedSet({ sessionId: 'session-1' })],
       })
 
       const { result } = renderHook(() => useVolumeChartData())
@@ -126,6 +118,20 @@ describe('useVolumeChartData', () => {
   // ==========================================================================
 
   describe('volume calculation', () => {
+    it('returns result when sessions do not match activeRoutineId', () => {
+      setupStore({
+        activeRoutineId: 'routine-1',
+        sessions: [
+          createMockSession({ id: 'session-1', routineId: 'other-routine' }),
+        ],
+        completedSets: [createMockCompletedSet({ sessionId: 'session-1' })], 
+      })
+
+      const { result } = renderHook(() => useVolumeChartData())
+
+      expect(result.current.totalVolume).toBe(500)
+    })
+
     it('calculates volume as reps × weight for single rep group', () => {
       vi.useFakeTimers()
       vi.setSystemTime(new Date('2026-01-08T12:00:00Z'))
@@ -575,125 +581,6 @@ describe('useVolumeChartData', () => {
   })
 
   // ==========================================================================
-  // Routine Filtering
-  // ==========================================================================
-
-  describe('routine filtering', () => {
-    it('only includes sessions from activeRoutineId', () => {
-      vi.useFakeTimers()
-      vi.setSystemTime(new Date('2026-01-08T12:00:00Z'))
-
-      setupStore({
-        activeRoutineId: 'routine-1',
-        sessions: [
-          createMockSession({
-            id: 'session-1',
-            routineId: 'routine-1',
-            startedAt: new Date(),
-          }),
-          createMockSession({
-            id: 'session-2',
-            routineId: 'routine-2',
-            startedAt: new Date(),
-          }),
-        ],
-        completedSets: [
-          createMockCompletedSet({
-            id: 'set-1',
-            sessionId: 'session-1',
-            repGroups: [createRepGroup(10, 100)],
-            completedAt: new Date(),
-          }),
-          createMockCompletedSet({
-            id: 'set-2',
-            sessionId: 'session-2',
-            repGroups: [createRepGroup(10, 200)],
-            completedAt: new Date(),
-          }),
-        ],
-      })
-
-      const { result } = renderHook(() => useVolumeChartData())
-
-      expect(result.current.totalVolume).toBe(1000) // Only routine-1
-    })
-
-    it('excludes sessions from other routines even if in date range', () => {
-      vi.useFakeTimers()
-      vi.setSystemTime(new Date('2026-01-08T12:00:00Z'))
-
-      setupStore({
-        activeRoutineId: 'routine-1',
-        sessions: [
-          createMockSession({
-            id: 'session-other',
-            routineId: 'other-routine',
-            startedAt: new Date(),
-          }),
-        ],
-        completedSets: [
-          createMockCompletedSet({
-            sessionId: 'session-other',
-            repGroups: [createRepGroup(10, 100)],
-            completedAt: new Date(),
-          }),
-        ],
-      })
-
-      const { result } = renderHook(() => useVolumeChartData())
-
-      expect(result.current).toEqual({ chartData: [], totalVolume: 0 })
-    })
-
-    it('updates when activeRoutineId changes', () => {
-      vi.useFakeTimers()
-      vi.setSystemTime(new Date('2026-01-08T12:00:00Z'))
-
-      setupStore({
-        activeRoutineId: 'routine-1',
-        sessions: [
-          createMockSession({
-            id: 'session-1',
-            routineId: 'routine-1',
-            startedAt: new Date(),
-          }),
-          createMockSession({
-            id: 'session-2',
-            routineId: 'routine-2',
-            startedAt: new Date(),
-          }),
-        ],
-        completedSets: [
-          createMockCompletedSet({
-            id: 'set-1',
-            sessionId: 'session-1',
-            repGroups: [createRepGroup(10, 100)],
-            completedAt: new Date(),
-          }),
-          createMockCompletedSet({
-            id: 'set-2',
-            sessionId: 'session-2',
-            repGroups: [createRepGroup(10, 200)],
-            completedAt: new Date(),
-          }),
-        ],
-      })
-
-      const { result, rerender } = renderHook(() => useVolumeChartData())
-
-      expect(result.current.totalVolume).toBe(1000) // routine-1
-
-      // Change active routine
-      act(() => {
-        useAppStore.setState({ activeRoutineId: 'routine-2' })
-      })
-      rerender()
-
-      expect(result.current.totalVolume).toBe(2000) // routine-2
-    })
-  })
-
-  // ==========================================================================
   // Aggregation & Sorting
   // ==========================================================================
 
@@ -980,56 +867,5 @@ describe('useVolumeChartData', () => {
       })
     })
 
-    it('correctly filters mixed routine data', () => {
-      vi.useFakeTimers()
-      vi.setSystemTime(new Date('2026-01-08T12:00:00Z'))
-
-      setupStore({
-        activeRoutineId: 'push-pull',
-        sessions: [
-          createMockSession({
-            id: 'pp-1',
-            routineId: 'push-pull',
-            startedAt: new Date('2026-01-06T10:00:00Z'),
-          }),
-          createMockSession({
-            id: 'legs-1',
-            routineId: 'legs',
-            startedAt: new Date('2026-01-07T10:00:00Z'),
-          }),
-          createMockSession({
-            id: 'pp-2',
-            routineId: 'push-pull',
-            startedAt: new Date('2026-01-08T10:00:00Z'),
-          }),
-        ],
-        completedSets: [
-          createMockCompletedSet({
-            id: 'set-pp1',
-            sessionId: 'pp-1',
-            repGroups: [createRepGroup(10, 80)],
-            completedAt: new Date('2026-01-06T10:00:00Z'),
-          }),
-          createMockCompletedSet({
-            id: 'set-legs',
-            sessionId: 'legs-1',
-            repGroups: [createRepGroup(10, 200)],
-            completedAt: new Date('2026-01-07T10:00:00Z'),
-          }),
-          createMockCompletedSet({
-            id: 'set-pp2',
-            sessionId: 'pp-2',
-            repGroups: [createRepGroup(10, 80)],
-            completedAt: new Date('2026-01-08T10:00:00Z'),
-          }),
-        ],
-      })
-
-      const { result } = renderHook(() => useVolumeChartData())
-
-      // Only push-pull sessions: 800 + 800 = 1600
-      expect(result.current.totalVolume).toBe(1600)
-      expect(result.current.chartData).toHaveLength(2)
-    })
   })
 })
