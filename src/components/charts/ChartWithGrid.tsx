@@ -8,9 +8,10 @@ export interface ChartProps {
   title?: string
   /** Number of staged sets at the end of processedData (shown in different color) */
   stagedCount?: number
+  currentCount: number
 }
 
-type BarType = 'staged' | 'completed'
+type BarType = 'unstaged' | 'staged' | 'completed'
 
 const barVariants = cva(
   'flex flex-col justify-between items-center px-0.5 relative z-10',
@@ -19,6 +20,7 @@ const barVariants = cva(
       type: {
         staged: 'bg-blue-500',
         completed: 'bg-amber-500',
+        unstaged: 'bg-gray-300',
       },
     },
     defaultVariants: {
@@ -62,9 +64,14 @@ const SetLabel = memo(({ setNumber }: { setNumber: number }) => (
   </span>
 ))
 
-function Chart({ processedData, title, stagedCount = 0 }: ChartProps) {
+function Chart({
+  processedData,
+  title,
+  stagedCount = 0,
+  currentCount,
+}: ChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const lastBarRef = useRef<HTMLDivElement>(null)
+  const lastBarRef = useRef<HTMLDivElement>(null) // Used to scroll to the last bar on data update
   const [gridWidth, setGridWidth] = useState(0)
 
   // Calculate where staged sets start
@@ -126,6 +133,16 @@ function Chart({ processedData, title, stagedCount = 0 }: ChartProps) {
     }
   }, [totalBars])
 
+  // DELETE LATER
+  useEffect(() => {
+    console.log(
+      'Processed Data:',
+      processedData,
+      '\n Current Count:',
+      currentCount,
+    )
+  }, [processedData])
+
   // Precompute last index for ref assignment
   const lastSetIndex = processedData.length - 1
 
@@ -177,20 +194,23 @@ function Chart({ processedData, title, stagedCount = 0 }: ChartProps) {
                 }
               })
 
-              // Group expanded bars by weight for visual stacking
-              const groupedByWeight = expandedBars.reduce(
-                (acc, bar) => {
-                  if (!acc[bar.weight]) acc[bar.weight] = []
-                  acc[bar.weight]?.push(bar)
-                  return acc
-                },
-                {} as Record<
-                  number,
-                  Array<{ weight: number; barIndex: number }> | undefined
-                >,
-              )
+              // Total bars in this set (used to determine unstaged threshold)
+              const totalBarsInSet = expandedBars.length
 
-              const weightGroups = Object.entries(groupedByWeight)
+                // Group expanded bars by weight for visual stacking (using Map to preserve insertion order)
+                const groupedByWeight = new Map<
+                  number,
+                  Array<{ weight: number; barIndex: number }>
+                >()
+
+                expandedBars.forEach((bar) => {
+                  if (!groupedByWeight.has(bar.weight)) {
+                    groupedByWeight.set(bar.weight, [])
+                  }
+                  groupedByWeight.get(bar.weight)!.push(bar)
+                })
+
+                const weightGroups = Array.from(groupedByWeight.entries())
               const lastWeightIndex = weightGroups.length - 1
               const isLastSet = setIndex === lastSetIndex
 
@@ -199,22 +219,20 @@ function Chart({ processedData, title, stagedCount = 0 }: ChartProps) {
                   key={setIndex}
                   className="flex items-end gap-1 h-full relative"
                 >
-                  {weightGroups.map(([weight, bars], weightIndex) => {
-                    if (!bars) return null
-                    const weightNum = Number(weight)
-                    const heightPercent = getHeightPercent(weightNum)
+                    {weightGroups.map(([weight, bars], weightIndex) => {
+                      const heightPercent = getHeightPercent(weight)
                     const lastBarIndex = bars.length - 1
 
                     return (
                       <div
-                        key={weight}
+                          key={`${setIndex}-${weight}-${weightIndex}`}
                         className="flex flex-col justify-end items-center gap-1 h-full relative"
                       >
                         <span
                           className="text-xs text-neutral-200 absolute whitespace-nowrap left-1/2 -translate-x-1/2"
                           style={{ bottom: `calc(${heightPercent}% + 6px)` }}
                         >
-                          {weightNum}kg
+                            {weight}kg
                         </span>
                         <div className="flex items-end gap-0.5 h-full">
                           {bars.map((bar, barIdx) => (
@@ -227,7 +245,15 @@ function Chart({ processedData, title, stagedCount = 0 }: ChartProps) {
                                 weightIndex === lastWeightIndex &&
                                 barIdx === lastBarIndex
                               }
-                              type={isStaged ? 'staged' : 'completed'}
+                              type={
+                                isLastSet &&
+                                currentCount > 0 &&
+                                bar.barIndex >= totalBarsInSet - currentCount
+                                  ? 'unstaged'
+                                  : isStaged
+                                  ? 'staged'
+                                  : 'completed'
+                              }
                               lastBarRef={lastBarRef}
                             />
                           ))}
