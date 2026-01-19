@@ -25,9 +25,9 @@ function Page() {
         <PageLayout
             variant="glass"
             bottomSlot={
-                <div className="w-full h-full flex flex-col">
+                <div className="w-full h-full flex flex-col overflow-y-auto pr-2 -mr-2 custom-scrollbar">
                     {/* Data Management Section */}
-                    <div className="flex-1 overflow-y-auto -mx-1 mb-2 px-1">
+                    <div className="mb-2 px-1">
                         <button
                             onClick={() => setIsDataManagementOpen(!isDataManagementOpen)}
                             className="w-full flex items-center justify-between text-base font-semibold text-white/90 uppercase tracking-wider mb-3 hover:text-white/60 transition-colors"
