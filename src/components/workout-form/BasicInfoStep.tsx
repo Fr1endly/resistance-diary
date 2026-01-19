@@ -24,7 +24,7 @@ export function BasicInfoStep({ form, onNext, onCancel }: BasicInfoStepProps) {
         </p>
       </div>
 
-      <div className="flex-1 space-y-6">
+      <div className="flex-1 space-y-6 overflow-y-auto pr-2 -mr-2 custom-scrollbar">
         <div className="space-y-2">
           <label
             htmlFor="routine-name"
@@ -61,7 +61,7 @@ export function BasicInfoStep({ form, onNext, onCancel }: BasicInfoStepProps) {
             id="routine-desc"
             placeholder="Describe your workout routine goals..."
             className={cn(
-              'w-full px-3 py-2 rounded-lg min-h-25',
+              'w-full px-3 py-2 rounded-lg min-h-40',
               'bg-white/5 border border-white/10 text-white placeholder:text-white/30',
               'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
             )}

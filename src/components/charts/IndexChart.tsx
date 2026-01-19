@@ -27,8 +27,8 @@ export default ({ data, orientation, title }: ChartProps) => {
                 maxHeight: '40px',
               }}
             >
-              <div className="bg-linear-to-t from-red-500/60 to-red-600/30 flex justify-between items-center w-full h-full text-nowrap  py-1">
-                <span className="text-xs text-neutral-200 w-full text-right pr-0.5">
+              <div className="bg-yellow-500 flex justify-between items-center w-full h-full text-nowrap  py-1">
+                <span className="text-sm font-bold text-neutral-900 w-full text-right pr-0.5">
                   {value} kg
                 </span>
               </div>

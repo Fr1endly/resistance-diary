@@ -200,7 +200,7 @@ function TrainingPage() {
         />
       }
       middleLeftSlot={
-        <div className="w-full h-full flex flex-col">
+        <div className="w-full h-full flex flex-col justify-end">
           {/* Target badges */}
           <div className="flex justify-center my-4 gap-2">
             <div
@@ -234,7 +234,7 @@ function TrainingPage() {
           <TrainingChart data={chartData} stagedCount={stagedCount} currentCount={reps} />
         </div>
       }
-      bottomUpper={
+      bottomSlot={
         <div className="relative w-full h-full flex flex-col justify-end gap-8">
           <FloatingControls
             reps={reps}

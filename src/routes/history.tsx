@@ -24,7 +24,7 @@ function Page() {
     return (
         <PageLayout
             variant="glass"
-            bottomUpper={
+            bottomSlot={
                 <div className="w-full h-full flex flex-col">
                     {/* Data Management Section */}
                     <div className="flex-1 overflow-y-auto -mx-1 mb-2 px-1">

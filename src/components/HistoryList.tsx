@@ -77,7 +77,7 @@ export function HistoryList() {
                 <h3 className="font-display font-bold text-lg text-white">
                   {format(date, 'EEEE, MMMM d')}
                 </h3>
-                <div className="text-xs font-mono text-amber-400/80 bg-amber-500/10 px-2 py-1 rounded-md border border-amber-500/20">
+                <div className="text-xs font-body text-amber-400/80 bg-amber-500/10 px-2 py-1 rounded-md border border-amber-500/20">
                   {sets.length} Sets Completed
                 </div>
               </div>
@@ -103,14 +103,14 @@ export function HistoryList() {
                 >
                   {/* Exercise */}
                   <div className="col-span-5">
-                    <h4 className="font-medium text-white/90 truncate pr-2">
+                    <h4 className="font-display font-medium text-white/90 truncate pr-2">
                       {getExerciseName(set.exerciseId)}
                     </h4>
                   </div>
 
                   {/* Sets Count */}
                   <div className="col-span-2 flex justify-center">
-                    <span className="px-2 py-0.5 rounded bg-white/10 text-xs font-mono text-white/70">
+                    <span className="px-2 py-0.5 rounded bg-white/10 text-xs font-body text-white/70">
                       {set.repGroups.length}
                     </span>
                   </div>
@@ -118,14 +118,14 @@ export function HistoryList() {
                   {/* Best Set */}
                   <div className="col-span-3 flex items-center gap-1.5 overflow-hidden">
                     <Trophy size={10} className="text-amber-400 shrink-0" />
-                    <span className="text-xs font-mono text-amber-100 truncate">
+                    <span className="text-xs font-body text-amber-100 truncate">
                       {getBestSet(set)}
                     </span>
                   </div>
 
                   {/* Time */}
                   <div className="col-span-2 text-right">
-                    <span className="text-xs text-white/40 font-mono">
+                    <span className="text-xs text-white/40 font-body">
                       {format(new Date(set.completedAt), 'h:mm a')}
                     </span>
                   </div>

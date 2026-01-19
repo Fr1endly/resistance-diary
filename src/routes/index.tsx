@@ -34,7 +34,7 @@ const ChartTitle = ({ subtitle }: ChartTitleProps) => {
       <p className="font-display text-neutral-300/95 text-lg">
         This week volume
       </p>
-      <p className="font-display  text-neutral-400">{subtitle}</p>
+      <p className="font-body  text-neutral-400">{subtitle}</p>
     </div>
   )
 }
@@ -48,8 +48,8 @@ const CurrentDayWorkout = ({
 
   return (
     <div className="font-display">
-      <h2 className="text-xl font-bold text-neutral-950">{workoutName}</h2>
-      <h3 className="font-medium text-lg text-neutral-900/95">{dayName}</h3>
+      <h2 className="text-2xl font-bold text-neutral-950">{workoutName}</h2>
+      <h3 className="font-body font-medium text-lg text-neutral-900/95">{dayName}</h3>
     </div>
   )
 }
@@ -58,11 +58,11 @@ const ActionButton = ({ url, text, onClick }: ActionButtonProps) => {
   return (
     <Button
       variant="default"
-      className="w-62.5 h-18.75 rounded-md text-2xl font-bold uppercase text-neutral-100 bg-neutral-900 px-2 py-1"
+      className="w-44 h-18.75 rounded-md text-2xl font-display font-medium uppercase text-neutral-100 bg-neutral-900 px-2 py-1"
       onClick={onClick}
     >
       <Link to={url} className="flex justify-center items-center w-full h-full">
-        <div className="size-6"></div>
+        {url == '/workouts' && <div className="size-6"></div>}
         <span className="flex-1">{text}</span>
         {url == '/workouts' && <ArrowDiagonal className="ml-2 size-6" />}
       </Link>
@@ -96,13 +96,19 @@ function IndexPage() {
       middleRightSlot={
         <Chart data={chartData} orientation="vertical" title="Workout Volume" />
       }
-      bottomUpper={
-        <CurrentDayWorkout
-          activeWorkout={activeWorkout}
-          activeDayIdx={currentDayIndex}
-        />
+      bottomSlot={
+        <div className="w-full h-full flex flex-col justify-between">
+          <div className="flex-1 flex flex-col justify-start items-start">
+            <CurrentDayWorkout
+              activeWorkout={activeWorkout}
+              activeDayIdx={currentDayIndex}
+            />
+          </div>
+          <div className="flex-1 flex justify-start items-end">
+            <ActionButton url={actionUrl} text={actionText} />
+          </div>
+        </div>
       }
-      bottomBottom={<ActionButton url={actionUrl} text={actionText} />}
     />
   )
 }

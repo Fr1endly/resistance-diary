@@ -111,19 +111,19 @@ function ExerciseList({
         )}
       >
         <div className="text-center flex-1">
-          <div className="text-3xl font-bold text-amber-400 font-mono">
+          <div className="text-3xl font-bold text-amber-400 font-body">
             {exercises.length}
           </div>
-          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+          <div className="text-xs text-white/40 uppercase tracking-wider mt-1 font-display">
             Total
           </div>
         </div>
         <div className="h-12 w-px bg-white/10" />
         <div className="text-center flex-1">
-          <div className="text-3xl font-bold text-amber-400 font-mono">
+          <div className="text-3xl font-bold text-amber-400 font-body">
             {muscleGroups.length}
           </div>
-          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+          <div className="text-xs text-white/40 uppercase tracking-wider mt-1 font-display">
             Muscle Groups
           </div>
         </div>
@@ -202,7 +202,7 @@ function ExerciseList({
                       className={cn(
                         'px-3 py-1.5 rounded-lg',
                         'bg-white/5 border border-white/10',
-                        'text-xs font-mono text-white/50',
+                        'text-xs font-body text-white/50',
                       )}
                     >
                       {muscleMap.get(mc.muscleGroupId) || 'Unknown'}:{' '}
@@ -524,7 +524,7 @@ function MuscleContributionInput({
             max={100}
             className={cn(
               'w-full h-10 px-3 rounded-lg',
-              'bg-white/5 border border-white/10 text-white',
+              'bg-white/5 border border-white/10 text-white font-body',
               'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
             )}
             {...form.register(`muscleContributions.${index}.percentage`, {
@@ -617,7 +617,7 @@ function Page() {
     <>
       <PageLayout
         variant="glass"
-        bottomUpper={
+        bottomSlot={
           view === 'list' ? (
             <ExerciseList
               exercises={exercises}

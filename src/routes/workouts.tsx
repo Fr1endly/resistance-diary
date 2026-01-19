@@ -393,8 +393,8 @@ function WorkoutsPage() {
     return (
       <PageLayout
         variant="glass"
-        bottomUpper={
-          <div className="w-full h-full flex-1 flex flex-col">
+        bottomSlot={
+          <div className="w-full h-full flex-1 flex flex-col ">
             {/* Back Button */}
             <button
               onClick={handleFormCancel}
@@ -409,11 +409,13 @@ function WorkoutsPage() {
             </button>
 
             {/* Form */}
-            <WorkoutPlanForm
-              onSubmit={handleFormSubmit}
-              onCancel={handleFormCancel}
-              initialData={editingRoutine || undefined}
-            />
+            <div className="flex-1 w-full min-h-0">
+              <WorkoutPlanForm
+                onSubmit={handleFormSubmit}
+                onCancel={handleFormCancel}
+                initialData={editingRoutine || undefined}
+              />
+            </div>
           </div>
         }
       />
@@ -425,7 +427,7 @@ function WorkoutsPage() {
     <>
       <PageLayout
         variant="glass"
-        bottomUpper={
+        bottomSlot={
           <div className="w-full h-full flex-1 flex flex-col ">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">

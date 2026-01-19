@@ -9,7 +9,7 @@ import Dialog from '@/components/ui/Dialog'
 
 // Layout height configuration by variant
 const LAYOUT_CONFIG = {
-  sectioned: { upper: '61%', middle: '80%', bottom: '39%' },
+  sectioned: { upper: '66%', middle: '80%', bottom: '34%' },
   glass: { upper: '15%', middle: '0', bottom: '85%' },
 } as const
 
@@ -29,8 +29,7 @@ interface PageLayoutProps {
   upperSlot?: ReactNode
   middleLeftSlot?: ReactNode
   middleRightSlot?: ReactNode
-  bottomUpper?: ReactNode
-  bottomBottom?: ReactNode
+  bottomSlot?: ReactNode
   // Dialog props (opt-in)
   dialogChildren?: ReactNode
   dialogTitle?: string
@@ -43,8 +42,7 @@ const PageLayout = ({
   upperSlot,
   middleLeftSlot,
   middleRightSlot,
-  bottomUpper,
-  bottomBottom,
+  bottomSlot,
   // Dialog
   dialogChildren,
   dialogTitle = 'Info',
@@ -118,7 +116,7 @@ const PageLayout = ({
             {/* Bottom section - yellow for sectioned/singular, glass for glass variant */}
             <motion.div
               className={cn(
-                'flex flex-col justify-start items-start overflow-y-auto relative z-30',
+                'flex flex-col justify-start items-start overflow-hidden relative z-30',
                 variant === 'glass'
                   ? 'p-4 h-full w-full bg-gray-900/15'
                   : 'p-6 pr-6 bg-yellow-500',
@@ -127,18 +125,7 @@ const PageLayout = ({
               transition={{ duration: 0.35, ease: 'easeInOut' }}
               {...fadeAnimation}
             >
-              <div className="w-full flex flex-col justify-start items-start ">
-                {bottomUpper}
-              </div>
-
-              <div
-                className={cn(
-                  'w-full flex justify-start items-end relative',
-                  variant === 'glass' ? 'h-0 flex-none' : 'flex-1',
-                )}
-              >
-                {bottomBottom}
-              </div>
+              {bottomSlot}
             </motion.div>
           </div>
         </NavDrawer>

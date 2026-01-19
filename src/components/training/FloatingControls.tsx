@@ -23,11 +23,10 @@ export const FloatingControls = memo(function FloatingControls({
   onUnstage,
 }: FloatingControlsProps) {
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <div
         className={cn(
-          'rounded-3xl',
-          'backdrop-blur-2xl border border-white/10',
+          'rounded-3xl h-full pr-4 flex flex-col justify-around',
         )}
       >
         {/* Inline inputs with divider */}

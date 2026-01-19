@@ -90,7 +90,7 @@ export function DayPlanStep({
 
   return (
     <div className="flex-1 flex flex-col h-full overflow-hidden">
-      <div className="mb-4 flex items-center justify-between">
+      <div className=" flex items-center justify-between">
         <div>
           <h2 className="font-display text-xl font-bold text-white mb-1">
             Day {dayIndex + 1} of {totalDays}
@@ -199,7 +199,7 @@ export function DayPlanStep({
         </button>
       </div>
 
-      <div className="flex items-start justify-between pt-4 mt-2 relative z-10 bg-gradient-to-t from-black/80 to-transparent -mx-4 px-4 pb-4">
+      <div className="flex items-start justify-between pt-4 mt-2 relative z-10">
         <button
           type="button"
           onClick={onPrevious}

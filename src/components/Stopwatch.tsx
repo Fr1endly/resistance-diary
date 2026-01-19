@@ -130,7 +130,7 @@ export function Stopwatch({ className }: StopwatchProps) {
         className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl"
       >
         {/* Digital time display */}
-        <div className="font-mono text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight">
+        <div className="font-body text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight">
           <span className="text-amber-400">
             <Digit value={minutes[0]} />
             <Digit value={minutes[1]} />
@@ -151,7 +151,7 @@ export function Stopwatch({ className }: StopwatchProps) {
             variant={isRunning ? 'destructive' : 'default'}
             size="lg"
             onClick={isRunning ? stopStopwatch : startStopwatch}
-            className="min-w-28 text-base font-semibold"
+            className="min-w-28 text-base font-display font-semibold"
           >
             {isRunning ? 'Stop' : 'Start'}
           </Button>
@@ -169,7 +169,7 @@ export function Stopwatch({ className }: StopwatchProps) {
               variant="outline"
               size="lg"
               onClick={resetStopwatch}
-              className="min-w-28 text-base font-semibold"
+              className="min-w-28 text-base font-display font-semibold"
             >
               Reset
             </Button>
@@ -182,7 +182,7 @@ export function Stopwatch({ className }: StopwatchProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center gap-2 text-white/50 text-sm font-mono"
+          className="flex items-center gap-2 text-white/50 text-sm font-body"
         >
           <motion.span
             animate={{ opacity: [1, 0.3, 1] }}

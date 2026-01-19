@@ -214,7 +214,7 @@ function Page() {
   return (
     <PageLayout
       variant="glass"
-      bottomUpper={
+      bottomSlot={
         <WorkoutDaySection
           name={activeDay?.name ?? ''}
           exercises={exerciseData}

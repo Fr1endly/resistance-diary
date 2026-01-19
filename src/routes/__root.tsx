@@ -192,7 +192,7 @@ export function MyErrorComponent({ error, reset }: ErrorComponentProps) {
               'bg-black/20 border border-white/5',
             )}
           >
-            <pre className="text-xs text-white/40 font-mono whitespace-pre-wrap wrap-break-word overflow-auto max-h-48">
+            <pre className="text-xs text-white/40 font-body whitespace-pre-wrap wrap-break-word overflow-auto max-h-48">
               {error.stack || JSON.stringify(error, null, 2)}
             </pre>
           </div>

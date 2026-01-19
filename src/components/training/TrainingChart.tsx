@@ -24,8 +24,8 @@ export const TrainingChart = memo(function TrainingChart({
   }, [data])
 
   return (
-    <div className="w-full h-70 flex items-start justify-center bg-black/20 rounded-xs py-4">
-      <div className="w-full h-full max-h-70 overflow-hidden p-2">
+    <div className="w-full h-90 flex items-start justify-center bg-black/20 rounded-xs py-4">
+      <div className="w-full h-full max-h-90 overflow-hidden p-2">
         <Chart
           processedData={processedData}
           title=""

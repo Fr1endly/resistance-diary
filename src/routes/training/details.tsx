@@ -375,7 +375,7 @@ function TrainingDetailsPage() {
   return (
     <PageLayout
       variant="glass"
-      bottomUpper={<ExerciseCard data={currentExerciseData} />}
+      bottomSlot={<ExerciseCard data={currentExerciseData} />}
     />
   )
 }
