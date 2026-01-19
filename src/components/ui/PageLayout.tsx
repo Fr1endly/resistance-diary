@@ -10,7 +10,7 @@ import Dialog from '@/components/ui/Dialog'
 // Layout height configuration by variant
 const LAYOUT_CONFIG = {
   sectioned: { upper: '66%', middle: '80%', bottom: '34%' },
-  glass: { upper: '15%', middle: '0', bottom: '85%' },
+  glass: { upper: '7%', middle: '0', bottom: '93%' },
 } as const
 
 // Shared fade animation props
