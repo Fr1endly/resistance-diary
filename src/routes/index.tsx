@@ -1,20 +1,16 @@
+import { useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { useAppStore } from '@/store/useAppStore'
 import { useVolumeChartData } from '@/hooks/useVolumeChartData'
+import { useMuscleGroupVolumeData } from '@/hooks/useMuscleGroupVolumeData'
 import Layout from '@/components/ui/PageLayout'
 import { Button } from '@/components/ui/button'
 import ArrowDiagonal from '@/components/icons/ArrowDiagonal'
-import Chart from '@/components/charts/IndexChart'
-
-// import type { WorkoutLogEntry, WorkoutPlan } from "@/types";
+import IndexChart, { type TimeRange, type ChartCategory } from '@/components/charts/IndexChart'
 
 export const Route = createFileRoute('/')({
   component: IndexPage,
 })
-
-interface ChartTitleProps {
-  subtitle: string
-}
 
 interface CurrentDayWorkoutProps {
   activeWorkout: any
@@ -28,16 +24,7 @@ interface ActionButtonProps {
   onClick?: () => void
 }
 
-const ChartTitle = ({ subtitle }: ChartTitleProps) => {
-  return (
-    <div className="flex-1 h-full pl-5">
-      <p className="font-display text-neutral-300/95 text-lg">
-        This week volume
-      </p>
-      <p className="font-body  text-neutral-400">{subtitle}</p>
-    </div>
-  )
-}
+
 
 const CurrentDayWorkout = ({
   activeWorkout,
@@ -71,9 +58,20 @@ const ActionButton = ({ url, text, onClick }: ActionButtonProps) => {
 }
 
 function IndexPage() {
+  const [timeRange, setTimeRange] = useState<TimeRange>('week')
+  const [chartCategory, setChartCategory] = useState<ChartCategory>('total')
   const { isWorkoutInProgress, currentDayIndex, activeRoutineId, routines } =
     useAppStore()
-  const { chartData, totalVolume } = useVolumeChartData(7)
+  const daysBack = timeRange === 'week' ? 7 : 30
+
+  // Get data from both hooks
+  const totalVolumeData = useVolumeChartData(daysBack)
+  const muscleVolumeData = useMuscleGroupVolumeData(daysBack)
+
+  // Select which data to display based on category
+  const { chartData, totalVolume } = chartCategory === 'muscle'
+    ? muscleVolumeData
+    : totalVolumeData
 
   const activeWorkout =
     routines.find((routine) => routine.id === activeRoutineId) || null
@@ -90,12 +88,17 @@ function IndexPage() {
 
   return (
     <Layout
-      middleLeftSlot={
-        <ChartTitle subtitle={`Total: ${totalVolume.toLocaleString()} kg`} />
+      middleSlot={
+        <IndexChart
+          chartData={chartData}
+          totalVolume={totalVolume}
+          timeRange={timeRange}
+          onTimeRangeChange={setTimeRange}
+          chartCategory={chartCategory}
+          onChartCategoryChange={setChartCategory}
+        />
       }
-      middleRightSlot={
-        <Chart data={chartData} orientation="vertical" title="Workout Volume" />
-      }
+
       bottomSlot={
         <div className="w-full h-full flex flex-col justify-between">
           <div className="flex-1 flex flex-col justify-start items-start">
@@ -112,3 +115,4 @@ function IndexPage() {
     />
   )
 }
+

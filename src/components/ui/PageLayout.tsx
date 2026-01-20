@@ -27,8 +27,7 @@ interface PageLayoutProps {
   variant?: LayoutVariant
   // Slot props
   upperSlot?: ReactNode
-  middleLeftSlot?: ReactNode
-  middleRightSlot?: ReactNode
+  middleSlot?: ReactNode
   bottomSlot?: ReactNode
   // Dialog props (opt-in)
   dialogChildren?: ReactNode
@@ -40,8 +39,7 @@ const PageLayout = ({
   variant = 'sectioned',
   // Slots
   upperSlot,
-  middleLeftSlot,
-  middleRightSlot,
+  middleSlot,
   bottomSlot,
   // Dialog
   dialogChildren,
@@ -106,10 +104,7 @@ const PageLayout = ({
                 style={{ height: config.middle }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
               >
-                {middleLeftSlot}
-                <div className="flex-1 h-full flex flex-col justify-between items-end">
-                  {middleRightSlot}
-                </div>
+                {middleSlot}
               </motion.div>
             </motion.div>
 

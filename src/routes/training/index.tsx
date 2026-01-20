@@ -174,7 +174,7 @@ function TrainingPage() {
     return (
       <PageLayout
         variant="sectioned"
-        middleLeftSlot={
+        middleSlot={
           <div className="w-full h-64 flex items-center justify-center bg-neutral-200 text-black">
             CANT LOAD DATA
             {JSON.stringify({ currentExercise, currentPlannedSet })}
@@ -199,7 +199,7 @@ function TrainingPage() {
           totalSets={currentExerciseProgress.total}
         />
       }
-      middleLeftSlot={
+      middleSlot={
         <div className="w-full h-full flex flex-col justify-end">
           {/* Target badges */}
           <div className="flex justify-center my-4 gap-2">

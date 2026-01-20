@@ -57,3 +57,9 @@ registerSW({
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
+
+import { setupDebugStore } from './utils/debugStore'
+
+if (import.meta.env.DEV) {
+  setupDebugStore()
+}

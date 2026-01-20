@@ -93,22 +93,14 @@ describe('PageLayout', () => {
       expect(screen.getByText('Upper Content')).toBeInTheDocument()
     })
 
-    it('renders middleLeftSlot content', () => {
+    it('renders middleSlot content', () => {
       render(
         <PageLayout
-          middleLeftSlot={<div data-testid="middle-left">Middle Left</div>}
+          middleSlot={<div data-testid="middle-slot">Middle Slot</div>}
         />,
       )
-      expect(screen.getByTestId('middle-left')).toBeInTheDocument()
-    })
-
-    it('renders middleRightSlot content', () => {
-      render(
-        <PageLayout
-          middleRightSlot={<div data-testid="middle-right">Middle Right</div>}
-        />,
-      )
-      expect(screen.getByTestId('middle-right')).toBeInTheDocument()
+      expect(screen.getByTestId('middle-slot')).toBeInTheDocument()
+      expect(screen.getByText('Middle Slot')).toBeInTheDocument()
     })
 
     it('renders bottomSlot content', () => {
@@ -124,14 +116,12 @@ describe('PageLayout', () => {
       render(
         <PageLayout
           upperSlot={<span>Upper</span>}
-          middleLeftSlot={<span>Middle Left</span>}
-          middleRightSlot={<span>Middle Right</span>}
+          middleSlot={<span>Middle</span>}
           bottomSlot={<span>Bottom Slot</span>}
         />,
       )
       expect(screen.getByText('Upper')).toBeInTheDocument()
-      expect(screen.getByText('Middle Left')).toBeInTheDocument()
-      expect(screen.getByText('Middle Right')).toBeInTheDocument()
+      expect(screen.getByText('Middle')).toBeInTheDocument()
       expect(screen.getByText('Bottom Slot')).toBeInTheDocument()
     })
 
