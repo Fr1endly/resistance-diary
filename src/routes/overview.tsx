@@ -22,6 +22,7 @@ interface WorkoutDaySectionProps {
   exercises: Array<ExerciseWithSets>
   setCount: number
   onStartSession: () => void
+  onSkipDay: () => void
 }
 
 function getRepRange(sets: Array<PlannedSet>): string {
@@ -37,6 +38,7 @@ function WorkoutDaySection({
   name,
   setCount,
   onStartSession,
+  onSkipDay,
 }: WorkoutDaySectionProps) {
   return (
     <div className="w-full h-full flex flex-col space-y-4">
@@ -155,17 +157,15 @@ function WorkoutDaySection({
           </button>
         </Link>
         <button
+          onClick={onSkipDay}
           className={cn(
-            'w-full h-12 rounded-2xl font-medium text-sm',
-            'backdrop-blur-md bg-white/5 border border-white/10',
-            'text-white/60 transition-all duration-200',
-            'hover:bg-white/10 hover:text-white/80',
-            'active:scale-[0.98]',
+            'w-full h-12 rounded-2xl font-medium text-sm text-red-400',
+            'backdrop-blur-md bg-red-400/20 border border-red-400/30',
             'flex items-center justify-center gap-2',
           )}
         >
           <SkipForward size={18} />
-          Skip Day
+          Skip Rest / Next Day
         </button>
       </div>
     </div>
@@ -179,6 +179,7 @@ function Page() {
     routines,
     exercises,
     startSession,
+    setCurrentDayIndex,
   } = useAppStore(
     useShallow((state) => ({
       currentDayIndex: state.currentDayIndex,
@@ -186,6 +187,7 @@ function Page() {
       routines: state.routines,
       exercises: state.exercises,
       startSession: state.startSession,
+      setCurrentDayIndex: state.setCurrentDayIndex,
     })),
   )
 
@@ -211,6 +213,12 @@ function Page() {
     })
   }
 
+  const handleSkipDay = () => {
+    if (!activeRoutine) return
+    const nextDayIndex = (currentDayIndex + 1) % activeRoutine.days.length
+    setCurrentDayIndex(nextDayIndex)
+  }
+
   return (
     <PageLayout
       variant="glass"
@@ -220,6 +228,7 @@ function Page() {
           exercises={exerciseData}
           setCount={plannedSets.length}
           onStartSession={handleStartSession}
+          onSkipDay={handleSkipDay}
         />
       }
     />
