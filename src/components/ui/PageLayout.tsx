@@ -9,7 +9,7 @@ import Dialog from '@/components/ui/Dialog'
 
 // Layout height configuration by variant
 const LAYOUT_CONFIG = {
-  sectioned: { upper: '66%', middle: '80%', bottom: '34%' },
+  sectioned: { upper: '66%', middle: '80%', bottom: '33%' },
   glass: { upper: '7%', middle: '0', bottom: '93%' },
 } as const
 
@@ -78,7 +78,7 @@ const PageLayout = ({
           </div>
 
           {/* background texture */}
-          <div className="bg-gray-900/90 w-full h-full z-20 absolute top-0">
+          <div className="bg-gray-900 w-full h-full z-20 absolute top-0 ">
             <img
               src={BgTextureImg}
               alt="Background Texture"
@@ -87,10 +87,10 @@ const PageLayout = ({
           </div>
 
           {/* content - transparent section  */}
-          <div className="relative h-full w-full z-30 ">
+          <div className="bg-gray-900/0 relative h-full w-full z-30 flex flex-col items-center">
             {/* Top section */}
             <motion.div
-              className="flex flex-col justify-end relative"
+              className="flex flex-col justify-end relative w-full"
               {...fadeAnimation}
               style={{ height: config.upper }}
               transition={{ duration: 1, ease: 'easeInOut' }}
@@ -100,7 +100,7 @@ const PageLayout = ({
               </div>
 
               <motion.div
-                className="w-full bg-gray-900/15 relative z-30 flex justify-between items-end overflow-auto"
+                className="w-full  relative z-30 flex justify-between items-end overflow-auto"
                 style={{ height: config.middle }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
               >
@@ -111,10 +111,10 @@ const PageLayout = ({
             {/* Bottom section - yellow for sectioned/singular, glass for glass variant */}
             <motion.div
               className={cn(
-                'flex flex-col justify-start items-start overflow-hidden relative z-30',
+                'flex flex-col justify-start items-start overflow-hidden relative z-30 w-[95%]',
                 variant === 'glass'
                   ? 'p-4 h-full w-full bg-gray-900/15'
-                  : 'p-6 pr-6 bg-yellow-500',
+                  : 'p-6 bg-yellow-500 rounded-lg',
               )}
               style={{ height: config.bottom }}
               transition={{ duration: 0.35, ease: 'easeInOut' }}
