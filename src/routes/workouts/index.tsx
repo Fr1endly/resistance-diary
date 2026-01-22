@@ -7,6 +7,7 @@ import {
   Dumbbell,
   Pencil,
   Plus,
+  Share2,
   Trash2,
 } from 'lucide-react'
 
@@ -20,6 +21,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
 import { useToast } from '@/hooks/useToast'
+import { generateShareUrl } from '@/lib/shareUtils'
 
 export const Route = createFileRoute('/workouts/')({
   component: WorkoutsPage,
@@ -155,6 +157,7 @@ function RoutineDetailContent({
   exercises,
   onActivate,
 }: RoutineDetailDialogProps) {
+  const toast = useToast()
   if (!routine) return null
 
   return (
@@ -267,10 +270,29 @@ function RoutineDetailContent({
         })}
       </div>
 
-      {/* Action Button */}
-      <div className="pt-2">
+      {/* Action Buttons */}
+      <div className="pt-2 flex flex-col gap-3">
         <button
           onClick={() => onActivate(routine)}
+          className={cn(
+            'w-full h-14 rounded-2xl font-semibold text-base',
+            'bg-amber-500 border border-amber-400/20',
+            'text-neutral-950 transition-all duration-200',
+            'hover:bg-amber-400',
+            'active:scale-[0.98]',
+            'flex items-center justify-center gap-2',
+          )}
+        >
+          Select as Active Routine
+          <ChevronRight size={20} />
+        </button>
+
+        <button
+          onClick={() => {
+            const url = generateShareUrl(routine)
+            navigator.clipboard.writeText(url)
+            toast.success('Share link copied to clipboard!')
+          }}
           className={cn(
             'w-full h-14 rounded-2xl font-semibold text-base',
             'bg-neutral-900 border border-neutral-900',
@@ -280,13 +302,14 @@ function RoutineDetailContent({
             'flex items-center justify-center gap-2',
           )}
         >
-          Select as Active Routine
-          <ChevronRight size={20} />
+          <Share2 size={20} />
+          Share Routine
         </button>
       </div>
     </div>
   )
 }
+
 
 // ============================================
 // MAIN PAGE

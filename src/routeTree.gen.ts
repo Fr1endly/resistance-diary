@@ -17,7 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkoutsIndexRouteImport } from './routes/workouts/index'
 import { Route as TrainingIndexRouteImport } from './routes/training/index'
 import { Route as TrainingDetailsRouteImport } from './routes/training/details'
-import { Route as WorkoutsImportCodeRouteImport } from './routes/workouts/import/[code]'
+import { Route as WorkoutsImportCodeRouteImport } from './routes/workouts/import/$code'
 
 const OverviewRoute = OverviewRouteImport.update({
   id: '/overview',
@@ -60,8 +60,8 @@ const TrainingDetailsRoute = TrainingDetailsRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkoutsImportCodeRoute = WorkoutsImportCodeRouteImport.update({
-  id: '/workouts/import/code',
-  path: '/workouts/import/code',
+  id: '/workouts/import/$code',
+  path: '/workouts/import/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -74,7 +74,7 @@ export interface FileRoutesByFullPath {
   '/training/details': typeof TrainingDetailsRoute
   '/training': typeof TrainingIndexRoute
   '/workouts': typeof WorkoutsIndexRoute
-  '/workouts/import/code': typeof WorkoutsImportCodeRoute
+  '/workouts/import/$code': typeof WorkoutsImportCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +85,7 @@ export interface FileRoutesByTo {
   '/training/details': typeof TrainingDetailsRoute
   '/training': typeof TrainingIndexRoute
   '/workouts': typeof WorkoutsIndexRoute
-  '/workouts/import/code': typeof WorkoutsImportCodeRoute
+  '/workouts/import/$code': typeof WorkoutsImportCodeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +97,7 @@ export interface FileRoutesById {
   '/training/details': typeof TrainingDetailsRoute
   '/training/': typeof TrainingIndexRoute
   '/workouts/': typeof WorkoutsIndexRoute
-  '/workouts/import/code': typeof WorkoutsImportCodeRoute
+  '/workouts/import/$code': typeof WorkoutsImportCodeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,7 +110,7 @@ export interface FileRouteTypes {
     | '/training/details'
     | '/training'
     | '/workouts'
-    | '/workouts/import/code'
+    | '/workouts/import/$code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -121,7 +121,7 @@ export interface FileRouteTypes {
     | '/training/details'
     | '/training'
     | '/workouts'
-    | '/workouts/import/code'
+    | '/workouts/import/$code'
   id:
     | '__root__'
     | '/'
@@ -132,7 +132,7 @@ export interface FileRouteTypes {
     | '/training/details'
     | '/training/'
     | '/workouts/'
-    | '/workouts/import/code'
+    | '/workouts/import/$code'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,10 +205,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrainingDetailsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/workouts/import/code': {
-      id: '/workouts/import/code'
-      path: '/workouts/import/code'
-      fullPath: '/workouts/import/code'
+    '/workouts/import/$code': {
+      id: '/workouts/import/$code'
+      path: '/workouts/import/$code'
+      fullPath: '/workouts/import/$code'
       preLoaderRoute: typeof WorkoutsImportCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
