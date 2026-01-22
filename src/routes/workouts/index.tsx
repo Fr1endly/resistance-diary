@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
 import { useToast } from '@/hooks/useToast'
 
-export const Route = createFileRoute('/workouts')({
+export const Route = createFileRoute('/workouts/')({
   component: WorkoutsPage,
 })
 
