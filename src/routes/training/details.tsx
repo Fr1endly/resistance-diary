@@ -8,6 +8,7 @@ import type { Exercise, PlannedSet } from '@/types'
 import PageLayout from '@/components/ui/PageLayout'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
+import { WorkoutProgress } from '@/components/training/WorkoutProgress'
 
 export const Route = createFileRoute('/training/details')({
   component: TrainingDetailsPage,
@@ -25,6 +26,9 @@ interface ExerciseWithSets {
 
 interface ExerciseCardProps {
   data: ExerciseWithSets
+  allPlannedSets: Array<PlannedSet>
+  allExercises: Array<Exercise>
+  currentSetIndex: number
   className?: string
 }
 
@@ -33,7 +37,7 @@ interface ExerciseCardProps {
 // ============================================
 
 const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
-  ({ data, className }, ref) => {
+  ({ data, allPlannedSets, allExercises, currentSetIndex, className }, ref) => {
     const [isVideosOpen, setIsVideosOpen] = useState(false)
     const { exercise, plannedSets, completedCount } = data
 
@@ -143,110 +147,125 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
           </div>
         )}
 
+        {/* Workout Progress Overview */}
+        <div className="mb-4">
+          <WorkoutProgress
+            plannedSets={allPlannedSets}
+            exercises={allExercises}
+            currentSetIndex={currentSetIndex}
+          />
+        </div>
+
         {/* Description if exists */}
-        {exercise.description && (
-          <div
-            className={cn(
-              'p-4 rounded-2xl mb-4',
-              'backdrop-blur-xl bg-white/5 border border-white/10',
-            )}
-          >
-            <p className="text-sm text-white/70 leading-relaxed">
-              {exercise.description}
-            </p>
-          </div>
-        )}
-
-        {/* Notes if exists */}
-        {exercise.notes && (
-          <div
-            className={cn(
-              'p-3 rounded-xl mb-4',
-              'backdrop-blur-md bg-white/5 border border-white/10',
-            )}
-          >
-            <p className="text-xs text-white/50 italic">{exercise.notes}</p>
-          </div>
-        )}
-
-        {/* Video embeds if exists */}
-        {exercise.videos && exercise.videos.length > 0 && (
-          <div
-            className={cn(
-              'rounded-2xl overflow-hidden',
-              'backdrop-blur-xl bg-white/5 border border-white/10',
-            )}
-          >
-            <button
-              onClick={() => setIsVideosOpen(!isVideosOpen)}
+        {
+          exercise.description && (
+            <div
               className={cn(
-                'flex w-full items-center justify-between px-4 py-3',
-                'text-sm font-medium text-white/70 hover:text-white/90 transition-colors',
+                'p-4 rounded-2xl mb-4',
+                'backdrop-blur-xl bg-white/5 border border-white/10',
               )}
             >
-              <div className="flex items-center gap-2">
-                <Video className="h-4 w-4 text-amber-400" />
-                <span>Watch Tutorials ({exercise.videos.length})</span>
-              </div>
-              <motion.div
-                animate={{ rotate: isVideosOpen ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChevronDown className="h-4 w-4 text-white/40" />
-              </motion.div>
-            </button>
+              <p className="text-sm text-white/70 leading-relaxed">
+                {exercise.description}
+              </p>
+            </div>
+          )
+        }
 
-            <AnimatePresence initial={false}>
-              {isVideosOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  className="overflow-hidden"
-                >
-                  <div className="space-y-3 px-4 pb-4">
-                    {exercise.videos.map((video, idx) => {
-                      // Extract YouTube video ID if it's a YouTube URL
-                      const youtubeMatch = video.match(
-                        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/,
-                      )
-                      const videoId = youtubeMatch?.[1]
-
-                      if (!videoId) {
-                        return (
-                          <a
-                            key={idx}
-                            href={video}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs font-mono text-amber-400 hover:text-amber-300 underline transition-colors block"
-                          >
-                            Video {idx + 1}
-                          </a>
-                        )
-                      }
-                      return (
-                        <div
-                          key={idx}
-                          className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10"
-                        >
-                          <iframe
-                            src={`https://www.youtube.com/embed/${videoId}`}
-                            title={`${exercise.name} - Video ${idx + 1}`}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="absolute inset-0 w-full h-full"
-                          />
-                        </div>
-                      )
-                    })}
-                  </div>
-                </motion.div>
+        {/* Notes if exists */}
+        {
+          exercise.notes && (
+            <div
+              className={cn(
+                'p-3 rounded-xl mb-4',
+                'backdrop-blur-md bg-white/5 border border-white/10',
               )}
-            </AnimatePresence>
-          </div>
-        )}
+            >
+              <p className="text-xs text-white/50 italic">{exercise.notes}</p>
+            </div>
+          )
+        }
+
+        {/* Video embeds if exists */}
+        {
+          exercise.videos && exercise.videos.length > 0 && (
+            <div
+              className={cn(
+                'rounded-2xl overflow-hidden',
+                'backdrop-blur-xl bg-white/5 border border-white/10',
+              )}
+            >
+              <button
+                onClick={() => setIsVideosOpen(!isVideosOpen)}
+                className={cn(
+                  'flex w-full items-center justify-between px-4 py-3',
+                  'text-sm font-medium text-white/70 hover:text-white/90 transition-colors',
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <Video className="h-4 w-4 text-amber-400" />
+                  <span>Watch Tutorials ({exercise.videos.length})</span>
+                </div>
+                <motion.div
+                  animate={{ rotate: isVideosOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="h-4 w-4 text-white/40" />
+                </motion.div>
+              </button>
+
+              <AnimatePresence initial={false}>
+                {isVideosOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-3 px-4 pb-4">
+                      {exercise.videos.map((video, idx) => {
+                        // Extract YouTube video ID if it's a YouTube URL
+                        const youtubeMatch = video.match(
+                          /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/,
+                        )
+                        const videoId = youtubeMatch?.[1]
+
+                        if (!videoId) {
+                          return (
+                            <a
+                              key={idx}
+                              href={video}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs font-mono text-amber-400 hover:text-amber-300 underline transition-colors block"
+                            >
+                              Video {idx + 1}
+                            </a>
+                          )
+                        }
+                        return (
+                          <div
+                            key={idx}
+                            className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10"
+                          >
+                            <iframe
+                              src={`https://www.youtube.com/embed/${videoId}`}
+                              title={`${exercise.name} - Video ${idx + 1}`}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="absolute inset-0 w-full h-full"
+                            />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )
+        }
 
         {/* Action Button */}
         <div className="pt-4 mt-auto">
@@ -271,7 +290,7 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
             </button>
           </Link>
         </div>
-      </div>
+      </div >
     )
   },
 )
@@ -375,7 +394,14 @@ function TrainingDetailsPage() {
   return (
     <PageLayout
       variant="glass"
-      bottomSlot={<ExerciseCard data={currentExerciseData} />}
+      bottomSlot={
+        <ExerciseCard
+          data={currentExerciseData}
+          allPlannedSets={plannedSets}
+          allExercises={exercises}
+          currentSetIndex={currentSetIndex}
+        />
+      }
     />
   )
 }
