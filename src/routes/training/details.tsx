@@ -29,6 +29,7 @@ interface ExerciseCardProps {
   allPlannedSets: Array<PlannedSet>
   allExercises: Array<Exercise>
   currentSetIndex: number
+  onSetJump: (index: number) => void
   className?: string
 }
 
@@ -37,7 +38,7 @@ interface ExerciseCardProps {
 // ============================================
 
 const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
-  ({ data, allPlannedSets, allExercises, currentSetIndex, className }, ref) => {
+  ({ data, allPlannedSets, allExercises, currentSetIndex, onSetJump, className }, ref) => {
     const [isVideosOpen, setIsVideosOpen] = useState(false)
     const { exercise, plannedSets, completedCount } = data
 
@@ -153,6 +154,7 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
             plannedSets={allPlannedSets}
             exercises={allExercises}
             currentSetIndex={currentSetIndex}
+            onSetJump={onSetJump}
           />
         </div>
 
@@ -313,6 +315,7 @@ function TrainingDetailsPage() {
     exercises,
     completedSets,
     sessions,
+    setCurrentSetIndex,
   } = useAppStore(
     useShallow((state) => ({
       isWorkoutInProgress: state.isWorkoutInProgress,
@@ -323,6 +326,7 @@ function TrainingDetailsPage() {
       exercises: state.exercises,
       completedSets: state.completedSets,
       sessions: state.sessions,
+      setCurrentSetIndex: state.setCurrentSetIndex,
     })),
   )
 
@@ -400,6 +404,7 @@ function TrainingDetailsPage() {
           allPlannedSets={plannedSets}
           allExercises={exercises}
           currentSetIndex={currentSetIndex}
+          onSetJump={setCurrentSetIndex}
         />
       }
     />

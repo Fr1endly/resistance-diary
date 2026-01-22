@@ -8,6 +8,7 @@ interface WorkoutProgressProps {
     plannedSets: PlannedSet[]
     exercises: Exercise[]
     currentSetIndex: number
+    onSetJump?: (index: number) => void
 }
 
 interface SetWithStatus extends PlannedSet {
@@ -26,6 +27,7 @@ export function WorkoutProgress({
     plannedSets,
     exercises,
     currentSetIndex,
+    onSetJump,
 }: WorkoutProgressProps) {
     const [isExpanded, setIsExpanded] = useState(false)
 
@@ -160,8 +162,13 @@ export function WorkoutProgress({
                                             {group.sets.map((set, setIdx) => (
                                                 <div
                                                     key={set.id}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        onSetJump?.(set.globalIndex)
+                                                    }}
                                                     className={cn(
                                                         "flex flex-col items-center justify-center p-1.5 rounded-lg border text-[10px]",
+                                                        "cursor-pointer transition-all active:scale-95 hover:bg-white/10",
                                                         set.status === 'completed'
                                                             ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
                                                             : set.status === 'current'
