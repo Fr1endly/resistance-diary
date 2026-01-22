@@ -81,7 +81,7 @@ export default function Dialog({
               }}
               className={cn(
                 'w-full pointer-events-auto max-h-[90vh] overflow-hidden rounded-3xl',
-                'backdrop-blur-2xl bg-gradient-to-b from-white/10 via-white/5 to-black/20',
+                'bg-yellow-400/90',
                 'border border-white/10',
                 'shadow-2xl shadow-black/40',
                 maxWidthClasses[maxWidth],
@@ -90,16 +90,11 @@ export default function Dialog({
               {/* Top highlight edge */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
-              {/* Drag indicator */}
-              <div className="flex justify-center pt-3 pb-1">
-                <div className="w-12 h-1 rounded-full bg-white/20" />
-              </div>
-
               {/* Header */}
               {(title || showCloseButton) && (
-                <div className="flex items-center justify-between px-6 py-3">
+                <div className="flex items-center justify-between px-6 py-5">
                   {title && (
-                    <h2 className="text-xl font-semibold text-white/90 font-display">
+                    <h2 className="text-xl font-semibold text-neutral-950 font-display">
                       {title}
                     </h2>
                   )}
@@ -108,8 +103,8 @@ export default function Dialog({
                       onClick={toggleDialog}
                       className={cn(
                         'w-8 h-8 rounded-full flex items-center justify-center ml-auto',
-                        'bg-white/5 border border-white/10',
-                        'text-white/40 hover:text-white/80 hover:bg-white/10',
+                        'bg-neutral-950/10 border border-neutral-950/10',
+                        'text-neutral-950 hover:text-neutral-950 hover:bg-neutral-950/10',
                         'transition-all duration-200',
                       )}
                       aria-label="Close dialog"
@@ -121,7 +116,7 @@ export default function Dialog({
               )}
 
               {/* Content */}
-              <div className="px-6 pb-6 overflow-y-auto max-h-[calc(90vh-80px)]">
+              <div className="px-6 pb-6 overflow-y-auto max-h-[calc(90vh-80px)] ">
                 {children}
               </div>
 

@@ -161,30 +161,30 @@ function RoutineDetailContent({
     <div className="space-y-6">
       {/* Description */}
       {routine.description && (
-        <p className="text-white/60 leading-relaxed">{routine.description}</p>
+        <p className="text-neutral-900/80 leading-relaxed italic">{routine.description}</p>
       )}
 
       {/* Stats Overview */}
       <div
         className={cn(
           'flex items-center gap-4 py-4 px-5 rounded-2xl',
-          'backdrop-blur-xl bg-white/5 border border-white/10',
+          'bg-neutral-950 shadow-xl shadow-neutral-950/20',
         )}
       >
         <div className="text-center flex-1">
-          <div className="text-3xl font-bold text-amber-400 font-mono">
+          <div className="text-3xl font-bold text-neutral-100 font-mono">
             {routine.days.length}
           </div>
-          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+          <div className="text-xs text-neutral-400 uppercase tracking-wider mt-1">
             Days
           </div>
         </div>
         <div className="h-12 w-px bg-white/10" />
         <div className="text-center flex-1">
-          <div className="text-3xl font-bold text-amber-400 font-mono">
+          <div className="text-3xl font-bold text-neutral-100 font-mono">
             {routine.days.reduce((sum, day) => sum + day.plannedSets.length, 0)}
           </div>
-          <div className="text-xs text-white/40 uppercase tracking-wider mt-1">
+          <div className="text-xs text-neutral-400 uppercase tracking-wider mt-1">
             Total Sets
           </div>
         </div>
@@ -192,7 +192,7 @@ function RoutineDetailContent({
 
       {/* Days Breakdown */}
       <div className="space-y-4">
-        <h4 className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+        <h4 className="text-xs font-semibold text-neutral-900/60 uppercase tracking-wider px-2">
           Workout Plan
         </h4>
         {routine.days.map((day, idx) => {
@@ -210,34 +210,34 @@ function RoutineDetailContent({
             <div
               key={day.id}
               className={cn(
-                'rounded-2xl p-4',
-                'backdrop-blur-xl bg-white/5 border border-white/10',
+                'rounded-2xl p-5',
+                'bg-neutral-900 shadow-lg shadow-neutral-900/30',
               )}
             >
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-4 mb-5">
                 <div
                   className={cn(
-                    'flex items-center justify-center w-10 h-10 rounded-full',
-                    'bg-amber-500/20 border border-amber-400/30',
-                    'text-amber-400 font-bold font-mono text-sm',
+                    'flex items-center justify-center w-10 min-w-10 h-10 rounded-full',
+                    'bg-neutral-900',
+                    'text-neutral-100 font-bold font-mono text-sm',
                   )}
                 >
                   {idx + 1}
                 </div>
-                <h5 className="font-display text-lg text-white/90">
+                <h5 className="font-display text-xl font-bold text-white tracking-tight">
                   {day.name}
                 </h5>
               </div>
 
-              <div className="space-y-3 ml-13">
+              <div className="space-y-5">
                 {Object.entries(exerciseGroups).map(([exerciseId, sets]) => {
                   if (!sets) return null
                   return (
                     <div
                       key={exerciseId}
-                      className="border-l-2 border-white/10 pl-4 py-1"
+                      className="border-l-2 border-white/10 pl-5 py-1"
                     >
-                      <p className="text-white/80 font-medium mb-2">
+                      <p className="text-yellow-100 font-bold mb-3 tracking-wide">
                         {exercises.get(exerciseId) || exerciseId}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -246,12 +246,15 @@ function RoutineDetailContent({
                             key={set.id}
                             className={cn(
                               'px-3 py-1.5 rounded-lg',
-                              'bg-white/5 border border-white/10',
-                              'text-xs font-mono text-white/50',
+                              'bg-white/5 border border-white/5',
+                              'text-[11px] font-mono text-neutral-400',
                             )}
                           >
-                            Set {setIdx + 1}: {set.targetReps} reps
-                            {set.targetWeight && ` @ ${set.targetWeight}kg`}
+                            <span className="text-neutral-200 mr-1">#{setIdx + 1}</span>
+                            <span className="text-neutral-100 font-bold">{set.targetReps}</span>
+                            <span className="text-neutral-200 mx-1">x</span>
+                            <span className="text-neutral-100">{set.targetWeight || 0}</span>
+                            <span className="text-neutral-200 ml-0.5">kg</span>
                           </div>
                         ))}
                       </div>
@@ -270,9 +273,9 @@ function RoutineDetailContent({
           onClick={() => onActivate(routine)}
           className={cn(
             'w-full h-14 rounded-2xl font-semibold text-base',
-            'backdrop-blur-md bg-amber-500/20 border border-amber-400/30',
-            'text-amber-100 transition-all duration-200',
-            'hover:bg-amber-500/30 hover:border-amber-400/50',
+            'bg-neutral-900 border border-neutral-900',
+            'text-neutral-100 transition-all duration-200',
+            'hover:bg-neutral-800',
             'active:scale-[0.98]',
             'flex items-center justify-center gap-2',
           )}
