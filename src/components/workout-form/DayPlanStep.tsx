@@ -1,5 +1,5 @@
 import { Reorder, useDragControls } from 'motion/react'
-import { ChevronLeft, ChevronRight, Plus, Trash2, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Trash2, X, Copy } from 'lucide-react'
 import { Controller, useFieldArray } from 'react-hook-form'
 import { nanoid } from 'nanoid'
 import { useRef, useState, useCallback, memo } from 'react'
@@ -44,7 +44,7 @@ export function DayPlanStep({
   onAddDay,
   onRemoveDay,
 }: DayPlanStepProps) {
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove, replace, insert } = useFieldArray({
     control: form.control,
     name: `days.${dayIndex}.plannedSets`,
   })
@@ -80,6 +80,19 @@ export function DayPlanStep({
       setDragOrder(newOrder)
     }
   }, [])
+
+  const handleDuplicate = useCallback(
+    (index: number) => {
+      const fieldToDuplicate = fields[index]
+      if (fieldToDuplicate) {
+        insert(index + 1, {
+          ...fieldToDuplicate,
+          id: nanoid(),
+        })
+      }
+    },
+    [fields, insert],
+  )
 
   const dayErrors = form.formState.errors.days?.[dayIndex]
 
@@ -167,6 +180,7 @@ export function DayPlanStep({
                 dayIndex={dayIndex}
                 exercises={exercises}
                 onRemove={() => remove(rhfIndex)}
+                onDuplicate={() => handleDuplicate(rhfIndex)}
                 canRemove={fields.length > 1}
                 getExerciseName={getExerciseName}
                 onDragStart={handleDragStart}
@@ -244,6 +258,7 @@ const PlannedSetInput = memo(function PlannedSetInput({
   dayIndex,
   exercises,
   onRemove,
+  onDuplicate,
   canRemove,
   getExerciseName,
   onDragStart,
@@ -255,6 +270,7 @@ const PlannedSetInput = memo(function PlannedSetInput({
   dayIndex: number
   exercises: Array<Exercise>
   onRemove: () => void
+  onDuplicate: () => void
   canRemove: boolean
   getExerciseName: (id: string) => string
   onDragStart: () => void
@@ -282,6 +298,19 @@ const PlannedSetInput = memo(function PlannedSetInput({
         >
           <GripVertical className="w-5 h-5" />
         </div>
+
+        {/* Hidden inputs for ID and Order validation */}
+        <input
+          type="hidden"
+          {...form.register(`days.${dayIndex}.plannedSets.${index}.id`)}
+        />
+        <input
+          type="hidden"
+          value={index}
+          {...form.register(`days.${dayIndex}.plannedSets.${index}.order`, {
+            valueAsNumber: true,
+          })}
+        />
 
         <div className="flex-1 space-y-3">
           {/* Exercise Selection */}
@@ -392,15 +421,26 @@ const PlannedSetInput = memo(function PlannedSetInput({
           </div>
         </div>
 
-        {canRemove && (
+        <div className="flex flex-col gap-2 mt-2">
+          {canRemove && (
+            <button
+              type="button"
+              onClick={onRemove}
+              className="text-white/20 hover:text-red-400 transition-colors"
+              title="Remove Set"
+            >
+              <X size={16} />
+            </button>
+          )}
           <button
             type="button"
-            onClick={onRemove}
-            className="text-white/20 hover:text-red-400 transition-colors self-start mt-2"
+            onClick={onDuplicate}
+            className="text-white/20 hover:text-amber-400 transition-colors"
+            title="Duplicate Set"
           >
-            <X size={16} />
+            <Copy size={15} />
           </button>
-        )}
+        </div>
       </div>
     </Reorder.Item>
   )
