@@ -36,7 +36,10 @@ function TrainingPage() {
     currentExercise,
     currentSetForExercise,
     currentExerciseProgress,
+    activeRoutineId,
+    activeDayId,
     addCompletedSet,
+    updatePlannedSet,
     nextSet,
     completeSession,
   } = useActiveTrainingSession()
@@ -134,6 +137,27 @@ function TrainingPage() {
     }
 
     addCompletedSet(completedSet)
+
+    // Progressive Overload Check: Hit rep target and exceed weight target
+    if (activeRoutineId && activeDayId) {
+      const bestQualifyingWeight = finalRepGroups.reduce((max, group) => {
+        const hitsReps = group.reps >= currentPlannedSet.targetReps
+        const exceedsWeight = group.weight > (currentPlannedSet.targetWeight || 0)
+        if (hitsReps && exceedsWeight) {
+          return Math.max(max, group.weight)
+        }
+        return max
+      }, 0)
+
+      if (bestQualifyingWeight > (currentPlannedSet.targetWeight || 0)) {
+        updatePlannedSet(activeRoutineId, activeDayId, currentPlannedSet.id, {
+          targetWeight: bestQualifyingWeight,
+        })
+        toast.success(
+          `Congratulations! New PR for ${currentExercise?.name}: ${bestQualifyingWeight}kg!`,
+        )
+      }
+    }
 
     // Check if this was the last set of entire workout
     if (currentSetIndex >= plannedSets.length - 1) {

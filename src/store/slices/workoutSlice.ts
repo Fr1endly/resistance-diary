@@ -31,6 +31,12 @@ export interface WorkoutSlice {
     dayId: string,
     orderedSetIds: Array<string>,
   ) => void
+  updatePlannedSet: (
+    routineId: string,
+    dayId: string,
+    setId: string,
+    updates: Partial<PlannedSet>,
+  ) => void
 }
 
 export const createWorkoutSlice: StateCreator<
@@ -75,12 +81,12 @@ export const createWorkoutSlice: StateCreator<
       routines: state.routines.map((r) =>
         r.id === routineId
           ? {
-              ...r,
-              days: r.days.map((d) =>
-                d.id === dayId ? { ...d, ...updates } : d,
-              ),
-              updatedAt: new Date(),
-            }
+            ...r,
+            days: r.days.map((d) =>
+              d.id === dayId ? { ...d, ...updates } : d,
+            ),
+            updatedAt: new Date(),
+          }
           : r,
       ),
     })),
@@ -90,10 +96,10 @@ export const createWorkoutSlice: StateCreator<
       routines: state.routines.map((r) =>
         r.id === routineId
           ? {
-              ...r,
-              days: r.days.filter((d) => d.id !== dayId),
-              updatedAt: new Date(),
-            }
+            ...r,
+            days: r.days.filter((d) => d.id !== dayId),
+            updatedAt: new Date(),
+          }
           : r,
       ),
     })),
@@ -103,14 +109,14 @@ export const createWorkoutSlice: StateCreator<
       routines: state.routines.map((r) =>
         r.id === routineId
           ? {
-              ...r,
-              days: r.days.map((d) =>
-                d.id === dayId
-                  ? { ...d, plannedSets: [...d.plannedSets, plannedSet] }
-                  : d,
-              ),
-              updatedAt: new Date(),
-            }
+            ...r,
+            days: r.days.map((d) =>
+              d.id === dayId
+                ? { ...d, plannedSets: [...d.plannedSets, plannedSet] }
+                : d,
+            ),
+            updatedAt: new Date(),
+          }
           : r,
       ),
     })),
@@ -120,17 +126,17 @@ export const createWorkoutSlice: StateCreator<
       routines: state.routines.map((r) =>
         r.id === routineId
           ? {
-              ...r,
-              days: r.days.map((d) =>
-                d.id === dayId
-                  ? {
-                      ...d,
-                      plannedSets: d.plannedSets.filter((s) => s.id !== setId),
-                    }
-                  : d,
-              ),
-              updatedAt: new Date(),
-            }
+            ...r,
+            days: r.days.map((d) =>
+              d.id === dayId
+                ? {
+                  ...d,
+                  plannedSets: d.plannedSets.filter((s) => s.id !== setId),
+                }
+                : d,
+            ),
+            updatedAt: new Date(),
+          }
           : r,
       ),
     })),
@@ -140,21 +146,42 @@ export const createWorkoutSlice: StateCreator<
       routines: state.routines.map((r) =>
         r.id === routineId
           ? {
-              ...r,
-              days: r.days.map((d): WorkoutDay => {
-                if (d.id !== dayId) return d
-                const setMap = new Map(d.plannedSets.map((s) => [s.id, s]))
-                const reorderedSets: Array<PlannedSet> = []
-                for (let idx = 0; idx < orderedSetIds.length; idx++) {
-                  const plannedSet = setMap.get(orderedSetIds[idx])
-                  if (plannedSet) {
-                    reorderedSets.push({ ...plannedSet, order: idx })
-                  }
+            ...r,
+            days: r.days.map((d): WorkoutDay => {
+              if (d.id !== dayId) return d
+              const setMap = new Map(d.plannedSets.map((s) => [s.id, s]))
+              const reorderedSets: Array<PlannedSet> = []
+              for (let idx = 0; idx < orderedSetIds.length; idx++) {
+                const plannedSet = setMap.get(orderedSetIds[idx])
+                if (plannedSet) {
+                  reorderedSets.push({ ...plannedSet, order: idx })
                 }
-                return { ...d, plannedSets: reorderedSets }
-              }),
-              updatedAt: new Date(),
-            }
+              }
+              return { ...d, plannedSets: reorderedSets }
+            }),
+            updatedAt: new Date(),
+          }
+          : r,
+      ),
+    })),
+  updatePlannedSet: (routineId, dayId, setId, updates) =>
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? {
+            ...r,
+            days: r.days.map((d) =>
+              d.id === dayId
+                ? {
+                  ...d,
+                  plannedSets: d.plannedSets.map((s) =>
+                    s.id === setId ? { ...s, ...updates } : s,
+                  ),
+                }
+                : d,
+            ),
+            updatedAt: new Date(),
+          }
           : r,
       ),
     })),

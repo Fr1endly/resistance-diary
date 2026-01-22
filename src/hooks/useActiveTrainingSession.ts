@@ -6,6 +6,8 @@ import { useAppStore } from '@/store/useAppStore'
 export interface ActiveTrainingSessionData {
   isWorkoutInProgress: boolean
   activeSessionId: string | null
+  activeRoutineId: string | null
+  activeDayId: string | undefined
   currentSetIndex: number
   plannedSets: Array<PlannedSet>
   currentPlannedSet: PlannedSet | undefined
@@ -20,6 +22,11 @@ export interface ActiveTrainingSessionData {
   : never
   nextSet: () => void
   completeSession: () => void
+  updatePlannedSet: typeof useAppStore.getState extends () => infer S
+  ? S extends { updatePlannedSet: infer F }
+  ? F
+  : never
+  : never
 }
 
 export function useActiveTrainingSession(): ActiveTrainingSessionData {
@@ -34,6 +41,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     completedSets,
     sessions,
     addCompletedSet,
+    updatePlannedSet,
     nextSet,
     completeSession,
   } = useAppStore(
@@ -48,6 +56,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
       completedSets: state.completedSets,
       sessions: state.sessions,
       addCompletedSet: state.addCompletedSet,
+      updatePlannedSet: state.updatePlannedSet,
       nextSet: state.nextSet,
       completeSession: state.completeSession,
     })),
@@ -124,6 +133,8 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
   return {
     isWorkoutInProgress,
     activeSessionId,
+    activeRoutineId,
+    activeDayId: activeSession?.dayId,
     currentSetIndex,
     plannedSets,
     currentPlannedSet,
@@ -131,6 +142,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     currentSetForExercise,
     currentExerciseProgress,
     addCompletedSet,
+    updatePlannedSet,
     nextSet,
     completeSession: () => {
       // Complete the session in store
