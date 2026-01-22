@@ -4,7 +4,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { nanoid } from 'nanoid'
-import { ChevronRight, Dumbbell, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
+import { ChevronRight, Dumbbell, Pencil, Plus, Search, Trash2, X, Filter } from 'lucide-react'
 import type { UseFormReturn } from 'react-hook-form'
 
 import type { Exercise, MuscleGroup, WorkoutRoutine } from '@/types'
@@ -82,6 +82,7 @@ function ExerciseList({
   const muscleMap = new Map(muscleGroups.map((mg) => [mg.id, mg.name]))
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<string[]>([])
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false)
 
   const filteredExercises = exercises.filter((exercise) => {
     // Search query filter
@@ -155,76 +156,98 @@ function ExerciseList({
         </div>
       </div>
 
-      {/* Search and Filter */}
-      <div className="flex flex-col gap-3">
-        {/* Search Bar */}
-        <div className="relative">
-          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-            <Search size={16} className="text-white/40" />
-          </div>
-          <input
-            type="text"
-            placeholder="Search exercises..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className={cn(
-              'w-full h-10 pl-9 pr-3 rounded-xl',
-              'bg-white/5 border border-white/10 text-white placeholder:text-white/30',
-              'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
-              'text-sm',
-            )}
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-3 flex items-center text-white/40 hover:text-white transition-colors"
-            >
-              <X size={14} />
-            </button>
-          )}
-        </div>
-
-        {/* Muscle Group Chips */}
-        <div className="-mx-1 px-1 overflow-x-auto no-scrollbar">
-          <div className="flex gap-2 min-w-max pb-1">
-            <button
-              onClick={() => setSelectedMuscleGroups([])}
-              className={cn(
-                'px-3 py-1.5 rounded-full text-xs font-medium transition-all',
-                selectedMuscleGroups.length === 0
-                  ? 'bg-amber-500 text-white'
-                  : 'bg-white/5 text-white/60 hover:bg-white/10',
-              )}
-            >
-              All
-            </button>
-            {muscleGroups.map((mg) => (
-              <button
-                key={mg.id}
-                onClick={() => toggleMuscleGroup(mg.id)}
-                className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-medium transition-all border',
-                  selectedMuscleGroups.includes(mg.id)
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
-                    : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10',
-                )}
-              >
-                {mg.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Exercise List */}
-      <div className="space-y-3 overflow-y-auto flex-1 -mx-1 px-1">
+      {/* Search and Filter Toggle */}
+      <div className="flex items-center justify-between px-1">
         <h4 className="text-xs font-semibold text-white/40 uppercase tracking-wider flex items-center gap-2">
           <Dumbbell size={12} />
           {searchQuery || selectedMuscleGroups.length > 0
             ? `Found ${filteredExercises.length}`
             : 'All Exercises'}
         </h4>
+        <button
+          onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+          className={cn(
+            'flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
+            isFiltersOpen || searchQuery || selectedMuscleGroups.length > 0
+              ? 'bg-amber-500/20 text-amber-300'
+              : 'bg-white/5 text-white/60 hover:bg-white/10',
+          )}
+        >
+          <Filter size={14} />
+          Filters
+          {(searchQuery || selectedMuscleGroups.length > 0) && (
+            <span className="flex items-center justify-center w-4 h-4 rounded-full bg-amber-500 text-[10px] text-white font-bold leading-none">
+              {(searchQuery ? 1 : 0) + selectedMuscleGroups.length}
+            </span>
+          )}
+        </button>
+      </div>
 
+      {/* Collapsible Search and Filters */}
+      {isFiltersOpen && (
+        <div className="flex flex-col gap-3 animate-in slide-in-from-top-2 fade-in duration-200">
+          {/* Search Bar */}
+          <div className="relative">
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+              <Search size={16} className="text-white/40" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search exercises..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={cn(
+                'w-full h-10 pl-9 pr-3 rounded-xl',
+                'bg-white/5 border border-white/10 text-white placeholder:text-white/30',
+                'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
+                'text-sm',
+              )}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute inset-y-0 right-3 flex items-center text-white/40 hover:text-white transition-colors"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+
+          {/* Muscle Group Chips */}
+          <div className="-mx-1 px-1 overflow-x-auto no-scrollbar">
+            <div className="flex gap-2 min-w-max pb-1">
+              <button
+                onClick={() => setSelectedMuscleGroups([])}
+                className={cn(
+                  'px-3 py-1.5 rounded-full text-xs font-medium transition-all',
+                  selectedMuscleGroups.length === 0
+                    ? 'bg-amber-500 text-white'
+                    : 'bg-white/5 text-white/60 hover:bg-white/10',
+                )}
+              >
+                All
+              </button>
+              {muscleGroups.map((mg) => (
+                <button
+                  key={mg.id}
+                  onClick={() => toggleMuscleGroup(mg.id)}
+                  className={cn(
+                    'px-3 py-1.5 rounded-full text-xs font-medium transition-all border',
+                    selectedMuscleGroups.includes(mg.id)
+                      ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
+                      : 'bg-white/5 border-transparent text-white/60 hover:bg-white/10',
+                  )}
+                >
+                  {mg.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Exercise List */}
+      <div className="space-y-3 overflow-y-auto flex-1 -mx-1 px-1">
         {filteredExercises.length === 0 ? (
           <EmptyState
             icon={<Search size={32} className="text-white/30" />}
