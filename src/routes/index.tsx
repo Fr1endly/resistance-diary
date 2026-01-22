@@ -34,9 +34,23 @@ const CurrentDayWorkout = ({
   const dayName = activeWorkout?.days[activeDayIdx]?.name || 'No Active Day'
 
   return (
-    <div className="font-display">
-      <h2 className="text-2xl font-bold text-neutral-950">{workoutName}</h2>
-      <h3 className="font-body font-medium text-lg text-neutral-900/95">{dayName}</h3>
+    <div className="font-display  space-y-2">
+      <div>
+        <span className="text-[10px] uppercase font-bold text-neutral-900/40 tracking-wider block mb-0.5">
+          Workout
+        </span>
+        <h2 className="text-xl font-bold text-neutral-950 leading-tight">
+          {workoutName}
+        </h2>
+      </div>
+      <div>
+        <span className="text-[10px] uppercase font-bold text-neutral-900/40 tracking-wider block mb-0.5">
+          Day
+        </span>
+        <h3 className="font-body font-medium text-lg text-neutral-900/95 leading-tight">
+          {dayName}
+        </h3>
+      </div>
     </div>
   )
 }

@@ -83,19 +83,19 @@ export function NavDrawerTrigger({
   variant = 'sectioned',
 }: NavDrawerTriggerProps) {
   return (
-    <div className="absolute right-2 bottom-6 z-50">
+    <div className="absolute right-8 bottom-8.5 z-50 shadow-lg">
       <DrawerTrigger asChild>
         <Button
           className={cn(
-            'border-0 shadow-lg',
+            'shadow-xl',
             variant === 'glass'
-              ? 'backdrop-blur-md bg-white/10 border border-white/20 text-white hover:bg-white/20'
-              : 'bg-amber-400 text-black',
+              ? 'backdrop-blur-md bg-white/10  text-white hover:bg-white/20'
+              : ' bg-neutral-900 text-white',
           )}
         >
           <MenuIcon
             className={cn(
-              variant === 'glass' ? 'stroke-white' : 'stroke-neutral-950',
+              variant === 'glass' ? 'stroke-white' : 'stroke-white',
             )}
           />
         </Button>
