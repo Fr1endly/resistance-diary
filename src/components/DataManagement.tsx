@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { AlertTriangle, Check, Download, Upload, X } from 'lucide-react'
+import { AlertTriangle, Check, Download, Trash2, Upload, X } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from '@/store/useAppStore'
 import {
@@ -8,6 +8,7 @@ import {
     parseCompletedSetsFromCsv,
 } from '@/lib/csv'
 import { cn } from '@/lib/utils'
+import ConfirmDialog from './ui/ConfirmDialog'
 
 type ImportMode = 'replace' | 'merge'
 
@@ -30,6 +31,7 @@ export default function DataManagement() {
     const [preview, setPreview] = useState<ImportPreview | null>(null)
     const [pendingCsv, setPendingCsv] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [isResetDialogOpen, setIsResetDialogOpen] = useState(false)
 
     const handleExport = () => {
         const csv = exportCompletedSetsToCsv(completedSets)
@@ -86,6 +88,11 @@ export default function DataManagement() {
         if (fileInputRef.current) {
             fileInputRef.current.value = ''
         }
+    }
+
+    const handleResetApp = () => {
+        localStorage.removeItem('resistance-diary-storage')
+        window.location.reload()
     }
 
     return (
@@ -249,6 +256,53 @@ export default function DataManagement() {
                     </div>
                 )}
             </div>
+
+            {/* Danger Zone */}
+            <div
+                className={cn(
+                    'p-4 rounded-2xl',
+                    'backdrop-blur-xl bg-white/5 border border-red-500/20',
+                )}
+            >
+                <h3 className="text-red-400 font-semibold mb-2 flex items-center gap-2">
+                    <div
+                        className={cn(
+                            'w-8 h-8 rounded-full flex items-center justify-center',
+                            'bg-red-500/20 border border-red-400/30',
+                        )}
+                    >
+                        <AlertTriangle size={16} className="text-red-400" />
+                    </div>
+                    Danger Zone
+                </h3>
+                <p className="text-white/50 text-sm mb-4">
+                    Reset the application to its initial state. This action cannot be undone.
+                </p>
+                <button
+                    onClick={() => setIsResetDialogOpen(true)}
+                    className={cn(
+                        'w-full px-4 py-3 rounded-xl font-medium text-sm',
+                        'bg-red-500/10 border border-red-500/20 text-red-400',
+                        'hover:bg-red-500/20 hover:text-red-300',
+                        'transition-all duration-200 active:scale-[0.98]',
+                        'flex items-center justify-center gap-2',
+                    )}
+                >
+                    <Trash2 size={16} />
+                    Reset App Data
+                </button>
+            </div>
+
+            <ConfirmDialog
+                open={isResetDialogOpen}
+                onClose={() => setIsResetDialogOpen(false)}
+                onConfirm={handleResetApp}
+                title="Reset Application"
+                description="Are you sure you want to delete all data and reset the application? This action cannot be undone."
+                variant="danger"
+                confirmLabel="Reset Everything"
+                warning="All workouts, history, and settings will be permanently lost."
+            />
         </div>
     )
 }
