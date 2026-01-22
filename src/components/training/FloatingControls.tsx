@@ -26,16 +26,18 @@ export const FloatingControls = memo(function FloatingControls({
     <div className="w-full h-full">
       <div
         className={cn(
-          'rounded-3xl h-full pr-4 flex flex-col justify-around',
+          'rounded-3xl h-full  flex flex-col justify-around',
         )}
       >
         {/* Inline inputs with divider */}
-        <div className="flex items-center gap-4 mb-3">
+        <div className="flex items-center gap-4 mb-1 " >
           <div className="flex-1 flex flex-col items-center ">
             <div
               className={cn(
-                'w-full rounded-xl overflow-hidden mb-1',
+                'w-full rounded-xl overflow-hidden mb-1 max-w-[100px]',
                 'bg-white/5 border border-white/10',
+                '-rotate-4',
+                'origin-center',
               )}
             >
               <SpinnerPicker
@@ -44,8 +46,8 @@ export const FloatingControls = memo(function FloatingControls({
                 min={0}
                 max={100}
                 step={1}
-                containerHeight={80}
-                itemHeight={50}
+                containerHeight={100}
+                itemHeight={80}
                 friction={0.75}
               />
             </div>
@@ -54,13 +56,15 @@ export const FloatingControls = memo(function FloatingControls({
             </span>
           </div>
 
-          <div className="h-16 w-px bg-white/10" />
+          <div className="h-16 w-px bg-black/15" />
 
           <div className="flex-1 flex flex-col items-center">
             <div
               className={cn(
-                'w-full rounded-xl overflow-hidden mb-1',
+                'w-full rounded-xl overflow-hidden mb-1 max-w-[100px]',
                 'bg-white/5 border border-white/10',
+                'rotate-4',
+                'origin-center',
               )}
             >
               <SpinnerPicker
@@ -70,8 +74,8 @@ export const FloatingControls = memo(function FloatingControls({
                 max={500}
                 step={2.5}
                 suffix="kg"
-                containerHeight={80}
-                itemHeight={50}
+                containerHeight={100}
+                itemHeight={80}
                 friction={0.75}
               />
             </div>
@@ -82,7 +86,7 @@ export const FloatingControls = memo(function FloatingControls({
         </div>
 
         {/* Action buttons */}
-        <div className="flex gap-2 justify-evenly items-center">
+        <div className="flex gap-6 justify-center items-end border-t border-black/15 pt-2">
           <button
             onClick={onAddRepGroup}
             className={cn(

@@ -106,10 +106,10 @@ export default ({
                 {label}
               </span>
               <div
-                className="bg-amber-500 h-6 flex items-center justify-end px-1 rounded-xs"
+                className="bg-yellow-500 h-6 flex items-center justify-end px-1 rounded-xs"
                 style={{ width: `calc(${(value / maxValue) * 100}% )`, minWidth: value > 0 ? '40px' : '0' }}
               >
-                <span className="text-xs font-medium text-neutral-900">
+                <span className="text-xs font-medium text-neutral-900 text-nowrap">
                   {value > 0 ? `${value} kg` : ''}
                 </span>
               </div>
