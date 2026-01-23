@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Check, ChevronDown, Dumbbell, Clock } from 'lucide-react'
+import { Check, ChevronDown, Clock } from 'lucide-react'
 import type { Exercise, PlannedSet } from '@/types'
 import { cn } from '@/lib/utils'
 
@@ -8,6 +8,7 @@ interface WorkoutProgressProps {
     plannedSets: PlannedSet[]
     exercises: Exercise[]
     currentSetIndex: number
+    completedPlannedSetIds: string[]
     onSetJump?: (index: number) => void
 }
 
@@ -27,18 +28,21 @@ export function WorkoutProgress({
     plannedSets,
     exercises,
     currentSetIndex,
+    completedPlannedSetIds,
     onSetJump,
 }: WorkoutProgressProps) {
     const [isExpanded, setIsExpanded] = useState(false)
 
     const exerciseGroups = useMemo(() => {
         return plannedSets.reduce((acc, set, index) => {
-            const status =
-                index < currentSetIndex
-                    ? 'completed'
-                    : index === currentSetIndex
-                        ? 'current'
-                        : 'upcoming'
+            const isCompleted = completedPlannedSetIds.includes(set.id)
+            const isCurrent = index === currentSetIndex
+
+            const status = isCompleted
+                ? 'completed'
+                : isCurrent
+                    ? 'current'
+                    : 'upcoming'
 
             const existingGroup = acc.find((g) => g.exerciseId === set.exerciseId)
 
@@ -64,7 +68,7 @@ export function WorkoutProgress({
     }, [plannedSets, exercises, currentSetIndex])
 
     const totalSets = plannedSets.length
-    const completedSetsCount = currentSetIndex
+    const completedSetsCount = completedPlannedSetIds.length
     const progressPercent = Math.min(
         100,
         Math.max(0, (completedSetsCount / totalSets) * 100),
@@ -159,7 +163,7 @@ export function WorkoutProgress({
 
                                         {/* Sets Grid */}
                                         <div className="pl-7 grid grid-cols-4 gap-2">
-                                            {group.sets.map((set, setIdx) => (
+                                            {group.sets.map((set) => (
                                                 <div
                                                     key={set.id}
                                                     onClick={(e) => {

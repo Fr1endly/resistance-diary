@@ -38,9 +38,10 @@ function TrainingPage() {
     currentExerciseProgress,
     activeRoutineId,
     activeDayId,
+    completedPlannedSetIds,
     addCompletedSet,
     updatePlannedSet,
-    nextSet,
+    setCurrentSetIndex,
     completeSession,
   } = useActiveTrainingSession()
 
@@ -159,24 +160,52 @@ function TrainingPage() {
       }
     }
 
-    // Check if this was the last set of entire workout
-    if (currentSetIndex >= plannedSets.length - 1) {
+    // Check if the entire workout is completed
+    // We use the updated list of completed set IDs (which includes the one we just added)
+    const updatedCompletedIds = [...completedPlannedSetIds, currentPlannedSet.id]
+    const isAllDone = plannedSets.every((ps) => updatedCompletedIds.includes(ps.id))
+
+    if (isAllDone) {
       completeSession()
       navigate({ to: '/' })
       return
     }
 
-    // Check if the next set is a different exercise
-    const nextPlannedSet = plannedSets[currentSetIndex + 1]
-    const isLastSetOfExercise =
-      nextPlannedSet.exerciseId !== currentPlannedSet.exerciseId
+    // Find the next unfinished set
+    // 1. Look ahead from current index
+    let nextUnfinishedIndex = -1
+    for (let i = currentSetIndex + 1; i < plannedSets.length; i++) {
+      if (!updatedCompletedIds.includes(plannedSets[i].id)) {
+        nextUnfinishedIndex = i
+        break
+      }
+    }
 
-    // Advance to next set first (so details page shows correct exercise)
-    nextSet()
+    // 2. If not found, look from the beginning
+    if (nextUnfinishedIndex === -1) {
+      for (let i = 0; i < currentSetIndex; i++) {
+        if (!updatedCompletedIds.includes(plannedSets[i].id)) {
+          nextUnfinishedIndex = i
+          break
+        }
+      }
+    }
 
-    // If switching exercises, redirect to details page
-    if (isLastSetOfExercise) {
-      navigate({ to: '/training/details' })
+    if (nextUnfinishedIndex !== -1) {
+      const nextSetObj = plannedSets[nextUnfinishedIndex]
+      const isExerciseChanging = nextSetObj.exerciseId !== currentPlannedSet.exerciseId
+
+      // Jump to the next unfinished set
+      setCurrentSetIndex(nextUnfinishedIndex)
+
+      // If switching exercises, redirect to details page
+      if (isExerciseChanging) {
+        navigate({ to: '/training/details' })
+      }
+    } else {
+      // Fallback: This shouldn't happen if isAllDone is false, but just in case
+      completeSession()
+      navigate({ to: '/' })
     }
   }, [
     currentPlannedSet,
@@ -187,10 +216,14 @@ function TrainingPage() {
     addCompletedSet,
     currentSetIndex,
     plannedSets,
+    completedPlannedSetIds,
     completeSession,
-    nextSet,
+    setCurrentSetIndex,
     navigate,
     toast,
+    activeRoutineId,
+    activeDayId,
+    currentExercise?.name,
   ])
 
   // Guard

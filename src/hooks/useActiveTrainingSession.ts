@@ -12,8 +12,11 @@ export interface ActiveTrainingSessionData {
   plannedSets: Array<PlannedSet>
   currentPlannedSet: PlannedSet | undefined
   currentExercise: Exercise | undefined
+  exercises: Exercise[]
   currentSetForExercise: number
   currentExerciseProgress: { total: number; completed: number }
+  completedPlannedSetIds: string[]
+  isAllPlannedSetsCompleted: boolean
   // Actions
   addCompletedSet: typeof useAppStore.getState extends () => infer S
   ? S extends { addCompletedSet: infer F }
@@ -22,6 +25,7 @@ export interface ActiveTrainingSessionData {
   : never
   nextSet: () => void
   completeSession: () => void
+  setCurrentSetIndex: (index: number) => void
   updatePlannedSet: typeof useAppStore.getState extends () => infer S
   ? S extends { updatePlannedSet: infer F }
   ? F
@@ -44,6 +48,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     updatePlannedSet,
     nextSet,
     completeSession,
+    setCurrentSetIndex,
   } = useAppStore(
     useShallow((state) => ({
       isWorkoutInProgress: state.isWorkoutInProgress,
@@ -59,6 +64,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
       updatePlannedSet: state.updatePlannedSet,
       nextSet: state.nextSet,
       completeSession: state.completeSession,
+      setCurrentSetIndex: state.setCurrentSetIndex,
     })),
   )
 
@@ -113,6 +119,20 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     return counts
   }, [plannedSets, completedSets, activeSessionId])
 
+  // Get IDs of all completed planned sets in this session
+  const completedPlannedSetIds = useMemo(() => {
+    if (!activeSessionId) return []
+    return completedSets
+      .filter((cs) => cs.sessionId === activeSessionId)
+      .map((cs) => cs.plannedSetId)
+      .filter((id): id is string => !!id)
+  }, [completedSets, activeSessionId])
+
+  const isAllPlannedSetsCompleted = useMemo(() => {
+    if (plannedSets.length === 0) return false
+    return plannedSets.every((ps) => completedPlannedSetIds.includes(ps.id))
+  }, [plannedSets, completedPlannedSetIds])
+
   // Current exercise progress
   const currentExerciseProgress = currentExercise
     ? (exerciseSetCounts[currentExercise.id] ?? { total: 0, completed: 0 })
@@ -139,11 +159,15 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     plannedSets,
     currentPlannedSet,
     currentExercise,
+    exercises,
     currentSetForExercise,
     currentExerciseProgress,
+    completedPlannedSetIds,
+    isAllPlannedSetsCompleted,
     addCompletedSet,
     updatePlannedSet,
     nextSet,
+    setCurrentSetIndex,
     completeSession: () => {
       // Complete the session in store
       completeSession()

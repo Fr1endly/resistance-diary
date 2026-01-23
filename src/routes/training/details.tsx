@@ -9,6 +9,7 @@ import PageLayout from '@/components/ui/PageLayout'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
 import { WorkoutProgress } from '@/components/training/WorkoutProgress'
+import { useActiveTrainingSession } from '@/hooks/useActiveTrainingSession'
 
 export const Route = createFileRoute('/training/details')({
   component: TrainingDetailsPage,
@@ -29,6 +30,7 @@ interface ExerciseCardProps {
   allPlannedSets: Array<PlannedSet>
   allExercises: Array<Exercise>
   currentSetIndex: number
+  completedPlannedSetIds: string[]
   onSetJump: (index: number) => void
   className?: string
 }
@@ -38,7 +40,7 @@ interface ExerciseCardProps {
 // ============================================
 
 const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
-  ({ data, allPlannedSets, allExercises, currentSetIndex, onSetJump, className }, ref) => {
+  ({ data, allPlannedSets, allExercises, currentSetIndex, completedPlannedSetIds, onSetJump, className }, ref) => {
     const [isVideosOpen, setIsVideosOpen] = useState(false)
     const { exercise, plannedSets, completedCount } = data
 
@@ -115,8 +117,8 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {plannedSets.map((set, i) => {
-                const isCompleted = i < completedCount
-                const isCurrent = i === completedCount
+                const isCompleted = completedPlannedSetIds.includes(set.id)
+                const isCurrent = allPlannedSets[currentSetIndex]?.id === set.id
 
                 return (
                   <div
@@ -154,6 +156,7 @@ const ExerciseCard = forwardRef<HTMLDivElement, ExerciseCardProps>(
             plannedSets={allPlannedSets}
             exercises={allExercises}
             currentSetIndex={currentSetIndex}
+            completedPlannedSetIds={completedPlannedSetIds}
             onSetJump={onSetJump}
           />
         </div>
@@ -309,44 +312,20 @@ function TrainingDetailsPage() {
   const {
     isWorkoutInProgress,
     activeSessionId,
-    activeRoutineId,
     currentSetIndex,
-    routines,
+    plannedSets,
     exercises,
-    completedSets,
-    sessions,
+    completedPlannedSetIds,
     setCurrentSetIndex,
-  } = useAppStore(
+  } = useActiveTrainingSession()
+
+  const { completedSets } = useAppStore(
     useShallow((state) => ({
-      isWorkoutInProgress: state.isWorkoutInProgress,
-      activeSessionId: state.activeSessionId,
-      activeRoutineId: state.activeRoutineId,
-      currentSetIndex: state.currentSetIndex,
-      routines: state.routines,
-      exercises: state.exercises,
       completedSets: state.completedSets,
-      sessions: state.sessions,
-      setCurrentSetIndex: state.setCurrentSetIndex,
     })),
   )
 
-  // Get active routine and day
-  const activeRoutine = useMemo(
-    () => routines.find((r) => r.id === activeRoutineId),
-    [routines, activeRoutineId],
-  )
-
-  const activeSession = useMemo(
-    () => sessions.find((s) => s.id === activeSessionId),
-    [sessions, activeSessionId],
-  )
-
-  const activeDay = useMemo(
-    () => activeRoutine?.days.find((d) => d.id === activeSession?.dayId),
-    [activeRoutine, activeSession],
-  )
-
-  const plannedSets = useMemo(() => activeDay?.plannedSets ?? [], [activeDay])
+  // Get current exercise with its planned sets
   const currentPlannedSet = plannedSets[currentSetIndex] as
     | PlannedSet
     | undefined
@@ -356,13 +335,13 @@ function TrainingDetailsPage() {
     if (!currentPlannedSet) return null
 
     const exercise = exercises.find(
-      (ex) => ex.id === currentPlannedSet.exerciseId,
+      (ex: Exercise) => ex.id === currentPlannedSet.exerciseId,
     )
     if (!exercise) return null
 
     // Get all planned sets for this exercise
     const exercisePlannedSets = plannedSets.filter(
-      (ps) => ps.exerciseId === currentPlannedSet.exerciseId,
+      (ps: PlannedSet) => ps.exerciseId === currentPlannedSet.exerciseId,
     )
 
     // Count completed sets for this exercise in current session
@@ -404,6 +383,7 @@ function TrainingDetailsPage() {
           allPlannedSets={plannedSets}
           allExercises={exercises}
           currentSetIndex={currentSetIndex}
+          completedPlannedSetIds={completedPlannedSetIds}
           onSetJump={setCurrentSetIndex}
         />
       }
