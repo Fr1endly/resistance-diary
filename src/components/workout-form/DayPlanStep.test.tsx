@@ -31,6 +31,7 @@ vi.mock('lucide-react', () => ({
   ChevronDown: () => <span data-testid="icon-chevron-down" />,
   ChevronUp: () => <span data-testid="icon-chevron-up" />,
   Check: () => <span data-testid="icon-check" />,
+  Copy: () => <span data-testid="icon-copy" />,
 }))
 vi.mock('@/components/icons', () => ({
   GripVertical: () => <span data-testid="icon-grip" />,
