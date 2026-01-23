@@ -8,6 +8,7 @@ export interface ActiveTrainingSessionData {
   activeSessionId: string | null
   activeRoutineId: string | null
   activeDayId: string | undefined
+  currentDayIndex: number
   currentSetIndex: number
   plannedSets: Array<PlannedSet>
   currentPlannedSet: PlannedSet | undefined
@@ -155,6 +156,7 @@ export function useActiveTrainingSession(): ActiveTrainingSessionData {
     activeSessionId,
     activeRoutineId,
     activeDayId: activeSession?.dayId,
+    currentDayIndex,
     currentSetIndex,
     plannedSets,
     currentPlannedSet,

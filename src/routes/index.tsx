@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
 import { useVolumeChartData } from '@/hooks/useVolumeChartData'
 import { useMuscleGroupVolumeData } from '@/hooks/useMuscleGroupVolumeData'
@@ -7,6 +8,8 @@ import Layout from '@/components/ui/PageLayout'
 import { Button } from '@/components/ui/button'
 import ArrowDiagonal from '@/components/icons/ArrowDiagonal'
 import IndexChart, { type TimeRange, type ChartCategory } from '@/components/charts/IndexChart'
+import { useActiveTrainingSession } from '@/hooks/useActiveTrainingSession'
+import { useShallow } from 'zustand/react/shallow'
 
 export const Route = createFileRoute('/')({
   component: IndexPage,
@@ -17,14 +20,6 @@ interface CurrentDayWorkoutProps {
   // activeWorkout: WorkoutPlan | null;
   activeDayIdx: number
 }
-
-interface ActionButtonProps {
-  url: string
-  text: string
-  onClick?: () => void
-}
-
-
 
 const CurrentDayWorkout = ({
   activeWorkout,
@@ -55,18 +50,50 @@ const CurrentDayWorkout = ({
   )
 }
 
-const ActionButton = ({ url, text, onClick }: ActionButtonProps) => {
+interface LinkButtonProps {
+  to: string
+  text: string
+  showIcon?: boolean
+}
+
+interface ActionButtonProps {
+  text: string
+  onClick: () => void
+  variant?: "default" | "destructive"
+}
+
+const baseButtonStyles = cn(
+  "h-14 min-h-14 box-border", // Force consistent height
+  "rounded-md text-xl font-display font-medium uppercase px-6",
+  "text-neutral-100 bg-neutral-900 hover:bg-neutral-800 transition-colors"
+)
+
+const LinkButton = ({ to, text, showIcon = false }: LinkButtonProps) => {
   return (
     <Button
       variant="default"
-      className="w-44 h-18.75 rounded-md text-2xl font-display font-medium uppercase text-neutral-100 bg-neutral-900 px-2 py-1"
+      className={baseButtonStyles}
+      asChild
+    >
+      <Link to={to} className="flex justify-center items-center w-full h-full">
+        {showIcon && <div className="size-6" />}
+        <span className="flex-1 text-center">{text}</span>
+        {showIcon && <ArrowDiagonal className="ml-2 size-6" />}
+      </Link>
+    </Button>
+  )
+}
+
+const ActionButton = ({ text, onClick }: ActionButtonProps) => {
+  return (
+    <Button
+      variant="default"
+      className={baseButtonStyles}
       onClick={onClick}
     >
-      <Link to={url} className="flex justify-center items-center w-full h-full">
-        {url == '/workouts' && <div className="size-6"></div>}
-        <span className="flex-1">{text}</span>
-        {url == '/workouts' && <ArrowDiagonal className="ml-2 size-6" />}
-      </Link>
+      <span className="w-full text-center">
+        {text}
+      </span>
     </Button>
   )
 }
@@ -74,8 +101,15 @@ const ActionButton = ({ url, text, onClick }: ActionButtonProps) => {
 function IndexPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>('week')
   const [chartCategory, setChartCategory] = useState<ChartCategory>('total')
-  const { isWorkoutInProgress, currentDayIndex, activeRoutineId, routines } =
-    useAppStore()
+
+  const { isWorkoutInProgress, currentDayIndex, completeSession } = useActiveTrainingSession()
+  const { routines, activeRoutineId } = useAppStore(
+    useShallow((state) => ({
+      routines: state.routines,
+      activeRoutineId: state.activeRoutineId,
+    })),
+  )
+
   const daysBack = timeRange === 'week' ? 7 : 30
 
   // Get data from both hooks
@@ -121,8 +155,22 @@ function IndexPage() {
               activeDayIdx={currentDayIndex}
             />
           </div>
-          <div className="flex-1 flex justify-start items-end">
-            <ActionButton url={actionUrl} text={actionText} />
+          <div className="flex-1 flex justify-start items-end gap-3">
+            <div className="">
+              <LinkButton
+                to={actionUrl}
+                text={actionText}
+                showIcon={!activeWorkout}
+              />
+            </div>
+            {isWorkoutInProgress && (
+              <div className="">
+                <ActionButton
+                  text="Finish"
+                  onClick={() => completeSession()}
+                />
+              </div>
+            )}
           </div>
         </div>
       }
